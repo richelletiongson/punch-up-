@@ -14,3 +14,5 @@ This piece demonstrates:
 - Frontend implementation (HTML, CSS, JavaScript)
 
 The objective is to showcase my ability to design and build immersive, narrative-driven web experiences as a complete portfolio entry.
+<img width="1728" height="907" alt="Screenshot 2026-03-04 at 12 38 22 PM" src="https://github.com/user-attachments/assets/b6af9eb5-83ca-40cf-ae3b-85007cf64e8b" />
+<img width="1728" height="910" alt="Screenshot 2026-03-04 at 12 38 43 PM" src="https://github.com/user-attachments/assets/20dbb4ec-36f9-438e-85e0-c1572ada15b4" />
