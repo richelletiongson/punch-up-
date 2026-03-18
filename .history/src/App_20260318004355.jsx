@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas, useLoader, useFrame } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
@@ -8,7 +8,7 @@ function BottleModel() {
   const obj = useLoader(OBJLoader, '/bottle_thick.obj')
 
   return (
-    <group rotation={[0, 0, 0]} position={[0.8, -1.8, 0]} scale={0.16}>
+    <group rotation={[0, 0, 0]} position={[0, -1.8, 0]} scale={0.16}>
       <primitive object={obj} />
     </group>
   )
@@ -18,15 +18,15 @@ function BottleScene({ scrollProgress }) {
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
   useFrame(({ camera }) => {
-    // Scroll parallax: close-up at top, full bottle after scroll
-    const startZ = 5
-    const endZ = 8
+    // Scroll parallax: zooms out until it stops.
+    const startZ = 4.2
+    const endZ = 8.5
     const clamped = Math.min(Math.max(scrollProgress, 0), 1)
 
     const z = startZ + (endZ - startZ) * clamped
-    // True eye-level front view: camera and target share the same Y.
-    camera.position.set(0.8, 0.0, z)
-    camera.lookAt(0.8, 0.0, 0)
+    // Keep bottle centered while zooming.
+    camera.position.set(0, 0.0, z)
+    camera.lookAt(0, 0.0, 0)
   })
 
   return (
@@ -44,36 +44,41 @@ function BottleScene({ scrollProgress }) {
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const stageRef = useRef(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY
-      const maxScroll = Math.max(
-        1,
-        document.documentElement.scrollHeight - window.innerHeight,
-      )
-      const progress = Math.min(scrollY / maxScroll, 1)
-      setScrollProgress(progress)
+    const el = stageRef.current ?? window
+
+    const onWheel = (e) => {
+      // Prevent actual page scroll; use wheel to drive zoom progress.
+      e.preventDefault()
+
+      // Trackpads can send large/small deltas; normalize a bit.
+      const delta = e.deltaY
+      const step = delta * 0.0008
+
+      setScrollProgress((p) => {
+        const next = p + step
+        if (next < 0) return 0
+        if (next > 1) return 1
+        return next
+      })
     }
 
-    handleScroll()
-    window.addEventListener('scroll', handleScroll)
-
-    return () => window.removeEventListener('scroll', handleScroll)
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
   }, [])
 
   return (
     <>
-      <div className="stage">
+      <div className="stage" ref={stageRef}>
         <Canvas
-          camera={{ position: [0.8, 0.6, 1.2], fov: 35, near: 0.01, far: 100 }}
+          camera={{ position: [0, 0, 4.2], fov: 35, near: 0.01, far: 100 }}
           className="stage__canvas"
         >
           <BottleScene scrollProgress={scrollProgress} />
         </Canvas>
       </div>
-      {/* Spacer so there is actually something to scroll */}
-      <div className="scroll-spacer" />
     </>
   )
 }

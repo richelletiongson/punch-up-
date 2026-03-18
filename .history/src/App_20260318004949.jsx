@@ -9,8 +9,8 @@ function BottleModel({ scrollProgress }) {
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
 
   // Start lower so the bottom is cropped, then rise into full view as it zooms out.
-  const startY = -4.0
-  const endY = -2.7
+  const startY = -3.4
+  const endY = -2.1
   const y = startY + (endY - startY) * clamped
 
   return (
