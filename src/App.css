@@ -1,0 +1,25 @@
+.stage {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /* Let the body background show through so there is no hard edge */
+  background: transparent;
+  overflow: hidden;
+}
+
+.stage__canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: block;
+}
+
+.scroll-spacer {
+  height: 160vh;
+  /* Transparent so the gradient from body continues seamlessly */
+  background: transparent;
+}
