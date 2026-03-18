@@ -7,6 +7,8 @@
   /* Let the body background show through so there is no hard edge */
   background: transparent;
   overflow: hidden;
+  /* Make wheel/touch scrolling feel intentional */
+  touch-action: none;
 }
 
 .stage__canvas {
@@ -18,8 +20,3 @@
   display: block;
 }
 
-.scroll-spacer {
-  height: 160vh;
-  /* Transparent so the gradient from body continues seamlessly */
-  background: transparent;
-}
