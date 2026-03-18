@@ -53,22 +53,10 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(
-      1200px 800px at 12% 10%,
-      color-mix(in srgb, var(--brandy-l2) 45%, transparent) 0%,
-      transparent 65%
-    ),
-    radial-gradient(
-      1100px 750px at 88% 12%,
-      color-mix(in srgb, var(--brandy-l1) 35%, transparent) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      1200px 900px at 50% 115%,
-      color-mix(in srgb, var(--brandy-l3) 28%, transparent) 0%,
-      transparent 72%
-    ),
-    var(--brandy);
+    radial-gradient(circle at top left, var(--brandy) 0%, transparent 55%),
+    radial-gradient(circle at 85% 12%, var(--brandy-d1) 0%, transparent 60%),
+    radial-gradient(circle at 50% 110%, var(--brandy-d2) 0%, transparent 55%),
+    var(--ink-black);
 }
 
 #root {
