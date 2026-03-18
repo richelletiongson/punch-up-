@@ -1,0 +1,29 @@
+.stage {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background:
+    radial-gradient(circle at top left, rgba(255, 193, 111, 0.2), transparent 55%),
+    radial-gradient(circle at 80% 10%, rgba(144, 190, 255, 0.25), transparent 60%),
+    #050712;
+  overflow: hidden;
+}
+
+.stage__canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: block;
+}
+
+.scroll-spacer {
+  height: 140vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 193, 111, 0.1), transparent 55%),
+    radial-gradient(circle at 80% 10%, rgba(144, 190, 255, 0.15), transparent 60%),
+    #050712;
+}
