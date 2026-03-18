@@ -116,31 +116,17 @@ function App() {
         />
 
         <div className="stage__titleBack" aria-hidden={scrollProgress === 0}>
-          <div className="stage__titleBackInner">
-            <ScrollFloat
-              as="div"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText"
-              stagger={0.03}
-            >
-              MADE
-            </ScrollFloat>
-
-            <ScrollFloat
-              as="div"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText"
-              stagger={0.03}
-            >
-              RIGHT.
-            </ScrollFloat>
-          </div>
+          <ScrollFloat
+            as="h2"
+            progress={floatProgress}
+            animationDuration={1}
+            ease="back.inOut(2)"
+            containerClassName="stage__copyTitle"
+            textClassName="stage__copyTitleText"
+            stagger={0.03}
+          >
+            MADE RIGHT.
+          </ScrollFloat>
         </div>
 
         <Canvas

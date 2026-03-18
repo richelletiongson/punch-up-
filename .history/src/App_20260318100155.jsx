@@ -114,35 +114,6 @@ function App() {
           onMenuOpen={() => console.log('Menu opened')}
           onMenuClose={() => console.log('Menu closed')}
         />
-
-        <div className="stage__titleBack" aria-hidden={scrollProgress === 0}>
-          <div className="stage__titleBackInner">
-            <ScrollFloat
-              as="div"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText"
-              stagger={0.03}
-            >
-              MADE
-            </ScrollFloat>
-
-            <ScrollFloat
-              as="div"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText"
-              stagger={0.03}
-            >
-              RIGHT.
-            </ScrollFloat>
-          </div>
-        </div>
-
         <Canvas
           camera={{ position: [0, 0, 4.2], fov: 35, near: 0.01, far: 100 }}
           className="stage__canvas"
@@ -152,6 +123,18 @@ function App() {
 
         <div className="stage__copy" aria-hidden={scrollProgress === 0}>
           <div className="stage__copyInner">
+            <ScrollFloat
+              as="h2"
+              progress={floatProgress}
+              animationDuration={1}
+              ease="back.inOut(2)"
+              containerClassName="stage__copyTitle"
+              textClassName="stage__copyTitleText"
+              stagger={0.03}
+            >
+              Made Right.
+            </ScrollFloat>
+
             <ScrollFloat
               as="p"
               progress={floatProgress}

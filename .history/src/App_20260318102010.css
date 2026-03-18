@@ -69,14 +69,14 @@
 }
 
 .stage__copyTitleText.scroll-float-text {
-  font-size: clamp(8rem, 17vw, 24.5rem);
+  font-size: clamp(7.6rem, 16vw, 23.5rem);
   line-height: 0.92;
   color: #ffffff;
   font-family: var(--font-heading); /* ensure Benzin font */
   font-weight: var(--weight-heading);
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.03em;
 }
 
 .stage__copyBody {
