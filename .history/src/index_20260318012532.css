@@ -1,0 +1,148 @@
+@import url('https://db.onlinewebfonts.com/c/e37c5bb24acd803973c692c8c59a6230?family=Benzin-Bold');
+
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --ink-black: #001524;
+  --ink-black-l1: #263845;
+  --ink-black-l2: #4d5b66;
+  --ink-black-l3: #737e87;
+  --ink-black-d1: #00121f;
+  --ink-black-d2: #000f19;
+
+  --stormy-teal: #15616d;
+  --stormy-teal-l1: #387983;
+  --stormy-teal-l2: #5b9099;
+  --stormy-teal-l3: #7ea8af;
+  --stormy-teal-d1: #12525d;
+  --stormy-teal-d2: #0f444c;
+
+  --papaya-whip: #ffecd1;
+  --papaya-whip-l1: #ffefd8;
+  --papaya-whip-l2: #fff2df;
+  --papaya-whip-l3: #fff5e6;
+  --papaya-whip-d1: #d9c9b2;
+  --papaya-whip-d2: #b3a592;
+
+  --harvest-orange: #ff7d00;
+  --harvest-orange-l1: #ff9126;
+  --harvest-orange-l2: #ffa44d;
+  --harvest-orange-l3: #ffb873;
+  --harvest-orange-d1: #d96a00;
+  --harvest-orange-d2: #b35800;
+
+  --brandy: #78290f;
+  --brandy-l1: #8c4933;
+  --brandy-l2: #a16957;
+  --brandy-l3: #b5897b;
+  --brandy-d1: #66230d;
+  --brandy-d2: #541d0b;
+
+  --font-benzin: 'Benzin-Bold', system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  --font-heading: var(--font-benzin);
+  --font-label: var(--font-benzin);
+
+  --weight-body: 400;
+  --weight-heading: 700;
+  --weight-label: 700;
+
+  --tracking-heading: -0.02em;
+  --tracking-label: 0.08em;
+
+  --text-h1: clamp(2.4rem, 4.5vw, 3.75rem);
+  --text-h2: clamp(1.8rem, 3.2vw, 2.6rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.6rem);
+  --text-body: 1rem;
+  --text-body-sm: 0.9375rem;
+  --text-label: 0.75rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-weight: var(--weight-body);
+  font-size: var(--text-body);
+  color: var(--papaya-whip);
+  background:
+    radial-gradient(
+      1200px 800px at 12% 10%,
+      color-mix(in srgb, var(--brandy-l2) 45%, transparent) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      1100px 750px at 88% 12%,
+      color-mix(in srgb, var(--brandy-l1) 35%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      1200px 900px at 50% 115%,
+      color-mix(in srgb, var(--brandy-l3) 28%, transparent) 0%,
+      transparent 72%
+    ),
+    var(--brandy);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  letter-spacing: var(--tracking-heading);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--text-h1);
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: var(--text-h2);
+  line-height: 1.12;
+}
+
+h3 {
+  font-size: var(--text-h3);
+  line-height: 1.18;
+}
+
+p {
+  margin: 0;
+  font-size: var(--text-body);
+}
+
+small {
+  font-size: var(--text-body-sm);
+}
+
+.label,
+label {
+  font-family: var(--font-label);
+  font-weight: var(--weight-label);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
