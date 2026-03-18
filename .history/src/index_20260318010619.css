@@ -45,24 +45,6 @@
   --brandy-d2: #541d0b;
 
   --font-benzin: 'Benzin-Bold', system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-
-  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  --font-heading: var(--font-benzin);
-  --font-label: var(--font-benzin);
-
-  --weight-body: 400;
-  --weight-heading: 700;
-  --weight-label: 700;
-
-  --tracking-heading: -0.02em;
-  --tracking-label: 0.08em;
-
-  --text-h1: clamp(2.4rem, 4.5vw, 3.75rem);
-  --text-h2: clamp(1.8rem, 3.2vw, 2.6rem);
-  --text-h3: clamp(1.25rem, 2vw, 1.6rem);
-  --text-body: 1rem;
-  --text-body-sm: 0.9375rem;
-  --text-label: 0.75rem;
 }
 
 *,
@@ -74,10 +56,6 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: var(--font-body);
-  font-weight: var(--weight-body);
-  font-size: var(--text-body);
-  color: var(--papaya-whip);
   background:
     radial-gradient(
       1200px 800px at 12% 10%,
@@ -95,48 +73,6 @@ body {
       transparent 72%
     ),
     var(--brandy);
-}
-
-h1,
-h2,
-h3 {
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
-  letter-spacing: var(--tracking-heading);
-  margin: 0;
-}
-
-h1 {
-  font-size: var(--text-h1);
-  line-height: 1.05;
-}
-
-h2 {
-  font-size: var(--text-h2);
-  line-height: 1.12;
-}
-
-h3 {
-  font-size: var(--text-h3);
-  line-height: 1.18;
-}
-
-p {
-  margin: 0;
-  font-size: var(--text-body);
-}
-
-small {
-  font-size: var(--text-body-sm);
-}
-
-.label,
-label {
-  font-family: var(--font-label);
-  font-weight: var(--weight-label);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
 }
 
 #root {
