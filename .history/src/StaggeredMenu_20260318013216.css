@@ -155,7 +155,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: 1px solid color-mix(in srgb, #000 14%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, #fff 72%, transparent);
   color: #111;
