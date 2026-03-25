@@ -35,18 +35,13 @@
 .stage__titleBackInner {
   display: flex;
   flex-direction: column;
-  /* Stretch rows to full width so text-align: center applies to the same axis for both lines */
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   gap: 0.1em;
-  width: 100%;
-  max-width: 100%;
 }
 
 .stage__titleLine {
   margin: 0;
-  width: 100%;
-  text-align: center;
 }
 
 .stage__copy {
