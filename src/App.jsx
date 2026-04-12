@@ -123,7 +123,7 @@ function App() {
               animationDuration={1}
               ease="back.inOut(2)"
               containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText stage__titleMade"
+              textClassName="stage__copyTitleText stage__titleSpread"
               stagger={0.03}
             >
               MADE
@@ -135,7 +135,7 @@ function App() {
               animationDuration={1}
               ease="back.inOut(2)"
               containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText stage__titleRight"
+              textClassName="stage__copyTitleText stage__titleSpread"
               stagger={0.03}
             >
               RIGHT.

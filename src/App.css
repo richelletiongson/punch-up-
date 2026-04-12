@@ -28,17 +28,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 6vw;
+  /* Extra horizontal inset so spread-out letters stay clear of the bottle silhouette */
+  padding: 0 clamp(1rem, 8vw, 6rem);
   pointer-events: none;
 }
 
 .stage__titleBackInner {
+  container-type: inline-size;
+  /*
+    `ch` = width of the "0" glyph in this element’s font (here, heading / Benzin).
+    Set font on the container so `ch` in descendant `font-size` resolves against inherited
+    heading metrics (per CSS, ch inside font-size uses the inherited font).
+  */
+  font-family: var(--font-heading);
   display: flex;
   flex-direction: column;
   /* Stretch rows to full width so text-align: center applies to the same axis for both lines */
   align-items: stretch;
   justify-content: center;
-  gap: 0.1em;
+  /* Vertical rhythm between rows, tied to type width instead of only em */
+  gap: max(0.08em, 0.2ch);
   width: 100%;
   max-width: 100%;
 }
@@ -49,8 +58,21 @@
   text-align: center;
 }
 
+/* ScrollFloat defaults to overflow:hidden — that clips spread-out glyphs on narrow viewports */
+.stage__titleLine.scroll-float {
+  overflow: visible;
+}
+
 .stage__copyTitleText.scroll-float-text {
-  font-size: clamp(8rem, 17vw, 24.5rem);
+  /*
+    Fit the longest spread row ("RIGHT." ≈ 6 glyphs). Uppercase display letters are wider
+    than `ch` (which is based on "0"), so divisor 4 is a practical slack factor, not "6ch".
+    Horizontal slack expressed in `ch` so it scales with the heading face.
+  */
+  font-size: min(
+    clamp(2.25rem, 14vw, 24.5rem),
+    calc((100vw - 2.5ch) / 4)
+  );
   line-height: 0.92;
   color: #ffffff;
   font-family: var(--font-heading); /* ensure Benzin font */
@@ -58,15 +80,37 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  /* Readable where letters meet the bottle edge (still behind the WebGL layer) */
+  text-shadow:
+    0 0.06em 0.18em rgba(0, 21, 36, 0.55),
+    0 0.02em 0.06em rgba(0, 21, 36, 0.45),
+    0 0 0.04em rgba(0, 21, 36, 0.35);
 }
 
-.stage__titleMade.scroll-float-text {
-  /* Slightly wider tracking for the shorter word so both rows feel even. */
-  letter-spacing: 0.155em;
+@supports (font-size: 1cqi) {
+  .stage__copyTitleText.scroll-float-text {
+    /* Track width from the title container; slack in `ch` matches Benzin, not the viewport alone */
+    font-size: min(
+      clamp(2.25rem, 14cqi, 24.5rem),
+      calc((100cqi - 2.5ch) / 4)
+    );
+  }
 }
 
-.stage__titleRight.scroll-float-text {
-  /* Tighter tracking than top row — smaller gap between letters */
-  letter-spacing: 0.012em;
+/* Distribute each character across the full row so most glyphs sit beside the bottle, not under it */
+.stage__copyTitleText.stage__titleSpread.scroll-float-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-inline: max(0.125rem, 0.75ch);
+  letter-spacing: 0;
+  text-align: unset;
+}
+
+.stage__copyTitleText.stage__titleSpread.scroll-float-text .char {
+  flex: 0 0 auto;
 }
 
