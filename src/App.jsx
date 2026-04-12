@@ -59,7 +59,6 @@ function App() {
   // Keep the bottle "initial screen" visible for a moment.
   // At `scrollProgress === 1`, both text and bottle end together.
   const floatProgress = clamp01((scrollProgress - 0.05) / 0.95)
-  const buttonsProgress = clamp01((scrollProgress - 0.12) / 0.88)
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -150,37 +149,6 @@ function App() {
         >
           <BottleScene scrollProgress={scrollProgress} />
         </Canvas>
-
-        <div className="stage__copy" aria-hidden={scrollProgress === 0}>
-          <div className="stage__copyInner">
-            <ScrollFloat
-              as="p"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__copyBody"
-              textClassName="stage__copyBodyText"
-              stagger={0.01}
-            >
-              100% blue agave tequila, crafted traditionally and finished with a sharper point of view.
-            </ScrollFloat>
-
-            <div
-              className="stage__copyButtons"
-              style={{
-                opacity: buttonsProgress,
-                transform: `translateY(${(1 - buttonsProgress) * 14}px) scale(${0.98 + 0.02 * buttonsProgress})`,
-              }}
-            >
-              <button className="stage__btn stage__btn--ghost" type="button">
-                Learn more
-              </button>
-              <button className="stage__btn stage__btn--solid" type="button">
-                Shop now
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   )
