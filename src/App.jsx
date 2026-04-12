@@ -138,7 +138,7 @@ function App() {
               textClassName="stage__copyTitleText stage__titleSpread"
               stagger={0.03}
             >
-              RIGHT.
+              RIGHT
             </ScrollFloat>
           </div>
         </div>

@@ -22,6 +22,7 @@
 }
 
 .stage__titleBack {
+  container-type: inline-size;
   position: absolute;
   inset: 0;
   z-index: 5; /* behind the WebGL bottle canvas */
@@ -36,25 +37,40 @@
 .stage__titleBackInner {
   container-type: inline-size;
   /*
-    `ch` = width of the "0" glyph in this element’s font (here, heading / Benzin).
-    Set font on the container so `ch` in descendant `font-size` resolves against inherited
-    heading metrics (per CSS, ch inside font-size uses the inherited font).
+    `ch` in descendant `font-size` uses inherited font (see .stage__copyTitleText).
+    Block width uses rem/vw so it does not depend on a mismatched `ch` on this wrapper.
   */
   font-family: var(--font-heading);
+  font-size: min(
+    clamp(3.15rem, 16vw, 32rem),
+    calc((100vw - 4ch) / 4.15)
+  );
+  width: min(100%, 44ch);
+  max-width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+  align-self: center;
   display: flex;
   flex-direction: column;
-  /* Stretch rows to full width so text-align: center applies to the same axis for both lines */
   align-items: stretch;
-  justify-content: center;
-  /* Vertical rhythm between rows, tied to type width instead of only em */
   gap: max(0.08em, 0.2ch);
-  width: 100%;
-  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@supports (width: 1cqw) {
+  .stage__titleBackInner {
+    /* cqw tracks padded title area — tighter than 100vw so glyphs are less likely to clip */
+    font-size: min(
+      clamp(3.15rem, 16cqw, 32rem),
+      calc((100cqw - 4ch) / 4.15)
+    );
+  }
 }
 
 .stage__titleLine {
   margin: 0;
   width: 100%;
+  min-width: 0;
   text-align: center;
 }
 
@@ -64,15 +80,8 @@
 }
 
 .stage__copyTitleText.scroll-float-text {
-  /*
-    Fit the longest spread row ("RIGHT." ≈ 6 glyphs). Uppercase display letters are wider
-    than `ch` (which is based on "0"), so divisor 4 is a practical slack factor, not "6ch".
-    Horizontal slack expressed in `ch` so it scales with the heading face.
-  */
-  font-size: min(
-    clamp(2.25rem, 14vw, 24.5rem),
-    calc((100vw - 2.5ch) / 4)
-  );
+  /* Single source of truth: .stage__titleBackInner font-size + `ch` width */
+  font-size: inherit;
   line-height: 0.92;
   color: #ffffff;
   font-family: var(--font-heading); /* ensure Benzin font */
@@ -87,27 +96,22 @@
     0 0 0.04em rgba(0, 21, 36, 0.35);
 }
 
-@supports (font-size: 1cqi) {
-  .stage__copyTitleText.scroll-float-text {
-    /* Track width from the title container; slack in `ch` matches Benzin, not the viewport alone */
-    font-size: min(
-      clamp(2.25rem, 14cqi, 24.5rem),
-      calc((100cqi - 2.5ch) / 4)
-    );
-  }
-}
-
-/* Distribute each character across the full row so most glyphs sit beside the bottle, not under it */
+/*
+  Same full row width + space-between: M/R share left edge, E/T share right edge.
+  `ch` in gap resolves on this element (headline font-size) so spacing tracks the type.
+*/
 .stage__copyTitleText.stage__titleSpread.scroll-float-text {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: nowrap;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  padding-inline: max(0.125rem, 0.75ch);
+  padding-inline: 0;
   letter-spacing: 0;
   text-align: unset;
+  gap: clamp(0.22ch, 1.1vw, 0.75ch);
 }
 
 .stage__copyTitleText.stage__titleSpread.scroll-float-text .char {
