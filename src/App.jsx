@@ -1,13 +1,12 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { Canvas, useLoader, useFrame } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Environment, useGLTF } from '@react-three/drei'
 import './App.css'
 import StaggeredMenu from './StaggeredMenu'
 import ScrollFloat from './ScrollFloat'
 
 function BottleModel({ scrollProgress }) {
-  const obj = useLoader(OBJLoader, '/bottle_thick.obj')
+  const { scene } = useGLTF('/Tequila01.glb')
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
 
   // Start lower so the bottom is cropped, then rise into full view as it zooms out.
@@ -17,10 +16,12 @@ function BottleModel({ scrollProgress }) {
 
   return (
     <group rotation={[0, 0, 0]} position={[0, y, 0]} scale={0.16}>
-      <primitive object={obj} />
+      <primitive object={scene} />
     </group>
   )
 }
+
+useGLTF.preload('/Tequila01.glb')
 
 function BottleScene({ scrollProgress }) {
   // Animate the camera distance based on scroll position:
