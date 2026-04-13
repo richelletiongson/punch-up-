@@ -4,34 +4,32 @@ import { gsap } from 'gsap'
 import './ScrollFloat.css'
 
 /**
- * Character-based "float in" animation.
- *
- * This project doesn't currently use GSAP ScrollTrigger, so `progress` (0..1)
- * directly drives the tween. If you later reintroduce real scrolling, you can
- * wire `progress` to ScrollTrigger's callback instead.
+ * Character-based float in/out. `progress` (0..1) scrubs the entrance; after the main
+ * scroll completes, `exitProgress` (0..1) scrubs a staggered exit.
  */
 const ScrollFloat = ({
   children,
   progress,
+  exitProgress = 0,
   as = 'h2',
   containerClassName = '',
   textClassName = '',
   animationDuration = 1,
   ease = 'back.inOut(2)',
-  scrollStart, // accepted for API parity with the provided snippet
-  scrollEnd, // accepted for API parity with the provided snippet
-  scrollContainerRef, // accepted for API parity with the provided snippet
-  stagger = 0.03
+  scrollStart,
+  scrollEnd,
+  scrollContainerRef,
+  stagger = 0.03,
+  exitEase = 'power3.in'
 }) => {
   const containerRef = useRef(null)
-  const tweenRef = useRef(null)
+  const timelineRef = useRef(null)
 
   const text = typeof children === 'string' ? children : ''
   const rangeStart = typeof scrollStart === 'number' ? scrollStart : 0
   const rangeEnd = typeof scrollEnd === 'number' ? scrollEnd : 1
 
   const splitText = useMemo(() => {
-    // Use normal spaces (not NBSP) so long copy can wrap.
     return text.split('').map((char, index) => (
       <span className="char" key={index}>
         {char === ' ' ? ' ' : char}
@@ -46,9 +44,14 @@ const ScrollFloat = ({
     const charElements = el.querySelectorAll('.char')
     if (!charElements.length) return
 
-    tweenRef.current?.kill()
+    timelineRef.current?.kill()
 
-    const tween = gsap.fromTo(
+    const enterDur = animationDuration
+    const exitDur = Math.max(0.4, animationDuration * 0.72)
+
+    const tl = gsap.timeline({ paused: true })
+
+    tl.fromTo(
       charElements,
       {
         willChange: 'opacity, transform',
@@ -59,37 +62,78 @@ const ScrollFloat = ({
         transformOrigin: '50% 0%'
       },
       {
-        duration: animationDuration,
+        duration: enterDur,
         ease,
         opacity: 1,
         yPercent: 0,
         scaleY: 1,
         scaleX: 1,
-        stagger,
-        // We'll drive this tween's progress manually.
-        paused: true
+        stagger
       }
     )
 
-    // Ensure we're exactly at the "start" state.
-    tween.progress(0)
+    tl.to(
+      charElements,
+      {
+        duration: exitDur,
+        ease: exitEase,
+        opacity: 0,
+        yPercent: -125,
+        scaleY: 1.35,
+        scaleX: 0.82,
+        stagger,
+        transformOrigin: '50% 0%'
+      },
+      `+=0`
+    )
 
-    tweenRef.current = tween
+    tl.pause(0)
+    timelineRef.current = tl
     return () => {
-      tweenRef.current?.kill()
-      tweenRef.current = null
+      timelineRef.current?.kill()
+      timelineRef.current = null
     }
-  }, [text, animationDuration, ease, stagger, scrollContainerRef])
+  }, [text, animationDuration, ease, exitEase, stagger, scrollContainerRef])
 
   useEffect(() => {
-    const tween = tweenRef.current
-    if (!tween) return
+    const el = containerRef.current
+    const tl = timelineRef.current
+    if (!tl || !el) return
+
+    const n = el.querySelectorAll('.char').length
+    const staggerPad = Math.max(0, n - 1) * stagger
+
     const pRaw = typeof progress === 'number' ? progress : 0
     const denom = rangeEnd - rangeStart
-    const p =
-      denom > 0 ? (pRaw - rangeStart) / denom : 0
-    tween.progress(Math.min(Math.max(p, 0), 1))
-  }, [progress, rangeStart, rangeEnd])
+    const p = denom > 0 ? (pRaw - rangeStart) / denom : 0
+    const pr = Math.min(Math.max(p, 0), 1)
+
+    const ep =
+      typeof exitProgress === 'number'
+        ? Math.min(Math.max(exitProgress, 0), 1)
+        : 0
+
+    const enterDur = animationDuration
+    const exitDur = Math.max(0.4, animationDuration * 0.72)
+    const enterSpan = enterDur + staggerPad
+    const exitSpan = exitDur + staggerPad
+
+    let t = 0
+    if (ep > 0) {
+      t = enterSpan + ep * exitSpan
+    } else {
+      t = pr * enterSpan
+    }
+
+    tl.time(t)
+  }, [
+    progress,
+    exitProgress,
+    rangeStart,
+    rangeEnd,
+    animationDuration,
+    stagger
+  ])
 
   const Element = as
 
@@ -101,4 +145,3 @@ const ScrollFloat = ({
 }
 
 export default ScrollFloat
-

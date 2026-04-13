@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState, useCallback } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, useGLTF } from '@react-three/drei'
 import './App.css'
@@ -54,10 +54,8 @@ function BottleScene({ scrollProgress, narrowViewport }) {
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [titleExitProgress, setTitleExitProgress] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
   const stageRef = useRef(null)
-  const scrollPhaseRef = useRef({ scroll: 0, exit: 0 })
 
   const clamp01 = (n) => Math.min(Math.max(n, 0), 1)
   // Keep the bottle "initial screen" visible for a moment.
@@ -85,49 +83,28 @@ function App() {
     return () => mq.removeEventListener('change', syncNarrow)
   }, [])
 
-  const onWheel = useCallback((e) => {
-    e.preventDefault()
-    const delta = e.deltaY
-    const stepScroll = delta * 0.0008
-    const stepExit = delta * 0.00055
-    const s = scrollPhaseRef.current
-
-    if (delta < 0) {
-      if (s.exit > 0) {
-        s.exit = Math.max(0, s.exit + stepExit)
-        setTitleExitProgress(s.exit)
-        return
-      }
-      s.scroll = Math.max(0, s.scroll + stepScroll)
-      setScrollProgress(s.scroll)
-      return
-    }
-
-    if (s.scroll < 1) {
-      s.scroll = Math.min(1, s.scroll + stepScroll)
-      setScrollProgress(s.scroll)
-      return
-    }
-
-    if (s.exit < 1) {
-      s.exit = Math.min(1, s.exit + stepExit)
-      setTitleExitProgress(s.exit)
-    }
-  }, [])
-
   useEffect(() => {
     const el = stageRef.current ?? window
+
+    const onWheel = (e) => {
+      // Prevent actual page scroll; use wheel to drive zoom progress.
+      e.preventDefault()
+
+      // Trackpads can send large/small deltas; normalize a bit.
+      const delta = e.deltaY
+      const step = delta * 0.0008
+
+      setScrollProgress((p) => {
+        const next = p + step
+        if (next < 0) return 0
+        if (next > 1) return 1
+        return next
+      })
+    }
+
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
-  }, [onWheel])
-
-  useEffect(() => {
-    scrollPhaseRef.current.scroll = scrollProgress
-  }, [scrollProgress])
-
-  useEffect(() => {
-    scrollPhaseRef.current.exit = titleExitProgress
-  }, [titleExitProgress])
+  }, [])
 
   return (
     <>
@@ -148,16 +125,12 @@ function App() {
           onMenuClose={() => console.log('Menu closed')}
         />
 
-        <div
-          className="stage__titleUnder"
-          aria-hidden={scrollProgress === 0 || titleExitProgress >= 0.99}
-        >
+        <div className="stage__titleUnder" aria-hidden={scrollProgress === 0}>
           <div className="stage__titleInner stage__titleInner--stacked">
             <div className="stage__titleStackRow stage__titleStackRow--spread">
               <ScrollFloat
                 as="div"
                 progress={floatProgress}
-                exitProgress={titleExitProgress}
                 animationDuration={1}
                 ease="back.inOut(2)"
                 containerClassName="stage__titleLine stage__titleLine--edgeTrack"
@@ -186,10 +159,7 @@ function App() {
           <BottleScene scrollProgress={scrollProgress} narrowViewport={narrowViewport} />
         </Canvas>
 
-        <div
-          className="stage__titleFront"
-          aria-hidden={scrollProgress === 0 || titleExitProgress >= 0.99}
-        >
+        <div className="stage__titleFront" aria-hidden={scrollProgress === 0}>
           <div className="stage__titleInner stage__titleInner--stacked">
             <div className="stage__titleStackRow stage__titleStackRow--spread" aria-hidden="true">
               <span className="stage__titleGhost stage__titleGhost--edgeTrack">
@@ -204,7 +174,6 @@ function App() {
               <ScrollFloat
                 as="div"
                 progress={floatProgress}
-                exitProgress={titleExitProgress}
                 animationDuration={1}
                 ease="back.inOut(2)"
                 containerClassName="stage__titleLine stage__titleLine--edgeTrack"

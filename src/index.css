@@ -1,5 +1,3 @@
-@import url('https://db.onlinewebfonts.com/c/e37c5bb24acd803973c692c8c59a6230?family=Benzin-Bold');
-
 :root {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
   line-height: 1.5;
@@ -44,15 +42,20 @@
   --brandy-d1: #66230d;
   --brandy-d2: #541d0b;
 
-  --font-benzin: 'Benzin-Bold', system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  /* Adobe Fonts / Typekit — chorine-large, avenir-lt-pro (kit: fcn3yta) */
+  --font-chorine: 'chorine-large', sans-serif;
+  --font-avenir: 'avenir-lt-pro', sans-serif;
 
   --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  --font-heading: var(--font-benzin);
-  --font-label: var(--font-benzin);
+  --font-heading: var(--font-chorine);
+  --font-label: var(--font-chorine);
 
   --weight-body: 400;
-  --weight-heading: 700;
-  --weight-label: 700;
+  --weight-heading: 500;
+  --weight-label: 500;
+  --weight-avenir: 800;
+  /* Hero MADE / RIGHT (heavier than nav; Typekit falls back if 900 missing) */
+  --weight-avenir-display: 900;
 
   --tracking-heading: -0.02em;
   --tracking-label: 0.08em;
@@ -102,6 +105,7 @@ h2,
 h3 {
   font-family: var(--font-heading);
   font-weight: var(--weight-heading);
+  font-style: normal;
   letter-spacing: var(--tracking-heading);
   margin: 0;
 }
