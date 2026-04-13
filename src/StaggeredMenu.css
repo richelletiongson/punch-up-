@@ -29,6 +29,9 @@
   background: transparent;
   pointer-events: none;
   z-index: 20;
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir);
+  font-style: normal;
 }
 
 .staggered-menu-header > * {
@@ -57,8 +60,8 @@
   border: none;
   cursor: pointer;
   color: #e9e9ef;
-  font-family: var(--font-body);
-  font-weight: 500;
+  font-family: inherit;
+  font-weight: inherit;
   line-height: 1;
   overflow: visible;
 }

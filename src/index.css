@@ -54,6 +54,8 @@
   --weight-heading: 500;
   --weight-label: 500;
   --weight-avenir: 800;
+  /* Hero MADE / RIGHT (heavier than nav; Typekit falls back if 900 missing) */
+  --weight-avenir-display: 900;
 
   --tracking-heading: -0.02em;
   --tracking-label: 0.08em;

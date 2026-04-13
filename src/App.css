@@ -43,17 +43,18 @@
 }
 
 .stage__titleInner {
-  font-family: var(--font-heading);
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir-display);
+  font-style: normal;
   /*
-    Track width caps how much `space-between` can stretch between glyphs. Chorine is
-    narrower than the old face — a wide track looked like huge letter-spacing.
+    Wider track → more slack for `space-between` between glyphs.
   */
   font-size: min(
     clamp(4rem, 18vw, 15rem),
     calc((100vw - 3ch) / 4.95)
   );
-  width: min(100%, 23ch, 46rem);
-  max-width: min(100%, 46rem);
+  width: min(100%, 34ch, 60rem);
+  max-width: min(100%, 60rem);
   min-width: 0;
   margin-inline: auto;
   box-sizing: border-box;
@@ -153,8 +154,9 @@
   box-sizing: border-box;
   font-size: inherit;
   line-height: 0.92;
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir-display);
+  font-style: normal;
   text-transform: uppercase;
   letter-spacing: 0;
 }
@@ -193,8 +195,9 @@
   font-size: inherit;
   line-height: 0.92;
   color: #ffffff;
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir-display);
+  font-style: normal;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.06em;
