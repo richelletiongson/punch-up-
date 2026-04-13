@@ -73,7 +73,7 @@
   Give the grid a floor height and space-between so MADE rides high and RIGHT sits low — roughly
   framing the bottle band. Same rules on under + front so ghost rows stay aligned.
 */
-@media (max-width: 768px), (max-height: 640px) {
+@media (max-width: 743px), (max-height: 640px) {
   .stage__titleUnder,
   .stage__titleFront {
     --title-stage-pad-top: max(4.75rem, calc(env(safe-area-inset-top, 0px) + 2.75rem));
@@ -109,6 +109,21 @@
 @media (max-width: 480px) {
   .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
     margin-top: clamp(3.5rem, 14vh, 8rem);
+  }
+}
+
+/* iPad / small tablet (incl. 744px-wide mini): widen spread — MADE higher, RIGHT lower */
+@media (min-width: 744px) and (max-width: 1024px) {
+  .stage__titleInner--stacked {
+    row-gap: clamp(4em, 22vmin, 9rem);
+  }
+
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+    transform: translateY(clamp(-3rem, -9.5vmin, -1.35rem));
+  }
+
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
+    transform: translateY(clamp(2.65rem, 7.5vmin, 4.5rem));
   }
 }
 
