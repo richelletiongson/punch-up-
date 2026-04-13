@@ -1,0 +1,237 @@
+.stage {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /* Let the body background show through so there is no hard edge */
+  background: transparent;
+  overflow: hidden;
+  /* Make wheel/touch scrolling feel intentional */
+  touch-action: none;
+}
+
+.stage__canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: block;
+  z-index: 10;
+}
+
+/* MADE: behind WebGL; RIGHT: above canvas with a stronger shadow */
+.stage__titleUnder,
+.stage__titleFront {
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 clamp(1rem, 8vw, 6rem);
+  pointer-events: none;
+}
+
+.stage__titleUnder {
+  z-index: 5;
+}
+
+.stage__titleFront {
+  z-index: 15;
+}
+
+.stage__titleInner {
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir-display);
+  font-style: normal;
+  /*
+    Wider track → more slack for `space-between` between glyphs.
+  */
+  font-size: min(
+    clamp(4rem, 18vw, 15rem),
+    calc((100vw - 3ch) / 4.95)
+  );
+  width: min(100%, 34ch, 60rem);
+  max-width: min(100%, 60rem);
+  min-width: 0;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* MADE on first row, RIGHT on second; ghost rows keep both layers aligned */
+.stage__titleInner--stacked {
+  display: grid;
+  grid-template-rows: auto auto;
+  /* Space between rows — “RIGHT” sits a bit lower than MADE */
+  row-gap: clamp(1.38em, 14.75vmin, 4.35em);
+  align-content: center;
+}
+
+/*
+  Narrow / short viewports: don’t vertically center the pair (they collapse toward the middle).
+  Give the grid a floor height and space-between so MADE rides high and RIGHT sits low — roughly
+  framing the bottle band. Same rules on under + front so ghost rows stay aligned.
+*/
+@media (max-width: 743px), (max-height: 640px) {
+  .stage__titleUnder,
+  .stage__titleFront {
+    --title-stage-pad-top: max(4.75rem, calc(env(safe-area-inset-top, 0px) + 2.75rem));
+    --title-stage-pad-bottom: max(2.75rem, env(safe-area-inset-bottom, 0px));
+    align-items: flex-start;
+    padding-top: var(--title-stage-pad-top);
+    padding-bottom: var(--title-stage-pad-bottom);
+  }
+
+  .stage__titleInner--stacked {
+    /* Slightly shorter band so rows sit closer to the bottle; then nudge into light overlap */
+    min-height: calc(
+      100svh - var(--title-stage-pad-top) - var(--title-stage-pad-bottom) -
+        clamp(1.75rem, 7vmin, 4rem)
+    );
+    align-content: space-between;
+    row-gap: 0;
+  }
+
+  /*
+    Push MADE (row 1) down into the bottle silhouette. Tiny translateY was lost on a tall
+    space-between grid; margin-top in vh moves the whole row clearly. MADE stays z-behind canvas.
+  */
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+    margin-top: clamp(2.85rem, 11vh, 6.25rem);
+  }
+
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
+    transform: translateY(clamp(-0.6rem, -3vmin, -1.85rem));
+  }
+}
+
+@media (max-width: 480px) {
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+    margin-top: clamp(3.5rem, 14vh, 8rem);
+  }
+}
+
+/* iPad / small tablet (incl. 744px-wide mini): widen spread — MADE higher, RIGHT lower */
+@media (min-width: 744px) and (max-width: 1024px) {
+  .stage__titleInner--stacked {
+    row-gap: clamp(4em, 22vmin, 9rem);
+  }
+
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+    transform: translateY(clamp(-3rem, -9.5vmin, -1.35rem));
+  }
+
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
+    transform: translateY(clamp(2.65rem, 7.5vmin, 4.5rem));
+  }
+}
+
+.stage__titleStackRow {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+}
+
+.stage__titleStackRow--spread > .stage__titleLine--edgeTrack,
+.stage__titleStackRow--spread > .stage__titleGhost--edgeTrack {
+  flex: 0 1 auto;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.stage__titleGhost--edgeTrack {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-size: inherit;
+  line-height: 0.92;
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir-display);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.stage__titleGhostChar {
+  flex: 0 0 auto;
+}
+
+@supports (width: 1cqw) {
+  .stage__titleInner {
+    font-size: min(
+      clamp(4rem, 18cqw, 15rem),
+      calc((100cqw - 3ch) / 4.95)
+    );
+  }
+}
+
+.stage__titleLine {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.stage__titleLine--edgeTrack {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ScrollFloat defaults to overflow:hidden — that clips spread-out glyphs on narrow viewports */
+.stage__titleLine.scroll-float {
+  overflow: visible;
+}
+
+.stage__copyTitleText.scroll-float-text {
+  font-size: inherit;
+  line-height: 0.92;
+  color: #ffffff;
+  font-family: var(--font-avenir);
+  font-weight: var(--weight-avenir-display);
+  font-style: normal;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Same outer box for MADE + RIGHT: first/last glyphs flush to track edges */
+.stage__titleInner--stacked .stage__copyTitleText--under.scroll-float-text,
+.stage__titleInner--stacked .stage__copyTitleText--front.scroll-float-text {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0;
+  letter-spacing: 0;
+  text-align: unset;
+}
+
+.stage__copyTitleText--under.scroll-float-text {
+  text-shadow:
+    0 0.05em 0.14em rgba(0, 21, 36, 0.45),
+    0 0.02em 0.05em rgba(0, 21, 36, 0.35);
+}
+
+.stage__copyTitleText--front.scroll-float-text {
+  text-shadow:
+    0 0.14em 0.42em rgba(0, 8, 14, 0.85),
+    0 0.08em 0.2em rgba(0, 21, 36, 0.7),
+    0 0.03em 0.08em rgba(0, 0, 0, 0.55),
+    0 0 0.06em rgba(0, 0, 0, 0.4);
+}
+
+.stage__copyTitleText--under.scroll-float-text .char,
+.stage__copyTitleText--front.scroll-float-text .char {
+  flex: 0 0 auto;
+}
+
