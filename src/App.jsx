@@ -5,17 +5,18 @@ import './App.css'
 import StaggeredMenu from './StaggeredMenu'
 import ScrollFloat from './ScrollFloat'
 
-function BottleModel({ scrollProgress }) {
+function BottleModel({ scrollProgress, narrowViewport }) {
   const { scene } = useGLTF('/Tequila01.glb')
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
 
-  // Start lower so the bottom is cropped, then rise into full view as it zooms out.
+  // Start low on first frame (scroll 0); only ease up toward endY as scroll progresses.
   const startY = -4.0
-  const endY = -2.7
+  const endY = -2.25
   const y = startY + (endY - startY) * clamped
+  const scale = narrowViewport ? 0.14 : 0.16
 
   return (
-    <group rotation={[0, 0, 0]} position={[0, y, 0]} scale={0.16}>
+    <group rotation={[0, 0, 0]} position={[0, y, 0]} scale={scale}>
       <primitive object={scene} />
     </group>
   )
@@ -23,7 +24,7 @@ function BottleModel({ scrollProgress }) {
 
 useGLTF.preload('/Tequila01.glb')
 
-function BottleScene({ scrollProgress }) {
+function BottleScene({ scrollProgress, narrowViewport }) {
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
   useFrame(({ camera }) => {
@@ -44,7 +45,7 @@ function BottleScene({ scrollProgress }) {
       <directionalLight position={[3, 5, 2]} intensity={1.4} />
       <directionalLight position={[-3, -4, -2]} intensity={0.5} />
       <Suspense fallback={null}>
-        <BottleModel scrollProgress={scrollProgress} />
+        <BottleModel scrollProgress={scrollProgress} narrowViewport={narrowViewport} />
       </Suspense>
       <Environment preset="city" />
     </>
@@ -53,6 +54,7 @@ function BottleScene({ scrollProgress }) {
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [narrowViewport, setNarrowViewport] = useState(false)
   const stageRef = useRef(null)
 
   const clamp01 = (n) => Math.min(Math.max(n, 0), 1)
@@ -72,6 +74,14 @@ function App() {
     { label: 'GitHub', link: 'https://github.com' },
     { label: 'LinkedIn', link: 'https://linkedin.com' },
   ]
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 700px)')
+    const syncNarrow = () => setNarrowViewport(mq.matches)
+    syncNarrow()
+    mq.addEventListener('change', syncNarrow)
+    return () => mq.removeEventListener('change', syncNarrow)
+  }, [])
 
   useEffect(() => {
     const el = stageRef.current ?? window
@@ -115,31 +125,30 @@ function App() {
           onMenuClose={() => console.log('Menu closed')}
         />
 
-        <div className="stage__titleBack" aria-hidden={scrollProgress === 0}>
-          <div className="stage__titleBackInner">
-            <ScrollFloat
-              as="div"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText stage__titleSpread"
-              stagger={0.03}
-            >
-              MADE
-            </ScrollFloat>
-
-            <ScrollFloat
-              as="div"
-              progress={floatProgress}
-              animationDuration={1}
-              ease="back.inOut(2)"
-              containerClassName="stage__titleLine"
-              textClassName="stage__copyTitleText stage__titleSpread"
-              stagger={0.03}
-            >
-              RIGHT
-            </ScrollFloat>
+        <div className="stage__titleUnder" aria-hidden={scrollProgress === 0}>
+          <div className="stage__titleInner stage__titleInner--stacked">
+            <div className="stage__titleStackRow stage__titleStackRow--spread">
+              <ScrollFloat
+                as="div"
+                progress={floatProgress}
+                animationDuration={1}
+                ease="back.inOut(2)"
+                containerClassName="stage__titleLine stage__titleLine--edgeTrack"
+                textClassName="stage__copyTitleText stage__copyTitleText--under"
+                stagger={0.03}
+              >
+                MADE
+              </ScrollFloat>
+            </div>
+            <div className="stage__titleStackRow stage__titleStackRow--spread" aria-hidden="true">
+              <span className="stage__titleGhost stage__titleGhost--edgeTrack">
+                {'RIGHT'.split('').map((ch, i) => (
+                  <span key={i} className="stage__titleGhostChar">
+                    {ch}
+                  </span>
+                ))}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -147,8 +156,35 @@ function App() {
           camera={{ position: [0, 0, 4.2], fov: 35, near: 0.01, far: 100 }}
           className="stage__canvas"
         >
-          <BottleScene scrollProgress={scrollProgress} />
+          <BottleScene scrollProgress={scrollProgress} narrowViewport={narrowViewport} />
         </Canvas>
+
+        <div className="stage__titleFront" aria-hidden={scrollProgress === 0}>
+          <div className="stage__titleInner stage__titleInner--stacked">
+            <div className="stage__titleStackRow stage__titleStackRow--spread" aria-hidden="true">
+              <span className="stage__titleGhost stage__titleGhost--edgeTrack">
+                {'MADE'.split('').map((ch, i) => (
+                  <span key={i} className="stage__titleGhostChar">
+                    {ch}
+                  </span>
+                ))}
+              </span>
+            </div>
+            <div className="stage__titleStackRow stage__titleStackRow--spread">
+              <ScrollFloat
+                as="div"
+                progress={floatProgress}
+                animationDuration={1}
+                ease="back.inOut(2)"
+                containerClassName="stage__titleLine stage__titleLine--edgeTrack"
+                textClassName="stage__copyTitleText stage__copyTitleText--front"
+                stagger={0.03}
+              >
+                RIGHT
+              </ScrollFloat>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

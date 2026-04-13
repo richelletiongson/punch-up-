@@ -21,48 +21,94 @@
   z-index: 10;
 }
 
-.stage__titleBack {
+/* MADE: behind WebGL; RIGHT: above canvas with a stronger shadow */
+.stage__titleUnder,
+.stage__titleFront {
   container-type: inline-size;
   position: absolute;
   inset: 0;
-  z-index: 5; /* behind the WebGL bottle canvas */
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Extra horizontal inset so spread-out letters stay clear of the bottle silhouette */
   padding: 0 clamp(1rem, 8vw, 6rem);
   pointer-events: none;
 }
 
-.stage__titleBackInner {
-  container-type: inline-size;
-  /*
-    `ch` in descendant `font-size` uses inherited font (see .stage__copyTitleText).
-    Block width uses rem/vw so it does not depend on a mismatched `ch` on this wrapper.
-  */
+.stage__titleUnder {
+  z-index: 5;
+}
+
+.stage__titleFront {
+  z-index: 15;
+}
+
+.stage__titleInner {
   font-family: var(--font-heading);
+  /*
+    Track width in `ch` sets how much horizontal room space-between has between glyphs.
+    Rem cap keeps ultra-wide + huge type from using the full viewport as the flex row.
+  */
   font-size: min(
-    clamp(3.15rem, 16vw, 32rem),
-    calc((100vw - 4ch) / 4.15)
+    clamp(4rem, 18vw, 15rem),
+    calc((100vw - 3ch) / 5.15)
   );
-  width: min(100%, 44ch);
-  max-width: 100%;
+  width: min(100%, 40ch, 72rem);
+  max-width: min(100%, 72rem);
   min-width: 0;
   margin-inline: auto;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: max(0.08em, 0.2ch);
   box-sizing: border-box;
 }
 
+/* MADE on first row, RIGHT on second; ghost rows keep both layers aligned */
+.stage__titleInner--stacked {
+  display: grid;
+  grid-template-rows: auto auto;
+  /* Space between rows — “RIGHT” sits a bit lower than MADE */
+  row-gap: clamp(1.2em, 13.5vmin, 4.1em);
+  align-content: center;
+}
+
+.stage__titleStackRow {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+}
+
+.stage__titleStackRow--spread > .stage__titleLine--edgeTrack,
+.stage__titleStackRow--spread > .stage__titleGhost--edgeTrack {
+  flex: 0 1 auto;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.stage__titleGhost--edgeTrack {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-size: inherit;
+  line-height: 0.92;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.stage__titleGhostChar {
+  flex: 0 0 auto;
+}
+
 @supports (width: 1cqw) {
-  .stage__titleBackInner {
-    /* cqw tracks padded title area — tighter than 100vw so glyphs are less likely to clip */
+  .stage__titleInner {
     font-size: min(
-      clamp(3.15rem, 16cqw, 32rem),
-      calc((100cqw - 4ch) / 4.15)
+      clamp(4rem, 18cqw, 15rem),
+      calc((100cqw - 3ch) / 5.15)
     );
   }
 }
@@ -74,47 +120,56 @@
   text-align: center;
 }
 
+.stage__titleLine--edgeTrack {
+  width: 100%;
+  max-width: 100%;
+}
+
 /* ScrollFloat defaults to overflow:hidden — that clips spread-out glyphs on narrow viewports */
 .stage__titleLine.scroll-float {
   overflow: visible;
 }
 
 .stage__copyTitleText.scroll-float-text {
-  /* Single source of truth: .stage__titleBackInner font-size + `ch` width */
   font-size: inherit;
   line-height: 0.92;
   color: #ffffff;
-  font-family: var(--font-heading); /* ensure Benzin font */
+  font-family: var(--font-heading);
   font-weight: var(--weight-heading);
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  /* Readable where letters meet the bottle edge (still behind the WebGL layer) */
-  text-shadow:
-    0 0.06em 0.18em rgba(0, 21, 36, 0.55),
-    0 0.02em 0.06em rgba(0, 21, 36, 0.45),
-    0 0 0.04em rgba(0, 21, 36, 0.35);
 }
 
-/*
-  Same full row width + space-between: M/R share left edge, E/T share right edge.
-  `ch` in gap resolves on this element (headline font-size) so spacing tracks the type.
-*/
-.stage__copyTitleText.stage__titleSpread.scroll-float-text {
+/* Same outer box for MADE + RIGHT: first/last glyphs flush to track edges */
+.stage__titleInner--stacked .stage__copyTitleText--under.scroll-float-text,
+.stage__titleInner--stacked .stage__copyTitleText--front.scroll-float-text {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding-inline: 0;
+  gap: 0;
   letter-spacing: 0;
   text-align: unset;
-  gap: clamp(0.22ch, 1.1vw, 0.75ch);
 }
 
-.stage__copyTitleText.stage__titleSpread.scroll-float-text .char {
+.stage__copyTitleText--under.scroll-float-text {
+  text-shadow:
+    0 0.05em 0.14em rgba(0, 21, 36, 0.45),
+    0 0.02em 0.05em rgba(0, 21, 36, 0.35);
+}
+
+.stage__copyTitleText--front.scroll-float-text {
+  text-shadow:
+    0 0.14em 0.42em rgba(0, 8, 14, 0.85),
+    0 0.08em 0.2em rgba(0, 21, 36, 0.7),
+    0 0.03em 0.08em rgba(0, 0, 0, 0.55),
+    0 0 0.06em rgba(0, 0, 0, 0.4);
+}
+
+.stage__copyTitleText--under.scroll-float-text .char,
+.stage__copyTitleText--front.scroll-float-text .char {
   flex: 0 0 auto;
 }
 
