@@ -88,29 +88,31 @@ function App() {
   const onWheel = useCallback((e) => {
     e.preventDefault()
     const delta = e.deltaY
-    const stepScroll = delta * 0.0008
-    const stepExit = delta * 0.00055
+    const scrollStep = delta * 0.0008
+    // floatProgress runs 0→1 over scrollProgress 0.05→1 (span 0.95). Scale exit so
+    // the same total wheel travel scrubs headline in vs out.
+    const exitStep = (delta * 0.0008) / 0.95
     const s = scrollPhaseRef.current
 
     if (delta < 0) {
       if (s.exit > 0) {
-        s.exit = Math.max(0, s.exit + stepExit)
+        s.exit = Math.max(0, s.exit + exitStep)
         setTitleExitProgress(s.exit)
         return
       }
-      s.scroll = Math.max(0, s.scroll + stepScroll)
+      s.scroll = Math.max(0, s.scroll + scrollStep)
       setScrollProgress(s.scroll)
       return
     }
 
     if (s.scroll < 1) {
-      s.scroll = Math.min(1, s.scroll + stepScroll)
+      s.scroll = Math.min(1, s.scroll + scrollStep)
       setScrollProgress(s.scroll)
       return
     }
 
     if (s.exit < 1) {
-      s.exit = Math.min(1, s.exit + stepExit)
+      s.exit = Math.min(1, s.exit + exitStep)
       setTitleExitProgress(s.exit)
     }
   }, [])
