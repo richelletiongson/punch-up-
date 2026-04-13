@@ -64,8 +64,52 @@
   display: grid;
   grid-template-rows: auto auto;
   /* Space between rows — “RIGHT” sits a bit lower than MADE */
-  row-gap: clamp(1.2em, 13.5vmin, 4.1em);
+  row-gap: clamp(1.38em, 14.75vmin, 4.35em);
   align-content: center;
+}
+
+/*
+  Narrow / short viewports: don’t vertically center the pair (they collapse toward the middle).
+  Give the grid a floor height and space-between so MADE rides high and RIGHT sits low — roughly
+  framing the bottle band. Same rules on under + front so ghost rows stay aligned.
+*/
+@media (max-width: 768px), (max-height: 640px) {
+  .stage__titleUnder,
+  .stage__titleFront {
+    --title-stage-pad-top: max(4.75rem, calc(env(safe-area-inset-top, 0px) + 2.75rem));
+    --title-stage-pad-bottom: max(2.75rem, env(safe-area-inset-bottom, 0px));
+    align-items: flex-start;
+    padding-top: var(--title-stage-pad-top);
+    padding-bottom: var(--title-stage-pad-bottom);
+  }
+
+  .stage__titleInner--stacked {
+    /* Slightly shorter band so rows sit closer to the bottle; then nudge into light overlap */
+    min-height: calc(
+      100svh - var(--title-stage-pad-top) - var(--title-stage-pad-bottom) -
+        clamp(1.75rem, 7vmin, 4rem)
+    );
+    align-content: space-between;
+    row-gap: 0;
+  }
+
+  /*
+    Push MADE (row 1) down into the bottle silhouette. Tiny translateY was lost on a tall
+    space-between grid; margin-top in vh moves the whole row clearly. MADE stays z-behind canvas.
+  */
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+    margin-top: clamp(2.85rem, 11vh, 6.25rem);
+  }
+
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
+    transform: translateY(clamp(-0.6rem, -3vmin, -1.85rem));
+  }
+}
+
+@media (max-width: 480px) {
+  .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+    margin-top: clamp(3.5rem, 14vh, 8rem);
+  }
 }
 
 .stage__titleStackRow {
