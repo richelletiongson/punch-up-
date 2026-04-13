@@ -300,7 +300,7 @@
   position: relative;
   color: #000;
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: var(--weight-heading);
   font-size: 3rem;
   cursor: pointer;
   line-height: 1;

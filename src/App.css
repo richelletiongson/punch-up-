@@ -45,15 +45,15 @@
 .stage__titleInner {
   font-family: var(--font-heading);
   /*
-    Track width in `ch` sets how much horizontal room space-between has between glyphs.
-    Rem cap keeps ultra-wide + huge type from using the full viewport as the flex row.
+    Track width caps how much `space-between` can stretch between glyphs. Chorine is
+    narrower than the old face — a wide track looked like huge letter-spacing.
   */
   font-size: min(
     clamp(4rem, 18vw, 15rem),
-    calc((100vw - 3ch) / 5.15)
+    calc((100vw - 3ch) / 4.95)
   );
-  width: min(100%, 40ch, 72rem);
-  max-width: min(100%, 72rem);
+  width: min(100%, 23ch, 46rem);
+  max-width: min(100%, 46rem);
   min-width: 0;
   margin-inline: auto;
   box-sizing: border-box;
@@ -167,7 +167,7 @@
   .stage__titleInner {
     font-size: min(
       clamp(4rem, 18cqw, 15rem),
-      calc((100cqw - 3ch) / 5.15)
+      calc((100cqw - 3ch) / 4.95)
     );
   }
 }
