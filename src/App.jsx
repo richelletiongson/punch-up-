@@ -5,9 +5,10 @@ import './App.css'
 import StaggeredMenu from './StaggeredMenu'
 import ScrollFloat from './ScrollFloat'
 
-function BottleModel({ scrollProgress, narrowViewport }) {
+function BottleModel({ scrollProgress, narrowViewport, titleExitProgress = 0 }) {
   const { scene } = useGLTF('/Tequila01.glb')
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
+  const exit = Math.min(Math.max(titleExitProgress ?? 0, 0), 1)
 
   // Start low on first frame (scroll 0); only ease up toward endY as scroll progresses.
   const startY = -4.0
@@ -15,8 +16,13 @@ function BottleModel({ scrollProgress, narrowViewport }) {
   const y = startY + (endY - startY) * clamped
   const scale = narrowViewport ? 0.14 : 0.16
 
+  // Header exit scroll: spin on Y with a fixed tilt so rotation reads off-axis (not flat).
+  const spinY = exit * Math.PI * 1.85
+  const tiltX = exit * 0.42
+  const tiltZ = exit * -0.14
+
   return (
-    <group rotation={[0, 0, 0]} position={[0, y, 0]} scale={scale}>
+    <group rotation={[tiltX, spinY, tiltZ]} position={[0, y, 0]} scale={scale}>
       <primitive object={scene} />
     </group>
   )
@@ -24,7 +30,7 @@ function BottleModel({ scrollProgress, narrowViewport }) {
 
 useGLTF.preload('/Tequila01.glb')
 
-function BottleScene({ scrollProgress, narrowViewport }) {
+function BottleScene({ scrollProgress, narrowViewport, titleExitProgress }) {
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
   useFrame(({ camera }) => {
@@ -45,7 +51,11 @@ function BottleScene({ scrollProgress, narrowViewport }) {
       <directionalLight position={[3, 5, 2]} intensity={1.4} />
       <directionalLight position={[-3, -4, -2]} intensity={0.5} />
       <Suspense fallback={null}>
-        <BottleModel scrollProgress={scrollProgress} narrowViewport={narrowViewport} />
+        <BottleModel
+          scrollProgress={scrollProgress}
+          narrowViewport={narrowViewport}
+          titleExitProgress={titleExitProgress}
+        />
       </Suspense>
       <Environment preset="city" />
     </>
@@ -185,7 +195,11 @@ function App() {
           camera={{ position: [0, 0, 4.2], fov: 35, near: 0.01, far: 100 }}
           className="stage__canvas"
         >
-          <BottleScene scrollProgress={scrollProgress} narrowViewport={narrowViewport} />
+          <BottleScene
+            scrollProgress={scrollProgress}
+            narrowViewport={narrowViewport}
+            titleExitProgress={titleExitProgress}
+          />
         </Canvas>
 
         <div
