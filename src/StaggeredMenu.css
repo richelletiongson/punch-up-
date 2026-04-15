@@ -25,7 +25,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2em;
+  padding-block: 2em;
+  padding-inline: clamp(1.75rem, 6vw, 4.5rem);
   background: transparent;
   pointer-events: none;
   z-index: 20;
