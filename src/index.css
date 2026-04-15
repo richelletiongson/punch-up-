@@ -42,6 +42,12 @@
   --brandy-d1: #66230d;
   --brandy-d2: #541d0b;
 
+  /* Hero page backdrop */
+  --hero-bg-base: #649ab2;
+  --hero-bg-blob-light: color-mix(in srgb, var(--hero-bg-base) 68%, #ffffff);
+  --hero-bg-blob-deep: color-mix(in srgb, var(--hero-bg-base) 62%, #1a3d4a);
+  --hero-bg-blob-mid: color-mix(in srgb, var(--hero-bg-base) 58%, #8ec4db);
+
   /* Adobe Fonts / Typekit — chorine-large, avenir-lt-pro (kit: fcn3yta) */
   --font-chorine: 'chorine-large', sans-serif;
   --font-avenir: 'avenir-lt-pro', sans-serif;
@@ -84,20 +90,20 @@ body {
   background:
     radial-gradient(
       1200px 800px at 12% 10%,
-      color-mix(in srgb, var(--brandy-l2) 45%, transparent) 0%,
+      color-mix(in srgb, var(--hero-bg-blob-light) 45%, transparent) 0%,
       transparent 65%
     ),
     radial-gradient(
       1100px 750px at 88% 12%,
-      color-mix(in srgb, var(--brandy-l1) 35%, transparent) 0%,
+      color-mix(in srgb, var(--hero-bg-blob-deep) 35%, transparent) 0%,
       transparent 70%
     ),
     radial-gradient(
       1200px 900px at 50% 115%,
-      color-mix(in srgb, var(--brandy-l3) 28%, transparent) 0%,
+      color-mix(in srgb, var(--hero-bg-blob-mid) 28%, transparent) 0%,
       transparent 72%
     ),
-    var(--brandy);
+    var(--hero-bg-base);
 }
 
 h1,
