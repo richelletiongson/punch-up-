@@ -20,6 +20,13 @@ function sameDirectionYawDelta(fromYaw, toYaw) {
   return d
 }
 
+const SETTLE_YAW_DELTA = sameDirectionYawDelta(BOTTLE_EXIT_SPIN_Y, BOTTLE_REST_ROTATION[1])
+// Settle’s Y move is often much smaller than the exit sweep — scale wheel speed so spin feels as fast.
+const SETTLE_SCROLL_MULT = Math.min(
+  SETTLE_YAW_DELTA > 1e-6 ? BOTTLE_EXIT_SPIN_Y / SETTLE_YAW_DELTA : 1,
+  48
+)
+
 function BottleModel({
   scrollProgress,
   narrowViewport,
@@ -147,11 +154,12 @@ function App() {
     // floatProgress runs 0→1 over scrollProgress 0.05→1 (span 0.95). Scale exit so
     // the same total wheel travel scrubs headline in vs out.
     const exitStep = (delta * 0.0008) / 0.95
+    const settleStep = exitStep * SETTLE_SCROLL_MULT
     const s = scrollPhaseRef.current
 
     if (delta < 0) {
       if (s.settle > 0) {
-        s.settle = Math.max(0, s.settle + exitStep)
+        s.settle = Math.max(0, s.settle + settleStep)
         setBottleSettleProgress(s.settle)
         return
       }
@@ -180,7 +188,7 @@ function App() {
     }
 
     if (s.settle < 1) {
-      s.settle = Math.min(1, s.settle + exitStep)
+      s.settle = Math.min(1, s.settle + settleStep)
       setBottleSettleProgress(s.settle)
     }
   }, [])
