@@ -5,10 +5,31 @@ import './App.css'
 import StaggeredMenu from './StaggeredMenu'
 import ScrollFloat from './ScrollFloat'
 
-function BottleModel({ scrollProgress, narrowViewport, titleExitProgress = 0 }) {
+const BOTTLE_EXIT_SPIN_Y = Math.PI * 1.85
+const BOTTLE_EXIT_TILT_X = 0.42
+const BOTTLE_EXIT_TILT_Z = -0.14
+// Rest pose: upright, label toward camera (GLB default). Tweak Y if the model’s “front” differs.
+const BOTTLE_REST_ROTATION = [0, 0, 0]
+
+const TWO_PI = Math.PI * 2
+
+/** Smallest positive radians to add to `fromYaw` so the result matches `toYaw` (mod 2π). Keeps spin direction. */
+function sameDirectionYawDelta(fromYaw, toYaw) {
+  let d = toYaw - fromYaw
+  d = ((d % TWO_PI) + TWO_PI) % TWO_PI
+  return d
+}
+
+function BottleModel({
+  scrollProgress,
+  narrowViewport,
+  titleExitProgress = 0,
+  bottleSettleProgress = 0
+}) {
   const { scene } = useGLTF('/Tequila01.glb')
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
   const exit = Math.min(Math.max(titleExitProgress ?? 0, 0), 1)
+  const settle = Math.min(Math.max(bottleSettleProgress ?? 0, 0), 1)
 
   // Start low on first frame (scroll 0); only ease up toward endY as scroll progresses.
   const startY = -4.0
@@ -16,10 +37,32 @@ function BottleModel({ scrollProgress, narrowViewport, titleExitProgress = 0 }) 
   const y = startY + (endY - startY) * clamped
   const scale = narrowViewport ? 0.14 : 0.16
 
-  // Header exit scroll: spin on Y with a fixed tilt so rotation reads off-axis (not flat).
-  const spinY = exit * Math.PI * 1.85
-  const tiltX = exit * 0.42
-  const tiltZ = exit * -0.14
+  // Header exit: angled spin. After exit, settle keeps increasing Y (same direction) until aligned with rest yaw,
+  // while tilts ease to upright.
+  const exitEndTiltX = BOTTLE_EXIT_TILT_X
+  const exitEndSpinY = BOTTLE_EXIT_SPIN_Y
+  const exitEndTiltZ = BOTTLE_EXIT_TILT_Z
+  const [restX, restY, restZ] = BOTTLE_REST_ROTATION
+  const settleYawDelta = sameDirectionYawDelta(exitEndSpinY, restY)
+
+  let tiltX
+  let spinY
+  let tiltZ
+  if (exit < 1) {
+    tiltX = exit * BOTTLE_EXIT_TILT_X
+    spinY = exit * BOTTLE_EXIT_SPIN_Y
+    tiltZ = exit * BOTTLE_EXIT_TILT_Z
+  } else {
+    const t = settle
+    spinY = exitEndSpinY + t * settleYawDelta
+    tiltX = exitEndTiltX + t * (restX - exitEndTiltX)
+    tiltZ = exitEndTiltZ + t * (restZ - exitEndTiltZ)
+    if (t >= 1 - 1e-6) {
+      spinY = restY
+      tiltX = restX
+      tiltZ = restZ
+    }
+  }
 
   return (
     <group rotation={[tiltX, spinY, tiltZ]} position={[0, y, 0]} scale={scale}>
@@ -30,7 +73,7 @@ function BottleModel({ scrollProgress, narrowViewport, titleExitProgress = 0 }) 
 
 useGLTF.preload('/Tequila01.glb')
 
-function BottleScene({ scrollProgress, narrowViewport, titleExitProgress }) {
+function BottleScene({ scrollProgress, narrowViewport, titleExitProgress, bottleSettleProgress }) {
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
   useFrame(({ camera }) => {
@@ -55,6 +98,7 @@ function BottleScene({ scrollProgress, narrowViewport, titleExitProgress }) {
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
           titleExitProgress={titleExitProgress}
+          bottleSettleProgress={bottleSettleProgress}
         />
       </Suspense>
       <Environment preset="city" />
@@ -65,9 +109,10 @@ function BottleScene({ scrollProgress, narrowViewport, titleExitProgress }) {
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [titleExitProgress, setTitleExitProgress] = useState(0)
+  const [bottleSettleProgress, setBottleSettleProgress] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
   const stageRef = useRef(null)
-  const scrollPhaseRef = useRef({ scroll: 0, exit: 0 })
+  const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0 })
 
   const clamp01 = (n) => Math.min(Math.max(n, 0), 1)
   // Keep the bottle "initial screen" visible for a moment.
@@ -105,9 +150,16 @@ function App() {
     const s = scrollPhaseRef.current
 
     if (delta < 0) {
+      if (s.settle > 0) {
+        s.settle = Math.max(0, s.settle + exitStep)
+        setBottleSettleProgress(s.settle)
+        return
+      }
       if (s.exit > 0) {
         s.exit = Math.max(0, s.exit + exitStep)
+        if (s.exit < 1) s.settle = 0
         setTitleExitProgress(s.exit)
+        setBottleSettleProgress(s.settle)
         return
       }
       s.scroll = Math.max(0, s.scroll + scrollStep)
@@ -124,6 +176,12 @@ function App() {
     if (s.exit < 1) {
       s.exit = Math.min(1, s.exit + exitStep)
       setTitleExitProgress(s.exit)
+      return
+    }
+
+    if (s.settle < 1) {
+      s.settle = Math.min(1, s.settle + exitStep)
+      setBottleSettleProgress(s.settle)
     }
   }, [])
 
@@ -140,6 +198,10 @@ function App() {
   useEffect(() => {
     scrollPhaseRef.current.exit = titleExitProgress
   }, [titleExitProgress])
+
+  useEffect(() => {
+    scrollPhaseRef.current.settle = bottleSettleProgress
+  }, [bottleSettleProgress])
 
   return (
     <>
@@ -199,6 +261,7 @@ function App() {
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}
             titleExitProgress={titleExitProgress}
+            bottleSettleProgress={bottleSettleProgress}
           />
         </Canvas>
 
