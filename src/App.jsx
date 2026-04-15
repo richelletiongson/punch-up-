@@ -217,6 +217,7 @@ function App() {
         <StaggeredMenu
           isFixed
           position="right"
+          logoUrl="/Aurero_Logo.svg"
           items={menuItems}
           socialItems={socialItems}
           displaySocials
