@@ -46,8 +46,9 @@
 
 .sm-logo-img {
   display: block;
-  height: 32px;
+  height: clamp(56px, 14vw, 128px);
   width: auto;
+  max-height: 128px;
   object-fit: contain;
 }
 

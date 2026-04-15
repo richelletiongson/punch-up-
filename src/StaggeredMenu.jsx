@@ -386,8 +386,8 @@ export const StaggeredMenu = ({
             alt="Aurero"
             className="sm-logo-img"
             draggable={false}
-            width={140}
-            height={100}
+            width={280}
+            height={200}
           />
         </div>
         <button
