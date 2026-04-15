@@ -56,12 +56,11 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.55em;
   background: transparent;
   border: none;
   cursor: pointer;
   color: #e9e9ef;
-  font-family: inherit;
+  font-family: var(--font-avenir), sans-serif;
   font-weight: inherit;
   font-size: clamp(1.25rem, 3.4vw, 2.1rem);
   line-height: 1;
@@ -72,10 +71,6 @@
   outline: 2px solid #ffffffaa;
   outline-offset: 4px;
   border-radius: 4px;
-}
-
-.sm-line:last-of-type {
-  margin-top: 6px;
 }
 
 .sm-toggle-textWrap {
@@ -100,37 +95,10 @@
   line-height: 1;
 }
 
-.sm-icon {
-  position: relative;
-  width: 1.1em;
-  height: 1.1em;
-  flex: 0 0 1.1em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  will-change: transform;
-}
-
 .sm-panel-itemWrap {
   position: relative;
   overflow: hidden;
   line-height: 1;
-}
-
-.sm-icon-line {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 100%;
-  height: max(2px, 0.1em);
-  background: currentColor;
-  border-radius: 2px;
-  transform: translate(-50%, -50%);
-  will-change: transform;
-}
-
-.sm-line {
-  display: none !important;
 }
 
 .staggered-menu-panel {

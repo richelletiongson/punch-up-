@@ -25,16 +25,12 @@ export const StaggeredMenu = ({
   const panelRef = useRef(null)
   const preLayersRef = useRef(null)
   const preLayerElsRef = useRef([])
-  const plusHRef = useRef(null)
-  const plusVRef = useRef(null)
-  const iconRef = useRef(null)
   const textInnerRef = useRef(null)
   const textWrapRef = useRef(null)
   const [textLines, setTextLines] = useState(['Menu', 'Close'])
 
   const openTlRef = useRef(null)
   const closeTweenRef = useRef(null)
-  const spinTweenRef = useRef(null)
   const textCycleAnimRef = useRef(null)
   const colorTweenRef = useRef(null)
   const toggleBtnRef = useRef(null)
@@ -45,11 +41,8 @@ export const StaggeredMenu = ({
     const ctx = gsap.context(() => {
       const panel = panelRef.current
       const preContainer = preLayersRef.current
-      const plusH = plusHRef.current
-      const plusV = plusVRef.current
-      const icon = iconRef.current
       const textInner = textInnerRef.current
-      if (!panel || !plusH || !plusV || !icon || !textInner) return
+      if (!panel || !textInner) return
 
       let preLayers = []
       if (preContainer) {
@@ -59,9 +52,6 @@ export const StaggeredMenu = ({
 
       const offscreen = position === 'left' ? -100 : 100
       gsap.set([panel, ...preLayers], { xPercent: offscreen })
-      gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 })
-      gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 })
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' })
       gsap.set(textInner, { yPercent: 0 })
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor })
     })
@@ -233,27 +223,6 @@ export const StaggeredMenu = ({
     })
   }, [position])
 
-  const animateIcon = useCallback((opening) => {
-    const icon = iconRef.current
-    if (!icon) return
-    spinTweenRef.current?.kill()
-    if (opening) {
-      spinTweenRef.current = gsap.to(icon, {
-        rotate: 225,
-        duration: 0.8,
-        ease: 'power4.out',
-        overwrite: 'auto',
-      })
-    } else {
-      spinTweenRef.current = gsap.to(icon, {
-        rotate: 0,
-        duration: 0.35,
-        ease: 'power3.inOut',
-        overwrite: 'auto',
-      })
-    }
-  }, [])
-
   const animateColor = useCallback(
     (opening) => {
       const btn = toggleBtnRef.current
@@ -324,10 +293,9 @@ export const StaggeredMenu = ({
       onMenuClose?.()
       playClose()
     }
-    animateIcon(target)
     animateColor(target)
     animateText(target)
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose])
+  }, [playOpen, playClose, animateColor, animateText, onMenuOpen, onMenuClose])
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
@@ -335,11 +303,10 @@ export const StaggeredMenu = ({
       setOpen(false)
       onMenuClose?.()
       playClose()
-      animateIcon(false)
       animateColor(false)
       animateText(false)
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose])
+  }, [playClose, animateColor, animateText, onMenuClose])
 
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return
@@ -407,10 +374,6 @@ export const StaggeredMenu = ({
                 </span>
               ))}
             </span>
-          </span>
-          <span ref={iconRef} className="sm-icon" aria-hidden="true">
-            <span ref={plusHRef} className="sm-icon-line" />
-            <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
           </span>
         </button>
       </header>
