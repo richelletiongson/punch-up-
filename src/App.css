@@ -249,8 +249,8 @@
   font-family: var(--font-heading);
   font-weight: var(--weight-heading);
   font-style: normal;
-  font-size: clamp(1.85rem, 6.5vw, 3.65rem);
-  letter-spacing: var(--tracking-heading);
+  font-size: clamp(2rem, 7vw, 4rem);
+  letter-spacing: 0.07em;
   line-height: 1.12;
   color: #fff;
   /* Stay left of bottle: cap width so block ends before mid-screen */
@@ -271,7 +271,7 @@
 @media (max-width: 700px) {
   .stage__tagline {
     top: clamp(22vh, 9rem, 34vh);
-    font-size: clamp(1.35rem, 5.5vw, 2.35rem);
+    font-size: clamp(1.5rem, 5.85vw, 2.55rem);
     max-width: min(17rem, calc(44vw - var(--page-margin-inline)));
   }
 }
