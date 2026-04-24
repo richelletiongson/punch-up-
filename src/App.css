@@ -34,6 +34,10 @@
   transition: none;
 }
 
+.stage__pureGold--boost {
+  overflow-x: clip;
+}
+
 .stage__pureGoldShift {
   will-change: transform;
 }

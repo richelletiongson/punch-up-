@@ -406,6 +406,11 @@ function App() {
   const [textOutroProgress, setTextOutroProgress] = useState(0)
   const [sceneSlideProgress, setSceneSlideProgress] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
+  /** ≤1200px: tablets / small widths — stronger off-screen offset so “Pure Gold” never peeks */
+  const [pureGoldOffscreenBoost, setPureGoldOffscreenBoost] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 1200px)').matches
+  })
   const stageRef = useRef(null)
   const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0, textOutro: 0, slide: 0 })
 
@@ -425,6 +430,9 @@ function App() {
   const textSlideX = sceneSlideProgress * 1200
   const showPureGoldLayer = heroSequenceComplete && textOutroProgress >= 1
   const pureGoldT = clamp01(sceneSlideProgress)
+  const pureGoldTransform = pureGoldOffscreenBoost
+    ? 'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-82dvw - 68%)), 0, 0)'
+    : 'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-52vw - 52%)), 0, 0)'
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -440,11 +448,19 @@ function App() {
   ]
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 700px)')
-    const syncNarrow = () => setNarrowViewport(mq.matches)
-    syncNarrow()
-    mq.addEventListener('change', syncNarrow)
-    return () => mq.removeEventListener('change', syncNarrow)
+    const mq700 = window.matchMedia('(max-width: 700px)')
+    const mq1200 = window.matchMedia('(max-width: 1200px)')
+    const sync = () => {
+      setNarrowViewport(mq700.matches)
+      setPureGoldOffscreenBoost(mq1200.matches)
+    }
+    sync()
+    mq700.addEventListener('change', sync)
+    mq1200.addEventListener('change', sync)
+    return () => {
+      mq700.removeEventListener('change', sync)
+      mq1200.removeEventListener('change', sync)
+    }
   }, [])
 
   const onWheel = useCallback((e) => {
@@ -610,15 +626,14 @@ function App() {
 
         {showPureGoldLayer ? (
           <div
-            className="stage__pureGold"
+            className={`stage__pureGold${pureGoldOffscreenBoost ? ' stage__pureGold--boost' : ''}`}
             aria-hidden={sceneSlideProgress < 0.01}
           >
             <div
               className="stage__pureGoldShift"
               style={{
                 '--pure-gold-t': pureGoldT,
-                transform:
-                  'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-52vw - 52%)), 0, 0)'
+                transform: pureGoldTransform
               }}
             >
               <h2 className="stage__pureGoldHeading">Pure Gold</h2>
