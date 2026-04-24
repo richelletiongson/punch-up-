@@ -626,7 +626,7 @@ function App() {
 
         {showPureGoldLayer ? (
           <div
-            className={`stage__pureGold${pureGoldOffscreenBoost ? ' stage__pureGold--boost' : ''}`}
+            className="stage__pureGold"
             aria-hidden={sceneSlideProgress < 0.01}
           >
             <div

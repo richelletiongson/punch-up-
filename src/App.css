@@ -34,23 +34,32 @@
   transition: none;
 }
 
-.stage__pureGold--boost {
-  overflow-x: clip;
-}
-
 .stage__pureGoldShift {
   will-change: transform;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
 }
 
 .stage__pureGoldHeading {
   font-family: var(--font-heading);
   font-weight: 500;
-  font-size: clamp(5.25rem, 36vw, 26rem);
+  /*
+    Above 700px: clamp gives the “hero” scale; min() caps by viewport so small laptops/tablets
+    never clip. Same rule for all — no gap between 1200px and 1201px.
+  */
+  font-size: min(
+    clamp(5.25rem, 36vw, 26rem),
+    calc((100vw - 2 * var(--page-margin-inline) - 1rem) / 4.85)
+  );
   line-height: 0.88;
   letter-spacing: 0.035em;
   color: #ffffff;
   white-space: nowrap;
   margin: 0;
+  max-width: 100%;
+  display: inline-block;
 }
 
 /* MADE: behind WebGL; RIGHT: above canvas with a stronger shadow */
