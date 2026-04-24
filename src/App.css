@@ -39,7 +39,7 @@
   font-weight: 500;
   font-size: clamp(5.25rem, 36vw, 26rem);
   line-height: 0.88;
-  letter-spacing: -0.035em;
+  letter-spacing: 0.035em;
   color: #ffffff;
   white-space: nowrap;
   margin: 0;
@@ -479,7 +479,6 @@
 
   .stage__pureGoldHeading {
     font-size: clamp(3.75rem, 20vw, 8rem);
-    letter-spacing: -0.03em;
   }
 }
 
