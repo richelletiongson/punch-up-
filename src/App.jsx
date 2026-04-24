@@ -202,9 +202,9 @@ function SideBottle({
             style={{
               marginTop: '8px',
               fontFamily: 'avenir-lt-pro, sans-serif',
-              fontWeight: 500,
-              fontSize: '14px',
-              letterSpacing: '0.02em',
+              fontWeight: 400,
+              fontSize: '10px',
+              letterSpacing: '0.01em',
               color: 'rgba(244,247,251,0.95)'
             }}
           >
@@ -309,9 +309,9 @@ function BottleScene({
             style={{
               marginTop: '8px',
               fontFamily: 'avenir-lt-pro, sans-serif',
-              fontWeight: 500,
-              fontSize: '14px',
-              letterSpacing: '0.02em',
+              fontWeight: 400,
+              fontSize: '10px',
+              letterSpacing: '0.01em',
               color: 'rgba(244,247,251,0.95)'
             }}
           >
