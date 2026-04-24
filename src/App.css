@@ -246,7 +246,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: clamp(1rem, 2.2vw, 1.65rem);
-  max-width: min(38rem, calc(62vw - var(--page-margin-inline)));
+  max-width: min(30rem, calc(48vw - var(--page-margin-inline)));
   margin: 0;
   padding: 0;
   pointer-events: none;
@@ -284,7 +284,7 @@
   max-width: 100%;
   font-family: var(--font-avenir);
   font-weight: 400;
-  font-size: clamp(0.875rem, 1.35vw, 1.0625rem);
+  font-size: clamp(0.9375rem, 1.55vw, 1.125rem);
   line-height: 1.65;
   letter-spacing: 0.01em;
   color: rgba(255, 255, 255, 0.94);
@@ -293,7 +293,7 @@
 @media (max-width: 700px) {
   .stage__heroOutro {
     top: clamp(22vh, 9rem, 34vh);
-    max-width: calc(100vw - 2 * var(--page-margin-inline));
+    max-width: min(26rem, calc(88vw - 2 * var(--page-margin-inline)));
   }
 
   .stage__tagline {
@@ -301,7 +301,7 @@
   }
 
   .stage__brandStory {
-    font-size: clamp(0.8125rem, 2.8vw, 0.9375rem);
+    font-size: clamp(0.875rem, 3vw, 1rem);
     line-height: 1.6;
   }
 }
