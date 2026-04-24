@@ -203,7 +203,7 @@ function SideBottle({
               marginTop: '-7px',
               fontFamily: 'avenir-lt-pro, sans-serif',
               fontWeight: 400,
-              fontSize: '9px',
+              fontSize: '6px',
               letterSpacing: '0.01em',
               color: 'rgba(244,247,251,0.95)'
             }}
@@ -310,7 +310,7 @@ function BottleScene({
               marginTop: '-7px',
               fontFamily: 'avenir-lt-pro, sans-serif',
               fontWeight: 400,
-              fontSize: '9px',
+              fontSize: '6px',
               letterSpacing: '0.01em',
               color: 'rgba(244,247,251,0.95)'
             }}
