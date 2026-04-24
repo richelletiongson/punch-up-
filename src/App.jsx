@@ -279,11 +279,21 @@ function App() {
         </Canvas>
 
         <div
-          className={`stage__tagline${heroSequenceComplete ? ' stage__tagline--visible' : ''}`}
+          className={`stage__heroOutro${heroSequenceComplete ? ' stage__heroOutro--visible' : ''}`}
           aria-hidden={!heroSequenceComplete}
         >
-          <span className="stage__taglineLine">Born of Sun.</span>
-          <span className="stage__taglineLine">Poured in Gold.</span>
+          <p className="stage__tagline">
+            <span className="stage__taglineLine">Born of Sun.</span>
+            <span className="stage__taglineLine">Poured in Gold.</span>
+          </p>
+          <p className="stage__brandStory">
+            Áureo is a modern tequila shaped by warmth, heritage, and the golden hours that linger
+            longest. Crafted from blue agave and inspired by the richness of sun-soaked landscapes,
+            each expression captures a different shade of gold. From the honeyed brightness of Miel,
+            to the oak-warmed depth of Dorado, to the spiced amber glow of Ámbar. Rooted in tradition,
+            refined through a modern lens, Áureo is made for slow pours, long evenings, and the art
+            of savoring.
+          </p>
         </div>
 
         <div
