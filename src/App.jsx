@@ -139,12 +139,13 @@ function SideBottle({
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
   const outro = Math.min(Math.max(textOutroProgress ?? 0, 0), 1)
   const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
-  const entrance = Math.min(Math.max((outro - 0.24) / 0.76, 0), 1)
+  const entranceRaw = Math.min(Math.max((reveal - 0.18) / 0.82, 0), 1)
+  const entrance = entranceRaw * entranceRaw * (3 - 2 * entranceRaw)
   const dir = side === 'left' ? -1 : 1
 
   const baseY = MAIN_BOTTLE_START_Y + (MAIN_BOTTLE_END_Y - MAIN_BOTTLE_START_Y) * clamped
   const targetY = baseY - outro * MAIN_BOTTLE_OUTRO_DROP
-  const riseFromBottom = 2.2
+  const riseFromBottom = 4.1
   const y = targetY - (1 - entrance) * riseFromBottom
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
@@ -177,7 +178,7 @@ function SideBottle({
         position={[bottleX, y, z]}
         rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection, 0]}
         scale={scale}
-        visible={entrance > 0.001}
+        visible={entrance > 0.08}
       >
         <primitive object={instance} />
       </group>
