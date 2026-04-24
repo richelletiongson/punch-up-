@@ -31,7 +31,11 @@
   justify-content: center;
   pointer-events: none;
   user-select: none;
-  will-change: transform, opacity;
+  transition: none;
+}
+
+.stage__pureGoldShift {
+  will-change: transform;
 }
 
 .stage__pureGoldHeading {

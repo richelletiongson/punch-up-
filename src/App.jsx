@@ -424,9 +424,7 @@ function App() {
   const textOutroOffset = textOutroEffectiveProgress * 72
   const textSlideX = sceneSlideProgress * 1200
   const showPureGoldLayer = heroSequenceComplete && textOutroProgress >= 1
-  const pureGoldSlideVw = (1 - sceneSlideProgress) * -78
-  const pureGoldOpacity =
-    sceneSlideProgress <= 0 ? 0 : sceneSlideProgress < 0.07 ? sceneSlideProgress / 0.07 : 1
+  const pureGoldT = clamp01(sceneSlideProgress)
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -614,12 +612,17 @@ function App() {
           <div
             className="stage__pureGold"
             aria-hidden={sceneSlideProgress < 0.01}
-            style={{
-              opacity: pureGoldOpacity,
-              transform: `translateX(${pureGoldSlideVw}vw)`
-            }}
           >
-            <h2 className="stage__pureGoldHeading">Pure Gold</h2>
+            <div
+              className="stage__pureGoldShift"
+              style={{
+                '--pure-gold-t': pureGoldT,
+                transform:
+                  'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-52vw - 52%)), 0, 0)'
+              }}
+            >
+              <h2 className="stage__pureGoldHeading">Pure Gold</h2>
+            </div>
           </div>
         ) : null}
 
