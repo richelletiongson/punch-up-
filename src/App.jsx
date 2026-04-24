@@ -150,7 +150,7 @@ function SideBottle({
   const minScaleFactor = 0.68
   const scale = baseScale * minScaleFactor * 1.02
   const centerNudge = 0.18
-  const panelX = dir * (4.05 + (1 - entrance) * 1.7) - dir * centerNudge
+  const panelX = dir * 4.05 - dir * centerNudge
   const bottleInwardShift = 0.34
   const bottleX = panelX - dir * bottleInwardShift
   const z = 0
