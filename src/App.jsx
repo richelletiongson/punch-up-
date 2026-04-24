@@ -143,7 +143,9 @@ function SideBottle({
   const dir = side === 'left' ? -1 : 1
 
   const baseY = MAIN_BOTTLE_START_Y + (MAIN_BOTTLE_END_Y - MAIN_BOTTLE_START_Y) * clamped
-  const y = baseY - outro * MAIN_BOTTLE_OUTRO_DROP
+  const targetY = baseY - outro * MAIN_BOTTLE_OUTRO_DROP
+  const riseFromBottom = 2.2
+  const y = targetY - (1 - entrance) * riseFromBottom
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
   const scale = baseScale * (1 - outro * (1 - minScaleFactor)) * 1.02
