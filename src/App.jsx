@@ -107,6 +107,7 @@ function SideBottle({
   modelPath,
   side = 'left',
   label,
+  subtitle,
   textOutroProgress = 0,
   scrollProgress = 1,
   narrowViewport
@@ -123,7 +124,7 @@ function SideBottle({
   }, [scene])
   const panelShape = useMemo(() => {
     const w = 1.8
-    const h = 4.25
+    const h = 4.3
     const r = 0.14
     const hw = w / 2
     const hh = h / 2
@@ -153,8 +154,8 @@ function SideBottle({
   const scale = baseScale * minScaleFactor * 1.02
   const centerNudge = 0.18
   const panelX = dir * 4.05 - dir * centerNudge
-  const panelScaleY = 0.5 + reveal * 1.9
-  const panelTopY = -2.95 + (4.25 * panelScaleY) / 2
+  const panelScaleY = 0.51 + reveal * 1.92
+  const panelTopY = -2.95 + (4.3 * panelScaleY) / 2
   const bottleInwardShift = 0.34
   const bottleX = panelX - dir * bottleInwardShift
   const z = 0
@@ -195,7 +196,21 @@ function SideBottle({
           userSelect: 'none'
         }}
       >
-        {label}
+        <div style={{ textAlign: 'center' }}>
+          <div>{label}</div>
+          <div
+            style={{
+              marginTop: '8px',
+              fontFamily: 'avenir-lt-pro, sans-serif',
+              fontWeight: 500,
+              fontSize: '14px',
+              letterSpacing: '0.02em',
+              color: 'rgba(244,247,251,0.95)'
+            }}
+          >
+            {subtitle}
+          </div>
+        </div>
       </Html>
       <group
         position={[bottleX, y, z]}
@@ -220,11 +235,11 @@ function BottleScene({
   textOutroProgress
 }) {
   const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
-  const panelScaleY = 0.5 + reveal * 1.9
-  const panelTopY = -2.95 + (4.25 * panelScaleY) / 2
+  const panelScaleY = 0.51 + reveal * 1.92
+  const panelTopY = -2.95 + (4.3 * panelScaleY) / 2
   const panelShape = useMemo(() => {
     const w = 1.8
-    const h = 4.25
+    const h = 4.3
     const r = 0.14
     const hw = w / 2
     const hh = h / 2
@@ -288,13 +303,28 @@ function BottleScene({
           userSelect: 'none'
         }}
       >
-        Miel
+        <div style={{ textAlign: 'center' }}>
+          <div>Miel</div>
+          <div
+            style={{
+              marginTop: '8px',
+              fontFamily: 'avenir-lt-pro, sans-serif',
+              fontWeight: 500,
+              fontSize: '14px',
+              letterSpacing: '0.02em',
+              color: 'rgba(244,247,251,0.95)'
+            }}
+          >
+            Aged in warmth.
+          </div>
+        </div>
       </Html>
       <Suspense fallback={null}>
         <SideBottle
           modelPath="/Tequila02.glb"
           side="left"
           label="Dorado"
+          subtitle="Aged in warmth."
           textOutroProgress={textOutroProgress}
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
@@ -303,6 +333,7 @@ function BottleScene({
           modelPath="/Tequila03.glb"
           side="right"
           label="Ámbar"
+          subtitle="Deep glow, slow heat."
           textOutroProgress={textOutroProgress}
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
