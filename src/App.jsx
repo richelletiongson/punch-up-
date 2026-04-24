@@ -424,7 +424,7 @@ function App() {
   const textOutroOffset = textOutroEffectiveProgress * 72
   const textSlideX = sceneSlideProgress * 1200
   const showPureGoldLayer = heroSequenceComplete && textOutroProgress >= 1
-  const pureGoldSlideVw = (1 - sceneSlideProgress) * -52
+  const pureGoldSlideVw = (1 - sceneSlideProgress) * -78
   const pureGoldOpacity =
     sceneSlideProgress <= 0 ? 0 : sceneSlideProgress < 0.07 ? sceneSlideProgress / 0.07 : 1
 
