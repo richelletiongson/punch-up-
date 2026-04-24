@@ -110,9 +110,16 @@ function SideBottle({
   scrollProgress = 1,
   narrowViewport
 }) {
-  const groupRef = useRef(null)
   const { scene } = useGLTF(modelPath)
-  const instance = useMemo(() => scene.clone(true), [scene])
+  const instance = useMemo(() => {
+    const clone = scene.clone(true)
+    // Normalize each variant's local center so it sits centered in its panel.
+    const box = new THREE.Box3().setFromObject(clone)
+    const center = box.getCenter(new THREE.Vector3())
+    clone.position.x -= center.x
+    clone.position.z -= center.z
+    return clone
+  }, [scene])
   const panelShape = useMemo(() => {
     const w = 1.8
     const h = 4.25
@@ -142,17 +149,8 @@ function SideBottle({
   const scale = baseScale * (1 - outro * (1 - minScaleFactor)) * 1.02
   const x = dir * (4.05 + (1 - entrance) * 1.7)
   const z = 0
-
-  useFrame(({ camera }) => {
-    const g = groupRef.current
-    if (!g || entrance <= 0.001) return
-    // Keep bottles mostly front-facing, with only subtle camera follow on yaw.
-    const yawFollow = 0.22
-    const targetX = g.position.x + (camera.position.x - g.position.x) * yawFollow
-    g.lookAt(targetX, g.position.y, camera.position.z)
-    g.rotation.x = 0
-    g.rotation.z = 0
-  })
+  // Tequila02/03 files are slightly yawed out by default; counter-rotate per side to match center bottle.
+  const yawCorrection = -dir * 0.24
 
   return (
     <>
@@ -171,9 +169,8 @@ function SideBottle({
         />
       </mesh>
       <group
-        ref={groupRef}
         position={[x, y, z]}
-        rotation={[0, BOTTLE_REST_ROTATION[1], 0]}
+        rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection, 0]}
         scale={scale}
         visible={entrance > 0.001}
       >
