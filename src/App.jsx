@@ -253,9 +253,12 @@ function BottleScene({
   narrowViewport,
   titleExitProgress,
   bottleSettleProgress,
-  textOutroProgress
+  textOutroProgress,
+  sceneSlideProgress = 0
 }) {
   const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
+  const slideDistance = narrowViewport ? 9 : 14
+  const sceneSlideX = Math.min(Math.max(sceneSlideProgress, 0), 1) * slideDistance
   const panelScaleY = 0.51 + reveal * 1.92
   const panelTopY = -2.95 + (4.3 * panelScaleY) / 2
   const panelShape = useMemo(() => {
@@ -294,101 +297,103 @@ function BottleScene({
       <ambientLight intensity={0.7} />
       <directionalLight position={[3, 5, 2]} intensity={1.4} />
       <directionalLight position={[-3, -4, -2]} intensity={0.5} />
-      <mesh
-        position={[0, -2.95, -1.05]}
-        scale={[0.45 + reveal * 1.35, panelScaleY, 1]}
-        visible={reveal > 0.001}
-      >
-        <shapeGeometry args={[panelShape]} />
-        <meshStandardMaterial
-          color="#f4f7fb"
-          transparent
-          opacity={reveal * 0.36}
-          roughness={0.62}
-          metalness={0.02}
-        />
-      </mesh>
-      <Html
-        position={[0, panelTopY - 0.8, -1.01]}
-        center
-        transform
-        style={{
-          fontFamily: 'chorine-large, sans-serif',
-          fontWeight: 500,
-          fontSize: '30px',
-          letterSpacing: '0.06em',
-          color: '#f4f7fb',
-          width: '280px',
-          maxWidth: '280px',
-          opacity: reveal > 0.35 ? 1 : 0,
-          pointerEvents: 'none',
-          userSelect: 'none'
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ whiteSpace: 'nowrap' }}>Miel</div>
-          <div
-            style={{
-              marginTop: '-7px',
-              fontFamily: 'avenir-lt-pro, sans-serif',
-              fontWeight: 700,
-              fontSize: '8px',
-              letterSpacing: '0.01em',
-              color: 'rgba(244,247,251,0.95)'
-            }}
-          >
-            Golden, slow, and softly sweet.
+      <group position={[sceneSlideX, 0, 0]}>
+        <mesh
+          position={[0, -2.95, -1.05]}
+          scale={[0.45 + reveal * 1.35, panelScaleY, 1]}
+          visible={reveal > 0.001}
+        >
+          <shapeGeometry args={[panelShape]} />
+          <meshStandardMaterial
+            color="#f4f7fb"
+            transparent
+            opacity={reveal * 0.36}
+            roughness={0.62}
+            metalness={0.02}
+          />
+        </mesh>
+        <Html
+          position={[0, panelTopY - 0.8, -1.01]}
+          center
+          transform
+          style={{
+            fontFamily: 'chorine-large, sans-serif',
+            fontWeight: 500,
+            fontSize: '30px',
+            letterSpacing: '0.06em',
+            color: '#f4f7fb',
+            width: '280px',
+            maxWidth: '280px',
+            opacity: reveal > 0.35 ? 1 : 0,
+            pointerEvents: 'none',
+            userSelect: 'none'
+          }}
+        >
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ whiteSpace: 'nowrap' }}>Miel</div>
+            <div
+              style={{
+                marginTop: '-7px',
+                fontFamily: 'avenir-lt-pro, sans-serif',
+                fontWeight: 700,
+                fontSize: '8px',
+                letterSpacing: '0.01em',
+                color: 'rgba(244,247,251,0.95)'
+              }}
+            >
+              Golden, slow, and softly sweet.
+            </div>
+            <div
+              style={{
+                marginTop: '2px',
+                fontFamily: 'avenir-lt-pro, sans-serif',
+                fontWeight: 400,
+                fontSize: '6px',
+                letterSpacing: '0.01em',
+                lineHeight: 1.2,
+                whiteSpace: 'pre-line',
+                width: '220px',
+                maxWidth: '220px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                overflowWrap: 'normal',
+                color: 'rgba(244,247,251,0.9)'
+              }}
+            >
+              {'wild honey • blood orange •\nagave'}
+            </div>
           </div>
-          <div
-            style={{
-              marginTop: '2px',
-              fontFamily: 'avenir-lt-pro, sans-serif',
-              fontWeight: 400,
-              fontSize: '6px',
-              letterSpacing: '0.01em',
-              lineHeight: 1.2,
-              whiteSpace: 'pre-line',
-              width: '220px',
-              maxWidth: '220px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              overflowWrap: 'normal',
-              color: 'rgba(244,247,251,0.9)'
-            }}
-          >
-            {'wild honey • blood orange •\nagave'}
-          </div>
-        </div>
-      </Html>
-      <Suspense fallback={null}>
-        <SideBottle
-          modelPath="/Tequila02.glb"
-          side="left"
-          label="Dorado"
-          subtitle="Aged in warmth."
-          profile={'toasted vanilla •\ncaramelized agave • light oak'}
-          textOutroProgress={textOutroProgress}
-          scrollProgress={scrollProgress}
-          narrowViewport={narrowViewport}
-        />
-        <SideBottle
-          modelPath="/Tequila03.glb"
-          side="right"
-          label="Ámbar"
-          subtitle="Deep glow, slow heat."
-          profile="apricot • golden raisin • soft spice"
-          textOutroProgress={textOutroProgress}
-          scrollProgress={scrollProgress}
-          narrowViewport={narrowViewport}
-        />
-        <BottleModel
-          scrollProgress={scrollProgress}
-          narrowViewport={narrowViewport}
-          titleExitProgress={titleExitProgress}
-          bottleSettleProgress={bottleSettleProgress}
-          textOutroProgress={textOutroProgress}
-        />
-      </Suspense>
+        </Html>
+        <Suspense fallback={null}>
+          <SideBottle
+            modelPath="/Tequila02.glb"
+            side="left"
+            label="Dorado"
+            subtitle="Aged in warmth."
+            profile={'toasted vanilla •\ncaramelized agave • light oak'}
+            textOutroProgress={textOutroProgress}
+            scrollProgress={scrollProgress}
+            narrowViewport={narrowViewport}
+          />
+          <SideBottle
+            modelPath="/Tequila03.glb"
+            side="right"
+            label="Ámbar"
+            subtitle="Deep glow, slow heat."
+            profile="apricot • golden raisin • soft spice"
+            textOutroProgress={textOutroProgress}
+            scrollProgress={scrollProgress}
+            narrowViewport={narrowViewport}
+          />
+          <BottleModel
+            scrollProgress={scrollProgress}
+            narrowViewport={narrowViewport}
+            titleExitProgress={titleExitProgress}
+            bottleSettleProgress={bottleSettleProgress}
+            textOutroProgress={textOutroProgress}
+          />
+        </Suspense>
+      </group>
       <Environment preset="city" />
     </>
   )
@@ -399,9 +404,10 @@ function App() {
   const [titleExitProgress, setTitleExitProgress] = useState(0)
   const [bottleSettleProgress, setBottleSettleProgress] = useState(0)
   const [textOutroProgress, setTextOutroProgress] = useState(0)
+  const [sceneSlideProgress, setSceneSlideProgress] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
   const stageRef = useRef(null)
-  const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0, textOutro: 0 })
+  const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0, textOutro: 0, slide: 0 })
 
   const clamp01 = (n) => Math.min(Math.max(n, 0), 1)
   // Keep the bottle "initial screen" visible for a moment.
@@ -416,6 +422,7 @@ function App() {
   )
   const textVisibleProgress = heroSequenceComplete ? 1 - textOutroEffectiveProgress : 0
   const textOutroOffset = textOutroEffectiveProgress * 72
+  const textSlideX = sceneSlideProgress * 1200
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -447,9 +454,15 @@ function App() {
     const exitStep = (delta * 0.0008) / 0.95
     const settleStep = exitStep * SETTLE_SCROLL_MULT
     const textOutroStep = exitStep * 0.8
+    const sceneSlideStep = exitStep * 0.9
     const s = scrollPhaseRef.current
 
     if (delta < 0) {
+      if (s.slide > 0) {
+        s.slide = Math.max(0, s.slide + sceneSlideStep)
+        setSceneSlideProgress(s.slide)
+        return
+      }
       if (s.textOutro > 0) {
         s.textOutro = Math.max(0, s.textOutro + textOutroStep)
         setTextOutroProgress(s.textOutro)
@@ -493,6 +506,12 @@ function App() {
     if (s.textOutro < 1) {
       s.textOutro = Math.min(1, s.textOutro + textOutroStep)
       setTextOutroProgress(s.textOutro)
+      return
+    }
+
+    if (s.slide < 1) {
+      s.slide = Math.min(1, s.slide + sceneSlideStep)
+      setSceneSlideProgress(s.slide)
     }
   }, [])
 
@@ -517,6 +536,10 @@ function App() {
   useEffect(() => {
     scrollPhaseRef.current.textOutro = textOutroProgress
   }, [textOutroProgress])
+
+  useEffect(() => {
+    scrollPhaseRef.current.slide = sceneSlideProgress
+  }, [sceneSlideProgress])
 
   return (
     <>
@@ -579,6 +602,7 @@ function App() {
             titleExitProgress={titleExitProgress}
             bottleSettleProgress={bottleSettleProgress}
             textOutroProgress={textOutroEffectiveProgress}
+            sceneSlideProgress={sceneSlideProgress}
           />
         </Canvas>
 
@@ -587,7 +611,7 @@ function App() {
           aria-hidden={!heroSequenceComplete}
           style={{
             opacity: textVisibleProgress,
-            transform: `translateY(${-textOutroOffset}px)`
+            transform: `translate(${textSlideX}px, ${-textOutroOffset}px)`
           }}
         >
           <p className="stage__tagline">
@@ -618,7 +642,7 @@ function App() {
           aria-hidden={!heroSequenceComplete}
           style={{
             opacity: textVisibleProgress,
-            transform: `translateY(${-textOutroOffset}px)`
+            transform: `translate(${textSlideX}px, ${-textOutroOffset}px)`
           }}
         >
           <section className="stage__heroSpec">
