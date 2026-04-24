@@ -117,9 +117,10 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [titleExitProgress, setTitleExitProgress] = useState(0)
   const [bottleSettleProgress, setBottleSettleProgress] = useState(0)
+  const [textOutroProgress, setTextOutroProgress] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
   const stageRef = useRef(null)
-  const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0 })
+  const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0, textOutro: 0 })
 
   const clamp01 = (n) => Math.min(Math.max(n, 0), 1)
   // Keep the bottle "initial screen" visible for a moment.
@@ -129,6 +130,8 @@ function App() {
     scrollProgress >= 0.998 &&
     titleExitProgress >= 0.998 &&
     bottleSettleProgress >= 0.998
+  const textVisibleProgress = heroSequenceComplete ? 1 - textOutroProgress : 0
+  const textOutroOffset = textOutroProgress * 72
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -159,9 +162,15 @@ function App() {
     // the same total wheel travel scrubs headline in vs out.
     const exitStep = (delta * 0.0008) / 0.95
     const settleStep = exitStep * SETTLE_SCROLL_MULT
+    const textOutroStep = exitStep * 1.25
     const s = scrollPhaseRef.current
 
     if (delta < 0) {
+      if (s.textOutro > 0) {
+        s.textOutro = Math.max(0, s.textOutro + textOutroStep)
+        setTextOutroProgress(s.textOutro)
+        return
+      }
       if (s.settle > 0) {
         s.settle = Math.max(0, s.settle + settleStep)
         setBottleSettleProgress(s.settle)
@@ -194,6 +203,12 @@ function App() {
     if (s.settle < 1) {
       s.settle = Math.min(1, s.settle + settleStep)
       setBottleSettleProgress(s.settle)
+      return
+    }
+
+    if (s.textOutro < 1) {
+      s.textOutro = Math.min(1, s.textOutro + textOutroStep)
+      setTextOutroProgress(s.textOutro)
     }
   }, [])
 
@@ -214,6 +229,10 @@ function App() {
   useEffect(() => {
     scrollPhaseRef.current.settle = bottleSettleProgress
   }, [bottleSettleProgress])
+
+  useEffect(() => {
+    scrollPhaseRef.current.textOutro = textOutroProgress
+  }, [textOutroProgress])
 
   return (
     <>
@@ -281,6 +300,10 @@ function App() {
         <div
           className={`stage__heroOutro${heroSequenceComplete ? ' stage__heroOutro--visible' : ''}`}
           aria-hidden={!heroSequenceComplete}
+          style={{
+            opacity: textVisibleProgress,
+            transform: `translateY(${-textOutroOffset}px)`
+          }}
         >
           <p className="stage__tagline">
             <span className="stage__taglineLine">Born of Sun.</span>
@@ -308,6 +331,10 @@ function App() {
           className={`stage__heroSpecs${heroSequenceComplete ? ' stage__heroSpecs--visible' : ''}`}
           aria-label="Product details"
           aria-hidden={!heroSequenceComplete}
+          style={{
+            opacity: textVisibleProgress,
+            transform: `translateY(${-textOutroOffset}px)`
+          }}
         >
           <section className="stage__heroSpec">
             <h3 className="stage__heroSpecTitle">AGAVE</h3>
