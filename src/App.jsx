@@ -157,6 +157,8 @@ function SideBottle({
   const z = 0
   // Tequila02/03 files are slightly yawed out by default; counter-rotate per side to match center bottle.
   const yawCorrection = -dir * 0.24
+  const enterSpinTurns = 0.9
+  const enterSpin = (1 - entrance) * TWO_PI * enterSpinTurns
 
   return (
     <>
@@ -176,7 +178,7 @@ function SideBottle({
       </mesh>
       <group
         position={[bottleX, y, z]}
-        rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection, 0]}
+        rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection + enterSpin, 0]}
         scale={scale}
         visible={entrance > 0.08}
       >
