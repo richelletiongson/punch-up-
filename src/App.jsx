@@ -186,7 +186,7 @@ function SideBottle({
         style={{
           fontFamily: 'chorine-large, sans-serif',
           fontWeight: 500,
-          fontSize: '34px',
+          fontSize: '30px',
           letterSpacing: '0.06em',
           color: '#f4f7fb',
           whiteSpace: 'nowrap',
@@ -279,7 +279,7 @@ function BottleScene({
         style={{
           fontFamily: 'chorine-large, sans-serif',
           fontWeight: 500,
-          fontSize: '34px',
+          fontSize: '30px',
           letterSpacing: '0.06em',
           color: '#f4f7fb',
           whiteSpace: 'nowrap',
