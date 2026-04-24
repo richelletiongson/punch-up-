@@ -28,6 +28,9 @@ const SETTLE_SCROLL_MULT = Math.min(
   48
 )
 const TEXT_OUTRO_START = 0.28
+const MAIN_BOTTLE_START_Y = -4.0
+const MAIN_BOTTLE_END_Y = -2.25
+const MAIN_BOTTLE_OUTRO_DROP = 0.68
 
 function BottleModel({
   scrollProgress,
@@ -43,10 +46,10 @@ function BottleModel({
   const outro = Math.min(Math.max(textOutroProgress ?? 0, 0), 1)
 
   // Start low on first frame (scroll 0); only ease up toward endY as scroll progresses.
-  const startY = -4.0
-  const endY = -2.25
+  const startY = MAIN_BOTTLE_START_Y
+  const endY = MAIN_BOTTLE_END_Y
   const baseY = startY + (endY - startY) * clamped
-  const outroDrop = 0.68
+  const outroDrop = MAIN_BOTTLE_OUTRO_DROP
   const y = baseY - outro * outroDrop
 
   const baseScale = narrowViewport ? 0.14 : 0.16
@@ -100,19 +103,27 @@ function BottleModel({
 
 useGLTF.preload('/Tequila01.glb')
 
-function SideBottle({ modelPath, side = 'left', textOutroProgress = 0, narrowViewport }) {
+function SideBottle({
+  modelPath,
+  side = 'left',
+  textOutroProgress = 0,
+  scrollProgress = 1,
+  narrowViewport
+}) {
   const { scene } = useGLTF(modelPath)
   const instance = useMemo(() => scene.clone(true), [scene])
+  const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
   const outro = Math.min(Math.max(textOutroProgress ?? 0, 0), 1)
   const entrance = Math.min(Math.max((outro - 0.24) / 0.76, 0), 1)
   const dir = side === 'left' ? -1 : 1
 
+  const baseY = MAIN_BOTTLE_START_Y + (MAIN_BOTTLE_END_Y - MAIN_BOTTLE_START_Y) * clamped
+  const y = baseY - outro * MAIN_BOTTLE_OUTRO_DROP
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
-  const scale = baseScale * (1 - outro * (1 - minScaleFactor))
+  const scale = baseScale * (1 - outro * (1 - minScaleFactor)) * 1.02
   const x = dir * (1.7 + (1 - entrance) * 0.8)
-  const y = -2.95 - (1 - entrance) * 0.25
-  const z = -0.72
+  const z = 0
 
   return (
     <group
@@ -192,12 +203,14 @@ function BottleScene({
           modelPath="/Tequila02.glb"
           side="left"
           textOutroProgress={textOutroProgress}
+          scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
         />
         <SideBottle
           modelPath="/Tequila03.glb"
           side="right"
           textOutroProgress={textOutroProgress}
+          scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
         />
         <BottleModel
