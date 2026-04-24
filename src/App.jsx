@@ -100,6 +100,35 @@ function BottleModel({
 
 useGLTF.preload('/Tequila01.glb')
 
+function SideBottle({ modelPath, side = 'left', textOutroProgress = 0, narrowViewport }) {
+  const { scene } = useGLTF(modelPath)
+  const instance = useMemo(() => scene.clone(true), [scene])
+  const outro = Math.min(Math.max(textOutroProgress ?? 0, 0), 1)
+  const entrance = Math.min(Math.max((outro - 0.24) / 0.76, 0), 1)
+  const dir = side === 'left' ? -1 : 1
+
+  const baseScale = narrowViewport ? 0.14 : 0.16
+  const minScaleFactor = 0.68
+  const scale = baseScale * (1 - outro * (1 - minScaleFactor))
+  const x = dir * (1.7 + (1 - entrance) * 0.8)
+  const y = -2.95 - (1 - entrance) * 0.25
+  const z = -0.72
+
+  return (
+    <group
+      position={[x, y, z]}
+      rotation={[0, 0, 0]}
+      scale={scale}
+      visible={entrance > 0.001}
+    >
+      <primitive object={instance} />
+    </group>
+  )
+}
+
+useGLTF.preload('/Tequila02.glb')
+useGLTF.preload('/Tequila03.glb')
+
 function BottleScene({
   scrollProgress,
   narrowViewport,
@@ -159,6 +188,18 @@ function BottleScene({
         />
       </mesh>
       <Suspense fallback={null}>
+        <SideBottle
+          modelPath="/Tequila02.glb"
+          side="left"
+          textOutroProgress={textOutroProgress}
+          narrowViewport={narrowViewport}
+        />
+        <SideBottle
+          modelPath="/Tequila03.glb"
+          side="right"
+          textOutroProgress={textOutroProgress}
+          narrowViewport={narrowViewport}
+        />
         <BottleModel
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
