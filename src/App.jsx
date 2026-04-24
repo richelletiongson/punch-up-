@@ -125,6 +125,10 @@ function App() {
   // Keep the bottle "initial screen" visible for a moment.
   // At `scrollProgress === 1`, both text and bottle end together.
   const floatProgress = clamp01((scrollProgress - 0.05) / 0.95)
+  const heroSequenceComplete =
+    scrollProgress >= 0.998 &&
+    titleExitProgress >= 0.998 &&
+    bottleSettleProgress >= 0.998
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -273,6 +277,14 @@ function App() {
             bottleSettleProgress={bottleSettleProgress}
           />
         </Canvas>
+
+        <div
+          className={`stage__tagline${heroSequenceComplete ? ' stage__tagline--visible' : ''}`}
+          aria-hidden={!heroSequenceComplete}
+        >
+          <span className="stage__taglineLine">Born of Sun.</span>
+          <span className="stage__taglineLine">Poured in Gold.</span>
+        </div>
 
         <div
           className="stage__titleFront"

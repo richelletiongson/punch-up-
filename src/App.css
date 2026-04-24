@@ -235,3 +235,50 @@
   flex: 0 0 auto;
 }
 
+/* After hero scroll + headline exit + bottle settle: tagline upper-left of bottle silhouette */
+.stage__tagline {
+  position: fixed;
+  z-index: 16;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  pointer-events: none;
+  text-align: left;
+  font-family: var(--font-avenir);
+  font-weight: 600;
+  font-style: normal;
+  font-size: clamp(0.8125rem, 2.15vw, 1.125rem);
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  color: var(--papaya-whip);
+  text-shadow:
+    0 0.06em 0.2em rgba(0, 21, 36, 0.45),
+    0 0.02em 0.06em rgba(0, 8, 14, 0.35);
+  max-width: min(13.5rem, 42vw);
+  /* From viewport center: up and left to sit on bottle’s top-left */
+  transform: translate(
+    calc(-50% - clamp(4.25rem, 15vmin, 9.5rem)),
+    calc(-50% - clamp(3.75rem, 13vmin, 8rem))
+  );
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.stage__tagline--visible {
+  opacity: 1;
+}
+
+.stage__taglineLine {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .stage__tagline {
+    transform: translate(
+      calc(-50% - clamp(2.75rem, 11vmin, 5.5rem)),
+      calc(-50% - clamp(2.25rem, 9vmin, 5rem))
+    );
+    max-width: min(11.5rem, 52vw);
+  }
+}
+
