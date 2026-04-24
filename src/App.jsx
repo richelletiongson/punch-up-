@@ -108,6 +108,7 @@ function SideBottle({
   side = 'left',
   label,
   subtitle,
+  profile,
   textOutroProgress = 0,
   scrollProgress = 1,
   narrowViewport
@@ -190,14 +191,15 @@ function SideBottle({
           fontSize: '30px',
           letterSpacing: '0.06em',
           color: '#f4f7fb',
-          whiteSpace: 'nowrap',
+          width: '280px',
+          maxWidth: '280px',
           opacity: reveal > 0.35 ? 1 : 0,
           pointerEvents: 'none',
           userSelect: 'none'
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          <div>{label}</div>
+          <div style={{ whiteSpace: 'nowrap' }}>{label}</div>
           <div
             style={{
               marginTop: '-7px',
@@ -209,6 +211,25 @@ function SideBottle({
             }}
           >
             {subtitle}
+          </div>
+          <div
+            style={{
+              marginTop: '-1px',
+              fontFamily: 'avenir-lt-pro, sans-serif',
+              fontWeight: 400,
+              fontSize: '6px',
+              letterSpacing: '0.01em',
+              lineHeight: 1.2,
+              whiteSpace: 'pre-line',
+              width: '220px',
+              maxWidth: '220px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              overflowWrap: 'normal',
+              color: 'rgba(244,247,251,0.9)'
+            }}
+          >
+            {profile}
           </div>
         </div>
       </Html>
@@ -297,14 +318,15 @@ function BottleScene({
           fontSize: '30px',
           letterSpacing: '0.06em',
           color: '#f4f7fb',
-          whiteSpace: 'nowrap',
+          width: '280px',
+          maxWidth: '280px',
           opacity: reveal > 0.35 ? 1 : 0,
           pointerEvents: 'none',
           userSelect: 'none'
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          <div>Miel</div>
+          <div style={{ whiteSpace: 'nowrap' }}>Miel</div>
           <div
             style={{
               marginTop: '-7px',
@@ -317,6 +339,25 @@ function BottleScene({
           >
             Golden, slow, and softly sweet.
           </div>
+          <div
+            style={{
+              marginTop: '-1px',
+              fontFamily: 'avenir-lt-pro, sans-serif',
+              fontWeight: 400,
+              fontSize: '6px',
+              letterSpacing: '0.01em',
+              lineHeight: 1.2,
+              whiteSpace: 'pre-line',
+              width: '220px',
+              maxWidth: '220px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              overflowWrap: 'normal',
+              color: 'rgba(244,247,251,0.9)'
+            }}
+          >
+            {'wild honey • blood orange •\nagave'}
+          </div>
         </div>
       </Html>
       <Suspense fallback={null}>
@@ -325,6 +366,7 @@ function BottleScene({
           side="left"
           label="Dorado"
           subtitle="Aged in warmth."
+          profile={'toasted vanilla •\ncaramelized agave • light oak'}
           textOutroProgress={textOutroProgress}
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
@@ -334,6 +376,7 @@ function BottleScene({
           side="right"
           label="Ámbar"
           subtitle="Deep glow, slow heat."
+          profile="apricot • golden raisin • soft spice"
           textOutroProgress={textOutroProgress}
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
