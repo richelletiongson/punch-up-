@@ -29,6 +29,9 @@ const SETTLE_SCROLL_MULT = Math.min(
 )
 const TEXT_OUTRO_START = 0.28
 
+/** Vertical panel base color (lit mesh + compact brand story panel) — light blue-grey */
+const HERO_PANEL_SURFACE = '#9eb6c3'
+
 const HERO_BRAND_STORY_FULL =
   'Áureo is a modern tequila shaped by warmth, heritage, and the golden hours that linger longest. Crafted from blue agave and inspired by the richness of sun-soaked landscapes, each expression captures a different shade of gold. From the honeyed brightness of Miel, to the oak-warmed depth of Dorado, to the spiced amber glow of Ámbar. Rooted in tradition, refined through a modern lens, Áureo is made for slow pours, long evenings, and the art of savoring.'
 
@@ -180,7 +183,7 @@ function SideBottle({
       >
         <shapeGeometry args={[panelShape]} />
         <meshStandardMaterial
-          color="#f4f7fb"
+          color={HERO_PANEL_SURFACE}
           transparent
           opacity={reveal * 0.36}
           roughness={0.62}
@@ -196,7 +199,7 @@ function SideBottle({
           fontWeight: 500,
           fontSize: '30px',
           letterSpacing: '0.06em',
-          color: '#f4f7fb',
+          color: '#ffffff',
           width: '280px',
           maxWidth: '280px',
           opacity: reveal > 0.35 ? 1 : 0,
@@ -213,7 +216,7 @@ function SideBottle({
               fontWeight: 700,
               fontSize: '8px',
               letterSpacing: '0.01em',
-              color: 'rgba(244,247,251,0.95)'
+              color: 'rgba(255,255,255,0.95)'
             }}
           >
             {subtitle}
@@ -232,7 +235,7 @@ function SideBottle({
               marginLeft: 'auto',
               marginRight: 'auto',
               overflowWrap: 'normal',
-              color: 'rgba(244,247,251,0.9)'
+              color: 'rgba(255,255,255,0.92)'
             }}
           >
             {profile}
@@ -311,7 +314,7 @@ function BottleScene({
         >
           <shapeGeometry args={[panelShape]} />
           <meshStandardMaterial
-            color="#f4f7fb"
+            color={HERO_PANEL_SURFACE}
             transparent
             opacity={reveal * 0.36}
             roughness={0.62}
@@ -327,7 +330,7 @@ function BottleScene({
             fontWeight: 500,
             fontSize: '30px',
             letterSpacing: '0.06em',
-            color: '#f4f7fb',
+            color: '#ffffff',
             width: '280px',
             maxWidth: '280px',
             opacity: reveal > 0.35 ? 1 : 0,
@@ -344,7 +347,7 @@ function BottleScene({
                 fontWeight: 700,
                 fontSize: '8px',
                 letterSpacing: '0.01em',
-                color: 'rgba(244,247,251,0.95)'
+                color: 'rgba(255,255,255,0.95)'
               }}
             >
               Golden, slow, and softly sweet.
@@ -363,7 +366,7 @@ function BottleScene({
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 overflowWrap: 'normal',
-                color: 'rgba(244,247,251,0.9)'
+                color: 'rgba(255,255,255,0.92)'
               }}
             >
               {'wild honey • blood orange •\nagave'}
@@ -667,18 +670,20 @@ function App() {
             <span className="stage__taglineLine">Born of Sun.</span>
             <span className="stage__taglineLine">Poured in Gold.</span>
           </p>
-          <div className="stage__brandStoryWrap">
-            <p className="stage__brandStory">
-              {heroCompactLayout ? HERO_BRAND_STORY_SHORT : HERO_BRAND_STORY_FULL}
-            </p>
-          </div>
-          <div className="stage__heroOutroCtas">
-            <a className="stage__cta stage__cta--primary" href="/shop">
-              Shop now
-            </a>
-            <a className="stage__cta stage__cta--ghost" href="/about">
-              Learn more
-            </a>
+          <div className="stage__heroBottomStack">
+            <div className="stage__brandStoryWrap">
+              <p className="stage__brandStory">
+                {heroCompactLayout ? HERO_BRAND_STORY_SHORT : HERO_BRAND_STORY_FULL}
+              </p>
+            </div>
+            <div className="stage__heroOutroCtas">
+              <a className="stage__cta stage__cta--primary" href="/shop">
+                Shop now
+              </a>
+              <a className="stage__cta stage__cta--ghost" href="/about">
+                Learn more
+              </a>
+            </div>
           </div>
         </div>
 
