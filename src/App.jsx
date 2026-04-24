@@ -44,7 +44,7 @@ function BottleModel({
   const startY = -4.0
   const endY = -2.25
   const baseY = startY + (endY - startY) * clamped
-  const outroDrop = 1.35
+  const outroDrop = 0.8
   const y = baseY - outro * outroDrop
 
   const baseScale = narrowViewport ? 0.14 : 0.16
