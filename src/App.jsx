@@ -148,7 +148,7 @@ function SideBottle({
   const y = targetY - (1 - entrance) * riseFromBottom
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
-  const scale = baseScale * (1 - outro * (1 - minScaleFactor)) * 1.02
+  const scale = baseScale * minScaleFactor * 1.02
   const centerNudge = 0.18
   const panelX = dir * (4.05 + (1 - entrance) * 1.7) - dir * centerNudge
   const bottleInwardShift = 0.34
