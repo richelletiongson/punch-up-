@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Environment, useGLTF } from '@react-three/drei'
+import { Environment, Text, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import './App.css'
 import StaggeredMenu from './StaggeredMenu'
@@ -106,6 +106,7 @@ useGLTF.preload('/Tequila01.glb')
 function SideBottle({
   modelPath,
   side = 'left',
+  label,
   textOutroProgress = 0,
   scrollProgress = 1,
   narrowViewport
@@ -152,6 +153,8 @@ function SideBottle({
   const scale = baseScale * minScaleFactor * 1.02
   const centerNudge = 0.18
   const panelX = dir * 4.05 - dir * centerNudge
+  const panelScaleY = 0.5 + reveal * 1.9
+  const panelTopY = -2.95 + (4.25 * panelScaleY) / 2
   const bottleInwardShift = 0.34
   const bottleX = panelX - dir * bottleInwardShift
   const z = 0
@@ -164,7 +167,7 @@ function SideBottle({
     <>
       <mesh
         position={[panelX, -2.95, -1.05]}
-        scale={[0.45 + reveal * 1.35, 0.5 + reveal * 1.9, 1]}
+        scale={[0.45 + reveal * 1.35, panelScaleY, 1]}
         visible={reveal > 0.001}
       >
         <shapeGeometry args={[panelShape]} />
@@ -176,6 +179,17 @@ function SideBottle({
           metalness={0.02}
         />
       </mesh>
+      <Text
+        position={[panelX, panelTopY - 0.42, -1.01]}
+        fontSize={0.22}
+        color="#f4f7fb"
+        anchorX="center"
+        anchorY="middle"
+        letterSpacing={0.02}
+        visible={reveal > 0.35}
+      >
+        {label}
+      </Text>
       <group
         position={[bottleX, y, z]}
         rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection + enterSpin, 0]}
@@ -199,6 +213,8 @@ function BottleScene({
   textOutroProgress
 }) {
   const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
+  const panelScaleY = 0.5 + reveal * 1.9
+  const panelTopY = -2.95 + (4.25 * panelScaleY) / 2
   const panelShape = useMemo(() => {
     const w = 1.8
     const h = 4.25
@@ -237,7 +253,7 @@ function BottleScene({
       <directionalLight position={[-3, -4, -2]} intensity={0.5} />
       <mesh
         position={[0, -2.95, -1.05]}
-        scale={[0.45 + reveal * 1.35, 0.5 + reveal * 1.9, 1]}
+        scale={[0.45 + reveal * 1.35, panelScaleY, 1]}
         visible={reveal > 0.001}
       >
         <shapeGeometry args={[panelShape]} />
@@ -249,10 +265,22 @@ function BottleScene({
           metalness={0.02}
         />
       </mesh>
+      <Text
+        position={[0, panelTopY - 0.42, -1.01]}
+        fontSize={0.22}
+        color="#f4f7fb"
+        anchorX="center"
+        anchorY="middle"
+        letterSpacing={0.02}
+        visible={reveal > 0.35}
+      >
+        Miel
+      </Text>
       <Suspense fallback={null}>
         <SideBottle
           modelPath="/Tequila02.glb"
           side="left"
+          label="Dorado"
           textOutroProgress={textOutroProgress}
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
@@ -260,6 +288,7 @@ function BottleScene({
         <SideBottle
           modelPath="/Tequila03.glb"
           side="right"
+          label="Ámbar"
           textOutroProgress={textOutroProgress}
           scrollProgress={scrollProgress}
           narrowViewport={narrowViewport}
