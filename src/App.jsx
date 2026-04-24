@@ -110,6 +110,7 @@ function SideBottle({
   scrollProgress = 1,
   narrowViewport
 }) {
+  const groupRef = useRef(null)
   const { scene } = useGLTF(modelPath)
   const instance = useMemo(() => scene.clone(true), [scene])
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
@@ -122,13 +123,25 @@ function SideBottle({
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
   const scale = baseScale * (1 - outro * (1 - minScaleFactor)) * 1.02
-  const x = dir * (1.7 + (1 - entrance) * 0.8)
+  const x = dir * (4.05 + (1 - entrance) * 1.7)
   const z = 0
+
+  useFrame(({ camera }) => {
+    const g = groupRef.current
+    if (!g || entrance <= 0.001) return
+    // Keep bottles mostly front-facing, with only subtle camera follow on yaw.
+    const yawFollow = 0.22
+    const targetX = g.position.x + (camera.position.x - g.position.x) * yawFollow
+    g.lookAt(targetX, g.position.y, camera.position.z)
+    g.rotation.x = 0
+    g.rotation.z = 0
+  })
 
   return (
     <group
+      ref={groupRef}
       position={[x, y, z]}
-      rotation={[0, 0, 0]}
+      rotation={[0, BOTTLE_REST_ROTATION[1], 0]}
       scale={scale}
       visible={entrance > 0.001}
     >
