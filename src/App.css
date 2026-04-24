@@ -21,6 +21,30 @@
   z-index: 10;
 }
 
+/* Large headline: scrubs in from the left while the 3D scene slides away */
+.stage__pureGold {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  display: flex;
+  align-items: center;
+  padding-left: var(--page-margin-inline);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+.stage__pureGoldHeading {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(3.25rem, 14vw, 11.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  white-space: nowrap;
+  margin: 0;
+}
+
 /* MADE: behind WebGL; RIGHT: above canvas with a stronger shadow */
 .stage__titleUnder,
 .stage__titleFront {
@@ -451,6 +475,11 @@
   .stage__heroSpecText,
   .stage__heroSpecList {
     font-size: clamp(0.75rem, 2.6vw, 0.875rem);
+  }
+
+  .stage__pureGoldHeading {
+    font-size: clamp(2.5rem, 11vw, 5.25rem);
+    letter-spacing: -0.02em;
   }
 }
 

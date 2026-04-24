@@ -423,6 +423,10 @@ function App() {
   const textVisibleProgress = heroSequenceComplete ? 1 - textOutroEffectiveProgress : 0
   const textOutroOffset = textOutroEffectiveProgress * 72
   const textSlideX = sceneSlideProgress * 1200
+  const showPureGoldLayer = heroSequenceComplete && textOutroProgress >= 1
+  const pureGoldSlideVw = (1 - sceneSlideProgress) * -52
+  const pureGoldOpacity =
+    sceneSlideProgress <= 0 ? 0 : sceneSlideProgress < 0.07 ? sceneSlideProgress / 0.07 : 1
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -605,6 +609,19 @@ function App() {
             sceneSlideProgress={sceneSlideProgress}
           />
         </Canvas>
+
+        {showPureGoldLayer ? (
+          <div
+            className="stage__pureGold"
+            aria-hidden={sceneSlideProgress < 0.01}
+            style={{
+              opacity: pureGoldOpacity,
+              transform: `translateX(${pureGoldSlideVw}vw)`
+            }}
+          >
+            <h2 className="stage__pureGoldHeading">Pure Gold</h2>
+          </div>
+        ) : null}
 
         <div
           className={`stage__heroOutro${heroSequenceComplete ? ' stage__heroOutro--visible' : ''}`}
