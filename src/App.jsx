@@ -1,6 +1,7 @@
-import { Suspense, useEffect, useRef, useState, useCallback } from 'react'
+import { Suspense, useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, useGLTF } from '@react-three/drei'
+import * as THREE from 'three'
 import './App.css'
 import StaggeredMenu from './StaggeredMenu'
 import ScrollFloat from './ScrollFloat'
@@ -107,6 +108,22 @@ function BottleScene({
   textOutroProgress
 }) {
   const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
+  const panelShape = useMemo(() => {
+    const w = 1.8
+    const h = 4.25
+    const r = 0.14
+    const hw = w / 2
+    const hh = h / 2
+    const shape = new THREE.Shape()
+    shape.moveTo(-hw, -hh)
+    shape.lineTo(hw, -hh)
+    shape.lineTo(hw, hh - r)
+    shape.quadraticCurveTo(hw, hh, hw - r, hh)
+    shape.lineTo(-hw + r, hh)
+    shape.quadraticCurveTo(-hw, hh, -hw, hh - r)
+    shape.lineTo(-hw, -hh)
+    return shape
+  }, [])
 
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
@@ -132,7 +149,7 @@ function BottleScene({
         scale={[0.45 + reveal * 1.35, 0.5 + reveal * 1.9, 1]}
         visible={reveal > 0.001}
       >
-        <planeGeometry args={[1.8, 4.25]} />
+        <shapeGeometry args={[panelShape]} />
         <meshStandardMaterial
           color="#f4f7fb"
           transparent
