@@ -113,8 +113,25 @@ function SideBottle({
   const groupRef = useRef(null)
   const { scene } = useGLTF(modelPath)
   const instance = useMemo(() => scene.clone(true), [scene])
+  const panelShape = useMemo(() => {
+    const w = 1.8
+    const h = 4.25
+    const r = 0.14
+    const hw = w / 2
+    const hh = h / 2
+    const shape = new THREE.Shape()
+    shape.moveTo(-hw, -hh)
+    shape.lineTo(hw, -hh)
+    shape.lineTo(hw, hh - r)
+    shape.quadraticCurveTo(hw, hh, hw - r, hh)
+    shape.lineTo(-hw + r, hh)
+    shape.quadraticCurveTo(-hw, hh, -hw, hh - r)
+    shape.lineTo(-hw, -hh)
+    return shape
+  }, [])
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
   const outro = Math.min(Math.max(textOutroProgress ?? 0, 0), 1)
+  const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
   const entrance = Math.min(Math.max((outro - 0.24) / 0.76, 0), 1)
   const dir = side === 'left' ? -1 : 1
 
@@ -138,15 +155,31 @@ function SideBottle({
   })
 
   return (
-    <group
-      ref={groupRef}
-      position={[x, y, z]}
-      rotation={[0, BOTTLE_REST_ROTATION[1], 0]}
-      scale={scale}
-      visible={entrance > 0.001}
-    >
-      <primitive object={instance} />
-    </group>
+    <>
+      <mesh
+        position={[x, -2.95, -1.05]}
+        scale={[0.45 + reveal * 1.35, 0.5 + reveal * 1.9, 1]}
+        visible={reveal > 0.001}
+      >
+        <shapeGeometry args={[panelShape]} />
+        <meshStandardMaterial
+          color="#f4f7fb"
+          transparent
+          opacity={reveal * 0.36}
+          roughness={0.62}
+          metalness={0.02}
+        />
+      </mesh>
+      <group
+        ref={groupRef}
+        position={[x, y, z]}
+        rotation={[0, BOTTLE_REST_ROTATION[1], 0]}
+        scale={scale}
+        visible={entrance > 0.001}
+      >
+        <primitive object={instance} />
+      </group>
+    </>
   )
 }
 
