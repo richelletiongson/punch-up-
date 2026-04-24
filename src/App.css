@@ -486,16 +486,16 @@
 
   .stage__tagline {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: auto;
     top: calc(env(safe-area-inset-top, 0px) + clamp(5rem, 11vh, 6.75rem));
-    width: 100%;
-    max-width: none;
+    width: min(36rem, calc(100vw - 2 * var(--page-margin-inline)));
+    max-width: calc(100vw - 2 * var(--page-margin-inline));
     margin: 0;
-    padding-inline: var(--page-margin-inline);
+    padding-inline: 0;
     box-sizing: border-box;
     text-align: center;
-    transform: none;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -570,6 +570,7 @@
 @media (max-width: 700px) {
   .stage__tagline {
     font-size: clamp(1.5rem, 5.85vw, 2.55rem);
+    width: min(34rem, calc(100vw - 2 * var(--page-margin-inline)));
     max-width: calc(100vw - 2 * var(--page-margin-inline));
   }
 
