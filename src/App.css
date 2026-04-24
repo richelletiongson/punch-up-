@@ -383,7 +383,7 @@
   margin: 0 0 0.35em;
   font-family: var(--font-heading);
   font-weight: var(--weight-heading);
-  font-size: clamp(1.05rem, 2.35vw, 1.5rem);
+  font-size: clamp(1.15rem, 2.55vw, 1.65rem);
   letter-spacing: 0.08em;
   line-height: 1.15;
   color: #fff;
@@ -444,7 +444,7 @@
   }
 
   .stage__heroSpecTitle {
-    font-size: clamp(0.95rem, 3.1vw, 1.2rem);
+    font-size: clamp(1.02rem, 3.35vw, 1.32rem);
     letter-spacing: 0.06em;
   }
 
