@@ -147,7 +147,10 @@ function SideBottle({
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
   const scale = baseScale * (1 - outro * (1 - minScaleFactor)) * 1.02
-  const x = dir * (4.05 + (1 - entrance) * 1.7)
+  const centerNudge = 0.18
+  const panelX = dir * (4.05 + (1 - entrance) * 1.7) - dir * centerNudge
+  const bottleInwardShift = 0.34
+  const bottleX = panelX - dir * bottleInwardShift
   const z = 0
   // Tequila02/03 files are slightly yawed out by default; counter-rotate per side to match center bottle.
   const yawCorrection = -dir * 0.24
@@ -155,7 +158,7 @@ function SideBottle({
   return (
     <>
       <mesh
-        position={[x, -2.95, -1.05]}
+        position={[panelX, -2.95, -1.05]}
         scale={[0.45 + reveal * 1.35, 0.5 + reveal * 1.9, 1]}
         visible={reveal > 0.001}
       >
@@ -169,7 +172,7 @@ function SideBottle({
         />
       </mesh>
       <group
-        position={[x, y, z]}
+        position={[bottleX, y, z]}
         rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection, 0]}
         scale={scale}
         visible={entrance > 0.001}
