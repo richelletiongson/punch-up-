@@ -204,8 +204,8 @@ function SideBottle({
             style={{
               marginTop: '-7px',
               fontFamily: 'avenir-lt-pro, sans-serif',
-              fontWeight: 400,
-              fontSize: '6px',
+              fontWeight: 700,
+              fontSize: '8px',
               letterSpacing: '0.01em',
               color: 'rgba(244,247,251,0.95)'
             }}
@@ -214,7 +214,7 @@ function SideBottle({
           </div>
           <div
             style={{
-              marginTop: '-1px',
+              marginTop: '2px',
               fontFamily: 'avenir-lt-pro, sans-serif',
               fontWeight: 400,
               fontSize: '6px',
@@ -331,8 +331,8 @@ function BottleScene({
             style={{
               marginTop: '-7px',
               fontFamily: 'avenir-lt-pro, sans-serif',
-              fontWeight: 400,
-              fontSize: '6px',
+              fontWeight: 700,
+              fontSize: '8px',
               letterSpacing: '0.01em',
               color: 'rgba(244,247,251,0.95)'
             }}
@@ -341,7 +341,7 @@ function BottleScene({
           </div>
           <div
             style={{
-              marginTop: '-1px',
+              marginTop: '2px',
               fontFamily: 'avenir-lt-pro, sans-serif',
               fontWeight: 400,
               fontSize: '6px',
