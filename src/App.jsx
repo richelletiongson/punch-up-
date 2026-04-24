@@ -26,6 +26,7 @@ const SETTLE_SCROLL_MULT = Math.min(
   SETTLE_YAW_DELTA > 1e-6 ? BOTTLE_EXIT_SPIN_Y / SETTLE_YAW_DELTA : 1,
   48
 )
+const TEXT_OUTRO_START = 0.28
 
 function BottleModel({
   scrollProgress,
@@ -144,8 +145,11 @@ function App() {
     scrollProgress >= 0.998 &&
     titleExitProgress >= 0.998 &&
     bottleSettleProgress >= 0.998
-  const textVisibleProgress = heroSequenceComplete ? 1 - textOutroProgress : 0
-  const textOutroOffset = textOutroProgress * 72
+  const textOutroEffectiveProgress = clamp01(
+    (textOutroProgress - TEXT_OUTRO_START) / (1 - TEXT_OUTRO_START)
+  )
+  const textVisibleProgress = heroSequenceComplete ? 1 - textOutroEffectiveProgress : 0
+  const textOutroOffset = textOutroEffectiveProgress * 72
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -176,7 +180,7 @@ function App() {
     // the same total wheel travel scrubs headline in vs out.
     const exitStep = (delta * 0.0008) / 0.95
     const settleStep = exitStep * SETTLE_SCROLL_MULT
-    const textOutroStep = exitStep * 1.25
+    const textOutroStep = exitStep * 0.8
     const s = scrollPhaseRef.current
 
     if (delta < 0) {
@@ -308,7 +312,7 @@ function App() {
             narrowViewport={narrowViewport}
             titleExitProgress={titleExitProgress}
             bottleSettleProgress={bottleSettleProgress}
-            textOutroProgress={textOutroProgress}
+            textOutroProgress={textOutroEffectiveProgress}
           />
         </Canvas>
 
