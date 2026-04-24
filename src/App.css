@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 clamp(1rem, 8vw, 6rem);
+  padding: 0 var(--page-margin-inline);
   pointer-events: none;
 }
 
@@ -235,11 +235,12 @@
   flex: 0 0 auto;
 }
 
-/* After hero scroll + headline exit + bottle settle: tagline upper-left of bottle silhouette */
+/* After hero scroll + headline exit + bottle settle: tagline flush with nav logo, clear of bottle */
 .stage__tagline {
   position: fixed;
   z-index: 16;
-  left: 50%;
+  left: var(--page-margin-inline);
+  right: auto;
   top: 50%;
   margin: 0;
   pointer-events: none;
@@ -254,12 +255,9 @@
   text-shadow:
     0 0.06em 0.2em rgba(0, 21, 36, 0.45),
     0 0.02em 0.06em rgba(0, 8, 14, 0.35);
-  max-width: min(13.5rem, 42vw);
-  /* From viewport center: up and left to sit on bottle’s top-left */
-  transform: translate(
-    calc(-50% - clamp(4.25rem, 15vmin, 9.5rem)),
-    calc(-50% - clamp(3.75rem, 13vmin, 8rem))
-  );
+  /* Stay left of bottle: cap width so block ends before mid-screen */
+  max-width: min(12.5rem, calc(46vw - var(--page-margin-inline)));
+  transform: translateY(calc(-50% - clamp(2rem, 8vmin, 5.5rem)));
   opacity: 0;
   transition: opacity 0.55s ease;
 }
@@ -274,11 +272,8 @@
 
 @media (max-width: 700px) {
   .stage__tagline {
-    transform: translate(
-      calc(-50% - clamp(2.75rem, 11vmin, 5.5rem)),
-      calc(-50% - clamp(2.25rem, 9vmin, 5rem))
-    );
-    max-width: min(11.5rem, 52vw);
+    max-width: min(10.5rem, calc(42vw - var(--page-margin-inline)));
+    transform: translateY(calc(-50% - clamp(1.5rem, 7vmin, 4.5rem)));
   }
 }
 

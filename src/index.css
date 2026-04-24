@@ -72,6 +72,11 @@
   --text-body: 1rem;
   --text-body-sm: 0.9375rem;
   --text-label: 0.75rem;
+
+  /* Global horizontal gutter (nav, tagline, hero headline tracks) */
+  --page-margin-inline: clamp(2.75rem, 9vw, 7.25rem);
+  /* Nav bar uses same inset as page gutter */
+  --nav-padding-inline: var(--page-margin-inline);
 }
 
 *,
