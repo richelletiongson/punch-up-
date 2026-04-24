@@ -31,18 +31,25 @@ function BottleModel({
   scrollProgress,
   narrowViewport,
   titleExitProgress = 0,
-  bottleSettleProgress = 0
+  bottleSettleProgress = 0,
+  textOutroProgress = 0
 }) {
   const { scene } = useGLTF('/Tequila01.glb')
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
   const exit = Math.min(Math.max(titleExitProgress ?? 0, 0), 1)
   const settle = Math.min(Math.max(bottleSettleProgress ?? 0, 0), 1)
+  const outro = Math.min(Math.max(textOutroProgress ?? 0, 0), 1)
 
   // Start low on first frame (scroll 0); only ease up toward endY as scroll progresses.
   const startY = -4.0
   const endY = -2.25
-  const y = startY + (endY - startY) * clamped
-  const scale = narrowViewport ? 0.14 : 0.16
+  const baseY = startY + (endY - startY) * clamped
+  const outroDrop = 1.35
+  const y = baseY - outro * outroDrop
+
+  const baseScale = narrowViewport ? 0.14 : 0.16
+  const minScaleFactor = 0.68
+  const scale = baseScale * (1 - outro * (1 - minScaleFactor))
 
   // Header exit: angled spin. After exit, settle keeps increasing Y (same direction) until aligned with rest yaw,
   // while tilts ease to upright.
@@ -80,7 +87,13 @@ function BottleModel({
 
 useGLTF.preload('/Tequila01.glb')
 
-function BottleScene({ scrollProgress, narrowViewport, titleExitProgress, bottleSettleProgress }) {
+function BottleScene({
+  scrollProgress,
+  narrowViewport,
+  titleExitProgress,
+  bottleSettleProgress,
+  textOutroProgress
+}) {
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
   useFrame(({ camera }) => {
@@ -106,6 +119,7 @@ function BottleScene({ scrollProgress, narrowViewport, titleExitProgress, bottle
           narrowViewport={narrowViewport}
           titleExitProgress={titleExitProgress}
           bottleSettleProgress={bottleSettleProgress}
+          textOutroProgress={textOutroProgress}
         />
       </Suspense>
       <Environment preset="city" />
@@ -294,6 +308,7 @@ function App() {
             narrowViewport={narrowViewport}
             titleExitProgress={titleExitProgress}
             bottleSettleProgress={bottleSettleProgress}
+            textOutroProgress={textOutroProgress}
           />
         </Canvas>
 
