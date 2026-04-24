@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Environment, Text, useGLTF } from '@react-three/drei'
+import { Environment, Html, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import './App.css'
 import StaggeredMenu from './StaggeredMenu'
@@ -179,17 +179,24 @@ function SideBottle({
           metalness={0.02}
         />
       </mesh>
-      <Text
+      <Html
         position={[panelX, panelTopY - 0.42, -1.01]}
-        fontSize={0.22}
-        color="#f4f7fb"
-        anchorX="center"
-        anchorY="middle"
-        letterSpacing={0.02}
-        visible={reveal > 0.35}
+        center
+        transform
+        style={{
+          fontFamily: 'chorine-large, sans-serif',
+          fontWeight: 500,
+          fontSize: '34px',
+          letterSpacing: '0.06em',
+          color: '#f4f7fb',
+          whiteSpace: 'nowrap',
+          opacity: reveal > 0.35 ? 1 : 0,
+          pointerEvents: 'none',
+          userSelect: 'none'
+        }}
       >
         {label}
-      </Text>
+      </Html>
       <group
         position={[bottleX, y, z]}
         rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection + enterSpin, 0]}
@@ -265,17 +272,24 @@ function BottleScene({
           metalness={0.02}
         />
       </mesh>
-      <Text
+      <Html
         position={[0, panelTopY - 0.42, -1.01]}
-        fontSize={0.22}
-        color="#f4f7fb"
-        anchorX="center"
-        anchorY="middle"
-        letterSpacing={0.02}
-        visible={reveal > 0.35}
+        center
+        transform
+        style={{
+          fontFamily: 'chorine-large, sans-serif',
+          fontWeight: 500,
+          fontSize: '34px',
+          letterSpacing: '0.06em',
+          color: '#f4f7fb',
+          whiteSpace: 'nowrap',
+          opacity: reveal > 0.35 ? 1 : 0,
+          pointerEvents: 'none',
+          userSelect: 'none'
+        }}
       >
         Miel
-      </Text>
+      </Html>
       <Suspense fallback={null}>
         <SideBottle
           modelPath="/Tequila02.glb"
