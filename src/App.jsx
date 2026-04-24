@@ -181,7 +181,7 @@ function SideBottle({
         />
       </mesh>
       <Html
-        position={[panelX, panelTopY - 0.42, -1.01]}
+        position={[panelX, panelTopY - 0.8, -1.01]}
         center
         transform
         style={{
@@ -288,7 +288,7 @@ function BottleScene({
         />
       </mesh>
       <Html
-        position={[0, panelTopY - 0.42, -1.01]}
+        position={[0, panelTopY - 0.8, -1.01]}
         center
         transform
         style={{
