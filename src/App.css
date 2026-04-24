@@ -465,10 +465,11 @@
 }
 
 /*
-  ≤1100px: no specs column — tagline top-center; short copy in a light-blue panel (same as 3D
-  vertical panels) stacked above centered CTAs. Specs aside is not rendered.
+  ≤900px: no specs column — tagline top-center; short copy in a light-blue panel (same as 3D
+  vertical panels) stacked above centered CTAs. Specs aside is not rendered (see App.jsx).
+  Laptops/tablets landscape use full story + specs (breakpoint matches heroCompactLayout).
 */
-@media (max-width: 1100px) {
+@media (max-width: 900px) {
   .stage__heroOutro {
     left: 0;
     right: 0;

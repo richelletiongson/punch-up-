@@ -420,9 +420,10 @@ function App() {
     if (typeof window === 'undefined') return false
     return window.matchMedia('(max-width: 1200px)').matches
   })
+  /** Phone / small tablet only — laptops keep full story + specs column */
   const [heroCompactLayout, setHeroCompactLayout] = useState(() => {
     if (typeof window === 'undefined') return false
-    return window.matchMedia('(max-width: 1100px)').matches
+    return window.matchMedia('(max-width: 900px)').matches
   })
   const stageRef = useRef(null)
   const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0, textOutro: 0, slide: 0 })
@@ -462,20 +463,20 @@ function App() {
 
   useEffect(() => {
     const mq700 = window.matchMedia('(max-width: 700px)')
-    const mq1100 = window.matchMedia('(max-width: 1100px)')
+    const mq900 = window.matchMedia('(max-width: 900px)')
     const mq1200 = window.matchMedia('(max-width: 1200px)')
     const sync = () => {
       setNarrowViewport(mq700.matches)
-      setHeroCompactLayout(mq1100.matches)
+      setHeroCompactLayout(mq900.matches)
       setPureGoldOffscreenBoost(mq1200.matches)
     }
     sync()
     mq700.addEventListener('change', sync)
-    mq1100.addEventListener('change', sync)
+    mq900.addEventListener('change', sync)
     mq1200.addEventListener('change', sync)
     return () => {
       mq700.removeEventListener('change', sync)
-      mq1100.removeEventListener('change', sync)
+      mq900.removeEventListener('change', sync)
       mq1200.removeEventListener('change', sync)
     }
   }, [])
