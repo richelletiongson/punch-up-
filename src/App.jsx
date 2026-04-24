@@ -304,6 +304,37 @@ function App() {
           </div>
         </div>
 
+        <aside
+          className={`stage__heroSpecs${heroSequenceComplete ? ' stage__heroSpecs--visible' : ''}`}
+          aria-label="Product details"
+          aria-hidden={!heroSequenceComplete}
+        >
+          <section className="stage__heroSpec">
+            <h3 className="stage__heroSpecTitle">AGAVE</h3>
+            <p className="stage__heroSpecText">100% Blue Weber</p>
+          </section>
+          <section className="stage__heroSpec">
+            <h3 className="stage__heroSpecTitle">REGION</h3>
+            <p className="stage__heroSpecText">Highlands, Jalisco</p>
+          </section>
+          <section className="stage__heroSpec">
+            <h3 className="stage__heroSpecTitle">RESTING</h3>
+            <p className="stage__heroSpecText">Oak Rested</p>
+          </section>
+          <section className="stage__heroSpec">
+            <h3 className="stage__heroSpecTitle">EXPRESSIONS</h3>
+            <ul className="stage__heroSpecList">
+              <li>Miel</li>
+              <li>Dorado</li>
+              <li>Ámbar</li>
+            </ul>
+          </section>
+          <section className="stage__heroSpec">
+            <h3 className="stage__heroSpecTitle">FINISH</h3>
+            <p className="stage__heroSpecText">Smooth / Layered / Golden</p>
+          </section>
+        </aside>
+
         <div
           className="stage__titleFront"
           aria-hidden={scrollProgress === 0 || titleExitProgress >= 0.99}
