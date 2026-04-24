@@ -28,6 +28,12 @@ const SETTLE_SCROLL_MULT = Math.min(
   48
 )
 const TEXT_OUTRO_START = 0.28
+
+const HERO_BRAND_STORY_FULL =
+  'Áureo is a modern tequila shaped by warmth, heritage, and the golden hours that linger longest. Crafted from blue agave and inspired by the richness of sun-soaked landscapes, each expression captures a different shade of gold. From the honeyed brightness of Miel, to the oak-warmed depth of Dorado, to the spiced amber glow of Ámbar. Rooted in tradition, refined through a modern lens, Áureo is made for slow pours, long evenings, and the art of savoring.'
+
+const HERO_BRAND_STORY_SHORT =
+  'Áureo is blue weber agave tequila shaped by warmth and craft with three expressions of gold: Miel, Dorado, and Ámbar. Rooted in tradition, refined for slow pours and long evenings.'
 const MAIN_BOTTLE_START_Y = -4.0
 const MAIN_BOTTLE_END_Y = -2.25
 const MAIN_BOTTLE_OUTRO_DROP = 0.68
@@ -411,6 +417,10 @@ function App() {
     if (typeof window === 'undefined') return false
     return window.matchMedia('(max-width: 1200px)').matches
   })
+  const [heroCompactLayout, setHeroCompactLayout] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 1100px)').matches
+  })
   const stageRef = useRef(null)
   const scrollPhaseRef = useRef({ scroll: 0, exit: 0, settle: 0, textOutro: 0, slide: 0 })
 
@@ -449,16 +459,20 @@ function App() {
 
   useEffect(() => {
     const mq700 = window.matchMedia('(max-width: 700px)')
+    const mq1100 = window.matchMedia('(max-width: 1100px)')
     const mq1200 = window.matchMedia('(max-width: 1200px)')
     const sync = () => {
       setNarrowViewport(mq700.matches)
+      setHeroCompactLayout(mq1100.matches)
       setPureGoldOffscreenBoost(mq1200.matches)
     }
     sync()
     mq700.addEventListener('change', sync)
+    mq1100.addEventListener('change', sync)
     mq1200.addEventListener('change', sync)
     return () => {
       mq700.removeEventListener('change', sync)
+      mq1100.removeEventListener('change', sync)
       mq1200.removeEventListener('change', sync)
     }
   }, [])
@@ -653,14 +667,11 @@ function App() {
             <span className="stage__taglineLine">Born of Sun.</span>
             <span className="stage__taglineLine">Poured in Gold.</span>
           </p>
-          <p className="stage__brandStory">
-            Áureo is a modern tequila shaped by warmth, heritage, and the golden hours that linger
-            longest. Crafted from blue agave and inspired by the richness of sun-soaked landscapes,
-            each expression captures a different shade of gold. From the honeyed brightness of Miel,
-            to the oak-warmed depth of Dorado, to the spiced amber glow of Ámbar. Rooted in tradition,
-            refined through a modern lens, Áureo is made for slow pours, long evenings, and the art
-            of savoring.
-          </p>
+          <div className="stage__brandStoryWrap">
+            <p className="stage__brandStory">
+              {heroCompactLayout ? HERO_BRAND_STORY_SHORT : HERO_BRAND_STORY_FULL}
+            </p>
+          </div>
           <div className="stage__heroOutroCtas">
             <a className="stage__cta stage__cta--primary" href="/shop">
               Shop now
@@ -671,40 +682,42 @@ function App() {
           </div>
         </div>
 
-        <aside
-          className={`stage__heroSpecs${heroSequenceComplete ? ' stage__heroSpecs--visible' : ''}`}
-          aria-label="Product details"
-          aria-hidden={!heroSequenceComplete}
-          style={{
-            opacity: textVisibleProgress,
-            transform: `translate(${textSlideX}px, ${-textOutroOffset}px)`
-          }}
-        >
-          <section className="stage__heroSpec">
-            <h3 className="stage__heroSpecTitle">AGAVE</h3>
-            <p className="stage__heroSpecText">100% Blue Weber</p>
-          </section>
-          <section className="stage__heroSpec">
-            <h3 className="stage__heroSpecTitle">REGION</h3>
-            <p className="stage__heroSpecText">Highlands, Jalisco</p>
-          </section>
-          <section className="stage__heroSpec">
-            <h3 className="stage__heroSpecTitle">RESTING</h3>
-            <p className="stage__heroSpecText">Oak Rested</p>
-          </section>
-          <section className="stage__heroSpec">
-            <h3 className="stage__heroSpecTitle">EXPRESSIONS</h3>
-            <ul className="stage__heroSpecList">
-              <li>Miel</li>
-              <li>Dorado</li>
-              <li>Ámbar</li>
-            </ul>
-          </section>
-          <section className="stage__heroSpec">
-            <h3 className="stage__heroSpecTitle">FINISH</h3>
-            <p className="stage__heroSpecText">Smooth / Layered / Golden</p>
-          </section>
-        </aside>
+        {!heroCompactLayout ? (
+          <aside
+            className={`stage__heroSpecs${heroSequenceComplete ? ' stage__heroSpecs--visible' : ''}`}
+            aria-label="Product details"
+            aria-hidden={!heroSequenceComplete}
+            style={{
+              opacity: textVisibleProgress,
+              transform: `translate(${textSlideX}px, ${-textOutroOffset}px)`
+            }}
+          >
+            <section className="stage__heroSpec">
+              <h3 className="stage__heroSpecTitle">AGAVE</h3>
+              <p className="stage__heroSpecText">100% Blue Weber</p>
+            </section>
+            <section className="stage__heroSpec">
+              <h3 className="stage__heroSpecTitle">REGION</h3>
+              <p className="stage__heroSpecText">Highlands, Jalisco</p>
+            </section>
+            <section className="stage__heroSpec">
+              <h3 className="stage__heroSpecTitle">RESTING</h3>
+              <p className="stage__heroSpecText">Oak Rested</p>
+            </section>
+            <section className="stage__heroSpec">
+              <h3 className="stage__heroSpecTitle">EXPRESSIONS</h3>
+              <ul className="stage__heroSpecList">
+                <li>Miel</li>
+                <li>Dorado</li>
+                <li>Ámbar</li>
+              </ul>
+            </section>
+            <section className="stage__heroSpec">
+              <h3 className="stage__heroSpecTitle">FINISH</h3>
+              <p className="stage__heroSpecText">Smooth / Layered / Golden</p>
+            </section>
+          </aside>
+        ) : null}
 
         <div
           className="stage__titleFront"

@@ -318,6 +318,11 @@
   white-space: nowrap;
 }
 
+/* Wrapper keeps desktop flex flow (contents) and holds the compact glass panel */
+.stage__brandStoryWrap {
+  display: contents;
+}
+
 .stage__brandStory {
   margin: 0;
   padding: 0;
@@ -454,44 +459,122 @@
   margin: 0;
 }
 
-@media (max-width: 700px) {
+/*
+  ≤1100px: no specs column — tagline + story + CTAs centered; story in a readable panel; short copy
+  is chosen in JS. Specs aside is not rendered.
+*/
+@media (max-width: 1100px) {
   .stage__heroOutro {
-    top: clamp(22vh, 9rem, 34vh);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    top: 0;
+    bottom: 0;
+    height: 100dvh;
+    min-height: 100svh;
+    display: block;
+    text-align: center;
+    pointer-events: none;
   }
 
+  .stage__tagline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(env(safe-area-inset-top, 0px) + clamp(5rem, 11vh, 6.75rem));
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-inline: var(--page-margin-inline);
+    box-sizing: border-box;
+    text-align: center;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stage__taglineLine {
+    white-space: nowrap;
+  }
+
+  .stage__brandStoryWrap {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: clamp(50vh, 54vh, 64vh);
+    transform: translateX(-50%);
+    width: min(32rem, calc(100vw - 2 * var(--page-margin-inline)));
+    max-width: calc(100vw - 2 * var(--page-margin-inline));
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background: rgba(0, 21, 36, 0.55);
+    background: color-mix(in srgb, var(--ink-black) 52%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 36px rgba(0, 21, 36, 0.35);
+  }
+
+  .stage__brandStory {
+    position: static;
+    transform: none;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    overflow: visible;
+    padding: clamp(0.85rem, 2.6vw, 1.1rem) clamp(1rem, 3vw, 1.2rem);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.98);
+  }
+
+  .stage__heroOutroCtas {
+    position: absolute;
+    left: 50%;
+    right: auto;
+    bottom: max(env(safe-area-inset-bottom, 0px), clamp(0.75rem, 2.5vh, 1.5rem));
+    top: auto;
+    margin-top: 0;
+    transform: translateX(-50%);
+    max-width: calc(100vw - 2 * var(--page-margin-inline));
+    width: max-content;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 700px) {
   .stage__tagline {
     font-size: clamp(1.5rem, 5.85vw, 2.55rem);
     max-width: calc(100vw - 2 * var(--page-margin-inline));
   }
 
+  .stage__brandStoryWrap {
+    top: clamp(48vh, 52vh, 60vh);
+    width: min(26rem, calc(100vw - 2 * var(--page-margin-inline)));
+  }
+
   .stage__brandStory {
     font-size: clamp(0.875rem, 3vw, 1rem);
-    line-height: 1.6;
-    max-width: min(26rem, calc(88vw - 2 * var(--page-margin-inline)));
+    line-height: 1.55;
   }
 
   .stage__heroOutroCtas {
-    max-width: min(26rem, calc(88vw - 2 * var(--page-margin-inline)));
+    max-width: calc(100vw - 2 * var(--page-margin-inline));
   }
 
   .stage__cta {
     font-size: clamp(0.7rem, 2.6vw, 0.8125rem);
     padding: 0.65em 1.2em;
-  }
-
-  .stage__heroSpecs {
-    top: clamp(20vh, 8.5rem, 34vh);
-    width: min(13.5rem, calc(40vw - var(--page-margin-inline)));
-  }
-
-  .stage__heroSpecTitle {
-    font-size: clamp(1.02rem, 3.35vw, 1.32rem);
-    letter-spacing: 0.06em;
-  }
-
-  .stage__heroSpecText,
-  .stage__heroSpecList {
-    font-size: clamp(0.75rem, 2.6vw, 0.875rem);
   }
 
   .stage__pureGoldHeading {
