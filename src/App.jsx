@@ -294,6 +294,14 @@ function App() {
             refined through a modern lens, Áureo is made for slow pours, long evenings, and the art
             of savoring.
           </p>
+          <div className="stage__heroOutroCtas">
+            <a className="stage__cta stage__cta--primary" href="/shop">
+              Shop now
+            </a>
+            <a className="stage__cta stage__cta--ghost" href="/about">
+              Learn more
+            </a>
+          </div>
         </div>
 
         <div

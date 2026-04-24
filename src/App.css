@@ -246,7 +246,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: clamp(1rem, 2.2vw, 1.65rem);
-  max-width: min(30rem, calc(48vw - var(--page-margin-inline)));
   margin: 0;
   padding: 0;
   pointer-events: none;
@@ -263,7 +262,7 @@
   margin: 0;
   padding: 0;
   width: max-content;
-  max-width: 100%;
+  max-width: min(36rem, calc(62vw - var(--page-margin-inline)));
   font-family: var(--font-heading);
   font-weight: var(--weight-heading);
   font-style: normal;
@@ -281,7 +280,7 @@
 .stage__brandStory {
   margin: 0;
   padding: 0;
-  max-width: 100%;
+  max-width: min(30rem, calc(48vw - var(--page-margin-inline)));
   font-family: var(--font-avenir);
   font-weight: 400;
   font-size: clamp(0.9375rem, 1.55vw, 1.125rem);
@@ -290,19 +289,86 @@
   color: rgba(255, 255, 255, 0.94);
 }
 
+.stage__heroOutroCtas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(0.6rem, 1.8vw, 0.95rem);
+  margin-top: clamp(0.35rem, 1vw, 0.65rem);
+  max-width: min(30rem, calc(48vw - var(--page-margin-inline)));
+  pointer-events: auto;
+}
+
+.stage__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-avenir);
+  font-weight: 600;
+  font-size: clamp(0.75rem, 1.15vw, 0.875rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.7em 1.45em;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.stage__cta--primary {
+  background: #fff;
+  color: var(--ink-black);
+  border-color: #fff;
+}
+
+.stage__cta--primary:hover {
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-1px);
+}
+
+.stage__cta--ghost {
+  background: transparent;
+  color: #fff;
+}
+
+.stage__cta--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.stage__cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
 @media (max-width: 700px) {
   .stage__heroOutro {
     top: clamp(22vh, 9rem, 34vh);
-    max-width: min(26rem, calc(88vw - 2 * var(--page-margin-inline)));
   }
 
   .stage__tagline {
     font-size: clamp(1.5rem, 5.85vw, 2.55rem);
+    max-width: calc(100vw - 2 * var(--page-margin-inline));
   }
 
   .stage__brandStory {
     font-size: clamp(0.875rem, 3vw, 1rem);
     line-height: 1.6;
+    max-width: min(26rem, calc(88vw - 2 * var(--page-margin-inline)));
+  }
+
+  .stage__heroOutroCtas {
+    max-width: min(26rem, calc(88vw - 2 * var(--page-margin-inline)));
+  }
+
+  .stage__cta {
+    font-size: clamp(0.7rem, 2.6vw, 0.8125rem);
+    padding: 0.65em 1.2em;
   }
 }
 
