@@ -79,6 +79,17 @@ function BottleModel({
     }
   }
 
+  // Final outro (text leaving + bottle dropping/scaling): add a spin feel similar to the
+  // earlier angled rotation, but end front-facing/straight.
+  if (outro > 0) {
+    const spinTurns = 1
+    const spin = outro * TWO_PI * spinTurns
+    const tiltEnvelope = Math.sin(outro * Math.PI) // 0 -> peak -> 0
+    spinY += spin
+    tiltX += tiltEnvelope * BOTTLE_EXIT_TILT_X * 0.58
+    tiltZ += tiltEnvelope * BOTTLE_EXIT_TILT_Z * 0.58
+  }
+
   return (
     <group rotation={[tiltX, spinY, tiltZ]} position={[0, y, 0]} scale={scale}>
       <primitive object={scene} />
