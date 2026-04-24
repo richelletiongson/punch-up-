@@ -315,7 +315,7 @@ function BottleScene({
               color: 'rgba(244,247,251,0.95)'
             }}
           >
-            Aged in warmth.
+            Golden, slow, and softly sweet.
           </div>
         </div>
       </Html>
