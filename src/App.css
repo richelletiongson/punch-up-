@@ -241,23 +241,24 @@
   z-index: 16;
   left: var(--page-margin-inline);
   right: auto;
-  top: 50%;
+  /* Higher on the viewport (same horizontal gutter as logo) */
+  top: clamp(24vh, 10.5rem, 38vh);
   margin: 0;
   pointer-events: none;
   text-align: left;
-  font-family: var(--font-avenir);
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
   font-style: normal;
-  font-size: clamp(0.8125rem, 2.15vw, 1.125rem);
-  letter-spacing: 0.06em;
-  line-height: 1.4;
+  font-size: clamp(1.05rem, 2.85vw, 1.5rem);
+  letter-spacing: var(--tracking-heading);
+  line-height: 1.25;
   color: var(--papaya-whip);
   text-shadow:
     0 0.06em 0.2em rgba(0, 21, 36, 0.45),
     0 0.02em 0.06em rgba(0, 8, 14, 0.35);
   /* Stay left of bottle: cap width so block ends before mid-screen */
-  max-width: min(12.5rem, calc(46vw - var(--page-margin-inline)));
-  transform: translateY(calc(-50% - clamp(2rem, 8vmin, 5.5rem)));
+  max-width: min(14rem, calc(46vw - var(--page-margin-inline)));
+  transform: none;
   opacity: 0;
   transition: opacity 0.55s ease;
 }
@@ -272,8 +273,9 @@
 
 @media (max-width: 700px) {
   .stage__tagline {
-    max-width: min(10.5rem, calc(42vw - var(--page-margin-inline)));
-    transform: translateY(calc(-50% - clamp(1.5rem, 7vmin, 4.5rem)));
+    top: clamp(22vh, 9rem, 34vh);
+    font-size: clamp(0.95rem, 2.6vw, 1.25rem);
+    max-width: min(11.5rem, calc(42vw - var(--page-margin-inline)));
   }
 }
 
