@@ -45,7 +45,7 @@ function BottleModel({
   const startY = -4.0
   const endY = -2.25
   const baseY = startY + (endY - startY) * clamped
-  const outroDrop = 0.8
+  const outroDrop = 0.68
   const y = baseY - outro * outroDrop
 
   const baseScale = narrowViewport ? 0.14 : 0.16
@@ -106,6 +106,8 @@ function BottleScene({
   bottleSettleProgress,
   textOutroProgress
 }) {
+  const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
+
   // Animate the camera distance based on scroll position:
   // at scrollProgress 0 → very zoomed in, at 1 → fully zoomed out.
   useFrame(({ camera }) => {
@@ -125,6 +127,20 @@ function BottleScene({
       <ambientLight intensity={0.7} />
       <directionalLight position={[3, 5, 2]} intensity={1.4} />
       <directionalLight position={[-3, -4, -2]} intensity={0.5} />
+      <mesh
+        position={[0, -2.95, -1.05]}
+        scale={[0.2 + reveal * 0.85, 0.3 + reveal * 1.9, 1]}
+        visible={reveal > 0.001}
+      >
+        <planeGeometry args={[1.05, 3.8]} />
+        <meshStandardMaterial
+          color="#f4f7fb"
+          transparent
+          opacity={reveal * 0.36}
+          roughness={0.62}
+          metalness={0.02}
+        />
+      </mesh>
       <Suspense fallback={null}>
         <BottleModel
           scrollProgress={scrollProgress}
