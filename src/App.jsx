@@ -36,6 +36,8 @@ const HERO_PANEL_SURFACE = '#9eb6c3'
 const DORADO_PANEL_SURFACE = '#7D513D'
 /** Miel center vertical panel */
 const MIEL_PANEL_SURFACE = '#E99861'
+/** Ámbar side panel only */
+const AMBAR_PANEL_SURFACE = '#FAD88A'
 
 /** Wider rendered panel bar only; `panelHalfWorldX` stays on base scale so center-to-center gaps unchanged. */
 const PANEL_MESH_WIDTH_MUL = 1.14
@@ -151,7 +153,7 @@ function SideBottle({
   narrowViewport,
   compressBottleSpacing = false,
   panelSurfaceColor = HERO_PANEL_SURFACE,
-  /** Max opacity factor at full reveal; default matches Miel/Ámbar frosted bar. */
+  /** Max opacity factor at full reveal; default frosted bar when no custom panel color tuning. */
   panelOpacityMul = 0.36,
   /** Nudge base color toward swatch under scene lights (0 = off). */
   panelEmissiveIntensity = 0,
@@ -479,6 +481,10 @@ function BottleScene({
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}
             compressBottleSpacing={compressBottleSpacing}
+            panelSurfaceColor={AMBAR_PANEL_SURFACE}
+            panelOpacityMul={0.96}
+            panelEmissiveIntensity={0.08}
+            panelRoughness={0.45}
           />
           <BottleModel
             scrollProgress={scrollProgress}
