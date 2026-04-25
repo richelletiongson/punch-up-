@@ -1,61 +1,85 @@
-import { useEffect, useRef } from 'react'
-import anime from 'animejs'
+import { useSyncExternalStore } from 'react'
+
+const PLAIN = 'Pure Gold'
+
+function clamp01(x) {
+  if (!Number.isFinite(x)) return 0
+  return Math.min(1, Math.max(0, x))
+}
+
+function easeOutCubic(t) {
+  const u = clamp01(t)
+  return 1 - (1 - u) ** 3
+}
+
+function subscribeReducedMotion(onStoreChange) {
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+  mq.addEventListener('change', onStoreChange)
+  return () => mq.removeEventListener('change', onStoreChange)
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
+function getReducedMotionServerSnapshot() {
+  return false
+}
 
 /**
- * “Pure Gold” with ML6-style staggered letter rise + looped fade (anime.js).
+ * Right → left: last letter rises first.
+ * `progress` must match `--pure-gold-t` / horizontal slide so motion happens while the line is on screen.
+ * (Using `sceneSlideProgress` finishes the stagger off-screen before `pureGoldT` moves.)
  */
-export default function PureGoldHeading() {
-  const rootRef = useRef(null)
-  const lettersRef = useRef(null)
-  const timelineRef = useRef(null)
+function letterRiseEm(progress, letterIndexFromLeft, letterCount) {
+  if (letterCount <= 0) return 0
+  const p = clamp01(progress)
+  const rtlRank = letterCount - 1 - letterIndexFromLeft
+  const stagger = 0.09
+  const win = 0.34
+  const t = clamp01((p - rtlRank * stagger) / win)
+  return (1 - easeOutCubic(t)) * 1.1
+}
 
-  useEffect(() => {
-    const root = rootRef.current
-    const letters = lettersRef.current
-    if (!root || !letters) return
+/**
+ * @param {number} progress — same as `pureGoldT` / `--pure-gold-t` (headline slide-in 0→1).
+ */
+export default function PureGoldHeading({ progress = 0 }) {
+  const reduceMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
+  )
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return
-    }
-
-    const raw = letters.textContent ?? ''
-    letters.innerHTML = raw.replace(/\S/g, "<span class='letter'>$&</span>")
-
-    const timeline = anime
-      .timeline({ loop: true })
-      .add({
-        targets: root.querySelectorAll('.letter'),
-        translateY: ['1.1em', 0],
-        translateZ: 0,
-        duration: 750,
-        delay: (_el, i) => 50 * i
-      })
-      .add({
-        targets: root,
-        opacity: 0,
-        duration: 1000,
-        easing: 'easeOutExpo',
-        delay: 1000
-      })
-
-    timelineRef.current = timeline
-
-    return () => {
-      timeline.pause()
-      if (root) {
-        anime.remove(root.querySelectorAll('.letter'))
-      }
-      letters.textContent = raw
-      root.style.opacity = ''
-      timelineRef.current = null
-    }
-  }, [])
+  const letterCount = [...PLAIN].filter((c) => /\S/.test(c)).length
+  let letterIndex = 0
 
   return (
-    <h2 ref={rootRef} className="stage__pureGoldHeading ml6">
+    <h2 className="stage__pureGoldHeading ml6">
       <span className="text-wrapper">
-        <span ref={lettersRef} className="letters">
-          Pure Gold
+        <span className="letters">
+          {[...PLAIN].map((ch, si) => {
+            if (!/\S/.test(ch)) {
+              return (
+                <span key={si} className="stage__pureGoldSpace">
+                  {ch}
+                </span>
+              )
+            }
+            const i = letterIndex++
+            const y = reduceMotion ? 0 : letterRiseEm(progress, i, letterCount)
+            return (
+              <span
+                key={si}
+                className="letter"
+                style={{
+                  transform: `translate3d(0, ${y}em, 0)`
+                }}
+              >
+                {ch}
+              </span>
+            )
+          })}
         </span>
       </span>
     </h2>

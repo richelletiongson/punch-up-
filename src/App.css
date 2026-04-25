@@ -62,7 +62,7 @@
   display: inline-block;
 }
 
-/* ML6-style letter mask (anime.js) — scoped under hero so it never collides globally */
+/* ML6-style letter mask — extra vertical padding so translateY(1.1em) is not fully clipped */
 .stage__pureGold .ml6 {
   position: relative;
 }
@@ -70,15 +70,21 @@
 .stage__pureGold .ml6 .text-wrapper {
   position: relative;
   display: inline-block;
-  padding-top: 0.2em;
+  padding-top: 1.05em;
   padding-right: 0.05em;
-  padding-bottom: 0.1em;
+  padding-bottom: 0.35em;
   overflow: hidden;
 }
 
 .stage__pureGold .ml6 .letter {
   display: inline-block;
   line-height: 1em;
+  will-change: transform;
+}
+
+.stage__pureGold .ml6 .stage__pureGoldSpace {
+  display: inline-block;
+  white-space: pre;
 }
 
 /* MADE: behind WebGL; RIGHT: above canvas with a stronger shadow */

@@ -745,7 +745,7 @@ function App() {
                 transform: pureGoldTransform
               }}
             >
-              <PureGoldHeading />
+              <PureGoldHeading progress={pureGoldT} />
             </div>
           </div>
         ) : null}
