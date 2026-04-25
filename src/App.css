@@ -123,15 +123,15 @@
 }
 
 .stage__titleInner {
-  font-family: var(--font-avenir);
-  font-weight: var(--weight-avenir-display);
+  font-family: var(--font-chorine);
+  font-weight: var(--weight-heading);
   font-style: normal;
   /*
-    Wider track → more slack for `space-between` between glyphs.
+    Chorine display — wider track + larger scale than prior Avenir lockup.
   */
   font-size: min(
-    clamp(4rem, 18vw, 15rem),
-    calc((100vw - 3ch) / 4.95)
+    clamp(5.35rem, 23vw, 18.5rem),
+    calc((100vw - 3ch) / 4.22)
   );
   width: min(100%, 34ch, 60rem);
   max-width: min(100%, 60rem);
@@ -234,8 +234,8 @@
   box-sizing: border-box;
   font-size: inherit;
   line-height: 0.92;
-  font-family: var(--font-avenir);
-  font-weight: var(--weight-avenir-display);
+  font-family: var(--font-chorine);
+  font-weight: var(--weight-heading);
   font-style: normal;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -248,8 +248,8 @@
 @supports (width: 1cqw) {
   .stage__titleInner {
     font-size: min(
-      clamp(4rem, 18cqw, 15rem),
-      calc((100cqw - 3ch) / 4.95)
+      clamp(5.35rem, 23cqw, 18.5rem),
+      calc((100cqw - 3ch) / 4.22)
     );
   }
 }
@@ -273,14 +273,14 @@
 
 .stage__copyTitleText.scroll-float-text {
   font-size: inherit;
-  line-height: 0.92;
+  line-height: 0.9;
   color: #ffffff;
-  font-family: var(--font-avenir);
-  font-weight: var(--weight-avenir-display);
+  font-family: var(--font-chorine);
+  font-weight: var(--weight-heading);
   font-style: normal;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 /* Same outer box for MADE + RIGHT: first/last glyphs flush to track edges */
