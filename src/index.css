@@ -42,11 +42,11 @@
   --brandy-d1: #66230d;
   --brandy-d2: #541d0b;
 
-  /* Hero page backdrop */
-  --hero-bg-base: #649ab2;
-  --hero-bg-blob-light: color-mix(in srgb, var(--hero-bg-base) 68%, #ffffff);
-  --hero-bg-blob-deep: color-mix(in srgb, var(--hero-bg-base) 62%, #1a3d4a);
-  --hero-bg-blob-mid: color-mix(in srgb, var(--hero-bg-base) 58%, #8ec4db);
+  /* Hero page backdrop — warm apricot base + layered radials (see body background) */
+  --hero-bg-base: #ecc38d;
+  --hero-bg-blob-light: color-mix(in srgb, var(--hero-bg-base) 46%, #ffffff);
+  --hero-bg-blob-deep: color-mix(in srgb, var(--hero-bg-base) 62%, #5a3d28);
+  --hero-bg-blob-mid: color-mix(in srgb, var(--hero-bg-base) 50%, #ffd4a0);
 
   /* Adobe Fonts / Typekit — chorine-large, avenir-lt-pro (kit: fcn3yta) */
   --font-chorine: 'chorine-large', sans-serif;
