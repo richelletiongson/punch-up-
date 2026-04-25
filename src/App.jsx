@@ -522,6 +522,12 @@ function App() {
     sceneSlideProgress <= pureGoldSlideHold
       ? 0
       : clamp01((sceneSlideProgress - pureGoldSlideHold) / (1 - pureGoldSlideHold))
+  /** Per-letter stagger uses this sub-progress so the rise starts on-screen (later on phone). */
+  const pureGoldLetterAnimDelay = narrowViewport ? 0.64 : compressBottleSpacing ? 0.44 : 0.32
+  const pureGoldLetterProgress =
+    pureGoldT <= pureGoldLetterAnimDelay
+      ? 0
+      : clamp01((pureGoldT - pureGoldLetterAnimDelay) / (1 - pureGoldLetterAnimDelay))
   const pureGoldTransform = pureGoldOffscreenBoost
     ? 'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-82dvw - 68%)), 0, 0)'
     : 'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-52vw - 52%)), 0, 0)'
@@ -745,7 +751,7 @@ function App() {
                 transform: pureGoldTransform
               }}
             >
-              <PureGoldHeading progress={pureGoldT} />
+              <PureGoldHeading progress={pureGoldLetterProgress} />
             </div>
           </div>
         ) : null}

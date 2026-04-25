@@ -28,8 +28,7 @@ function getReducedMotionServerSnapshot() {
 
 /**
  * Right → left: last letter rises first.
- * `progress` must match `--pure-gold-t` / horizontal slide so motion happens while the line is on screen.
- * (Using `sceneSlideProgress` finishes the stagger off-screen before `pureGoldT` moves.)
+ * `progress` is usually `pureGoldLetterProgress` from App (remapped 0→1 after a delay vs `pureGoldT`).
  */
 function letterRiseEm(progress, letterIndexFromLeft, letterCount) {
   if (letterCount <= 0) return 0
@@ -42,7 +41,7 @@ function letterRiseEm(progress, letterIndexFromLeft, letterCount) {
 }
 
 /**
- * @param {number} progress — same as `pureGoldT` / `--pure-gold-t` (headline slide-in 0→1).
+ * @param {number} progress — 0→1 remapped letter phase (see `pureGoldLetterProgress` in App.jsx).
  */
 export default function PureGoldHeading({ progress = 0 }) {
   const reduceMotion = useSyncExternalStore(
