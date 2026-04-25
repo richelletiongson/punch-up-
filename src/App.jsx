@@ -34,6 +34,8 @@ const TEXT_OUTRO_START = 0.28
 const HERO_PANEL_SURFACE = '#9eb6c3'
 /** Dorado side panel only */
 const DORADO_PANEL_SURFACE = '#7D513D'
+/** Miel center vertical panel */
+const MIEL_PANEL_SURFACE = '#E99861'
 
 /** Wider rendered panel bar only; `panelHalfWorldX` stays on base scale so center-to-center gaps unchanged. */
 const PANEL_MESH_WIDTH_MUL = 1.14
@@ -390,11 +392,13 @@ function BottleScene({
         >
           <shapeGeometry args={[panelShape]} />
           <meshStandardMaterial
-            color={HERO_PANEL_SURFACE}
-            transparent
-            opacity={reveal * 0.36}
-            roughness={0.62}
+            color={MIEL_PANEL_SURFACE}
+            transparent={reveal * 0.92 < 0.998}
+            opacity={reveal * 0.92}
+            roughness={0.45}
             metalness={0.02}
+            emissive={MIEL_PANEL_SURFACE}
+            emissiveIntensity={0.06}
           />
         </mesh>
         <Html
