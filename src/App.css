@@ -39,6 +39,60 @@
   user-select: none;
 }
 
+.stage__scrollPrompt {
+  position: fixed;
+  z-index: 19;
+  left: 50%;
+  bottom: max(env(safe-area-inset-bottom, 0px), clamp(1.1rem, 4.2vh, 2.75rem));
+  transform: translateX(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  pointer-events: none;
+  user-select: none;
+  color: #fff;
+  text-shadow: 0 0.04em 0.1em rgba(255, 255, 255, 0.25);
+  animation: stageScrollPromptPulse 1.35s ease-in-out infinite;
+}
+
+.stage__scrollPromptText {
+  font-family: var(--font-avenir);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.95vw, 1.15rem);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.stage__scrollPromptArrow {
+  font-family: var(--font-heading);
+  font-size: clamp(1.15rem, 2.55vw, 1.7rem);
+  line-height: 1;
+  transform: translateY(0);
+  animation: stageScrollPromptArrow 1.35s ease-in-out infinite;
+}
+
+@keyframes stageScrollPromptPulse {
+  0%,
+  100% {
+    opacity: 0.48;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes stageScrollPromptArrow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(0.22rem);
+  }
+}
+
 /* Large headline: scrubs in from the left while the 3D scene slides away */
 .stage__pureGold {
   position: fixed;

@@ -550,6 +550,12 @@ function App() {
   const textOutroEffectiveProgress = clamp01(
     (textOutroProgress - TEXT_OUTRO_START) / (1 - TEXT_OUTRO_START)
   )
+  const showScrollPrompt =
+    scrollProgress < 0.02 &&
+    titleExitProgress < 0.02 &&
+    bottleSettleProgress < 0.02 &&
+    textOutroProgress < 0.02 &&
+    sceneSlideProgress < 0.02
   const textVisibleProgress = heroSequenceComplete ? 1 - textOutroEffectiveProgress : 0
   const textOutroOffset = textOutroEffectiveProgress * 72
   const textSlideX =
@@ -782,6 +788,15 @@ function App() {
             sceneSlideProgress={sceneSlideProgress}
           />
         </Canvas>
+
+        {showScrollPrompt ? (
+          <div className="stage__scrollPrompt" aria-live="polite">
+            <span className="stage__scrollPromptText">Keep Scrolling</span>
+            <span className="stage__scrollPromptArrow" aria-hidden="true">
+              ↓
+            </span>
+          </div>
+        ) : null}
 
         {showPureGoldLayer ? (
           <div
