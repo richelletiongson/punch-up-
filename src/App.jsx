@@ -722,8 +722,8 @@ function App() {
           items={menuItems}
           displaySocials={false}
           displayItemNumbering={true}
-          menuButtonColor="#ffffff"
-          openMenuButtonColor="#fff"
+          menuButtonColor="var(--color-hero-tagline)"
+          openMenuButtonColor="var(--color-hero-tagline)"
           changeMenuColorOnOpen={true}
           colors={['var(--brandy-l2)', 'var(--harvest-orange)']}
           accentColor="var(--harvest-orange)"
