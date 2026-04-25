@@ -110,7 +110,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 var(--page-margin-inline);
+  padding: clamp(0.85rem, 3vmin, 2rem) var(--page-margin-inline);
   pointer-events: none;
 }
 
@@ -145,8 +145,17 @@
   display: grid;
   grid-template-rows: auto auto;
   /* Space between rows — “RIGHT” sits a bit lower than MADE */
-  row-gap: clamp(1.38em, 14.75vmin, 4.35em);
+  row-gap: clamp(1.15em, 12vmin, 3.6em);
   align-content: center;
+}
+
+/* Chorine runs tall — nudge MADE down / RIGHT up so neither hugs the viewport edge */
+.stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
+  transform: translateY(clamp(0.9rem, 3.5vh, 2.75rem));
+}
+
+.stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
+  transform: translateY(clamp(-0.9rem, -3.5vh, -2.75rem));
 }
 
 /*
@@ -157,8 +166,8 @@
 @media (max-width: 743px), (max-height: 640px) {
   .stage__titleUnder,
   .stage__titleFront {
-    --title-stage-pad-top: max(4.75rem, calc(env(safe-area-inset-top, 0px) + 2.75rem));
-    --title-stage-pad-bottom: max(2.75rem, env(safe-area-inset-bottom, 0px));
+    --title-stage-pad-top: max(5.5rem, calc(env(safe-area-inset-top, 0px) + 3.25rem));
+    --title-stage-pad-bottom: max(3.75rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));
     align-items: flex-start;
     padding-top: var(--title-stage-pad-top);
     padding-bottom: var(--title-stage-pad-bottom);
@@ -179,32 +188,32 @@
     space-between grid; margin-top in vh moves the whole row clearly. MADE stays z-behind canvas.
   */
   .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
-    margin-top: clamp(2.85rem, 11vh, 6.25rem);
+    margin-top: clamp(3.75rem, 14vh, 7.5rem);
   }
 
   .stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
-    transform: translateY(clamp(-0.6rem, -3vmin, -1.85rem));
+    transform: translateY(clamp(-2.25rem, -6.5vmin, -1rem));
   }
 }
 
 @media (max-width: 480px) {
   .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
-    margin-top: clamp(3.5rem, 14vh, 8rem);
+    margin-top: clamp(4.5rem, 17vh, 9.5rem);
   }
 }
 
-/* iPad / small tablet (incl. 744px-wide mini): widen spread — MADE higher, RIGHT lower */
+/* iPad / small tablet: same edge intent — MADE lower, RIGHT higher (toward center band) */
 @media (min-width: 744px) and (max-width: 1024px) {
   .stage__titleInner--stacked {
-    row-gap: clamp(4em, 22vmin, 9rem);
+    row-gap: clamp(3.25em, 16vmin, 7rem);
   }
 
   .stage__titleInner--stacked > .stage__titleStackRow--spread:first-child {
-    transform: translateY(clamp(-3rem, -9.5vmin, -1.35rem));
+    transform: translateY(clamp(1.35rem, 4.5vmin, 3rem));
   }
 
   .stage__titleInner--stacked > .stage__titleStackRow--spread:last-child {
-    transform: translateY(clamp(2.65rem, 7.5vmin, 4.5rem));
+    transform: translateY(clamp(-1.35rem, -4.5vmin, -3rem));
   }
 }
 
