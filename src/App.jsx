@@ -4,6 +4,7 @@ import { Environment, Html, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import './App.css'
 import StaggeredMenu from './StaggeredMenu'
+import PureGoldHeading from './PureGoldHeading'
 import ScrollFloat from './ScrollFloat'
 
 const BOTTLE_EXIT_SPIN_Y = Math.PI * 1.85
@@ -744,7 +745,7 @@ function App() {
                 transform: pureGoldTransform
               }}
             >
-              <h2 className="stage__pureGoldHeading">Pure Gold</h2>
+              <PureGoldHeading />
             </div>
           </div>
         ) : null}

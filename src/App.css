@@ -62,6 +62,25 @@
   display: inline-block;
 }
 
+/* ML6-style letter mask (anime.js) — scoped under hero so it never collides globally */
+.stage__pureGold .ml6 {
+  position: relative;
+}
+
+.stage__pureGold .ml6 .text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.2em;
+  padding-right: 0.05em;
+  padding-bottom: 0.1em;
+  overflow: hidden;
+}
+
+.stage__pureGold .ml6 .letter {
+  display: inline-block;
+  line-height: 1em;
+}
+
 /* MADE: behind WebGL; RIGHT: above canvas with a stronger shadow */
 .stage__titleUnder,
 .stage__titleFront {
