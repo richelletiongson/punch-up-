@@ -727,6 +727,10 @@ function App() {
           onMenuClose={() => console.log('Menu closed')}
         />
 
+        <div className="stage__heroStar" aria-hidden="true">
+          <img className="stage__heroStarImg" src="/Star.svg" alt="" />
+        </div>
+
         <div
           className="stage__titleUnder"
           aria-hidden={scrollProgress === 0 || titleExitProgress >= 0.99}

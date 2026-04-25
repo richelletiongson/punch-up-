@@ -21,6 +21,24 @@
   z-index: 10;
 }
 
+.stage__heroStar {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.stage__heroStarImg {
+  width: min(96vmin, 68rem);
+  height: auto;
+  opacity: 0.62;
+  filter: brightness(0.82) saturate(0.98);
+  transform: translateY(clamp(0.5rem, 2.2vh, 1.75rem));
+  user-select: none;
+}
+
 /* Large headline: scrubs in from the left while the 3D scene slides away */
 .stage__pureGold {
   position: fixed;
