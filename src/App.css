@@ -476,7 +476,7 @@
   text-decoration: none;
   padding: 0.7em 1.45em;
   border-radius: 999px;
-  border: 2px solid #fff;
+  border: 2px solid #cc6100;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -486,29 +486,29 @@
 }
 
 .stage__cta--primary {
-  background: #fff;
+  background: #cc6100;
   color: var(--color-cta-text);
-  border-color: #fff;
+  border-color: #cc6100;
 }
 
 .stage__cta--primary:hover {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(204, 97, 0, 0.92);
   transform: translateY(-1px);
 }
 
 .stage__cta--ghost {
   background: transparent;
-  color: #fff;
+  color: #cc6100;
   border-color: var(--color-cta-text);
 }
 
 .stage__cta--ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(204, 97, 0, 0.12);
   transform: translateY(-1px);
 }
 
 .stage__cta:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid #cc6100;
   outline-offset: 3px;
 }
 

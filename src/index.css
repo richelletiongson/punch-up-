@@ -52,7 +52,7 @@
   /* Default paragraph / inherited UI copy */
   --color-body-text: #be7d5e;
   /* Hero CTA labels (Shop / About / Pure Gold layer) */
-  --color-cta-text: #95c7e2;
+  --color-cta-text: #ffc83e;
   --hero-bg-blob-light: color-mix(in srgb, var(--hero-bg-base) 46%, #ffffff);
   --hero-bg-blob-deep: color-mix(in srgb, var(--hero-bg-base) 62%, #5a3d28);
   --hero-bg-blob-mid: color-mix(in srgb, var(--hero-bg-base) 50%, #ffd4a0);
