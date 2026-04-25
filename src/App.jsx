@@ -66,7 +66,7 @@ function BottleModel({
   bottleSettleProgress = 0,
   textOutroProgress = 0
 }) {
-  const { scene } = useGLTF('/Tequila01.glb')
+  const { scene } = useGLTF('/Tequila01.opt.glb')
   const clamped = Math.min(Math.max(scrollProgress ?? 0, 0), 1)
   const exit = Math.min(Math.max(titleExitProgress ?? 0, 0), 1)
   const settle = Math.min(Math.max(bottleSettleProgress ?? 0, 0), 1)
@@ -127,9 +127,7 @@ function BottleModel({
     </group>
   )
 }
-
-useGLTF.preload('/Tequila01.glb')
-
+useGLTF.preload('/Tequila01.opt.glb')
 /** Horizontal scale factor for vertical panel mesh (shape half-width = 0.9 in local units). */
 function panelWidthMul(narrowViewport, compressBottleSpacing) {
   if (narrowViewport) return 0.84
@@ -331,8 +329,27 @@ function SideBottle({
   )
 }
 
-useGLTF.preload('/Tequila02.glb')
-useGLTF.preload('/Tequila03.glb')
+function CanvasLoadingHint() {
+  return (
+    <Html center>
+      <div
+        style={{
+          padding: '0.5rem 0.75rem',
+          borderRadius: '10px',
+          background: 'rgba(255, 255, 255, 0.7)',
+          color: '#7d513d',
+          fontFamily: 'avenir-lt-pro, sans-serif',
+          fontWeight: 700,
+          fontSize: '0.9rem',
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase'
+        }}
+      >
+        Loading 3D...
+      </div>
+    </Html>
+  )
+}
 
 function BottleScene({
   scrollProgress,
@@ -467,7 +484,7 @@ function BottleScene({
         </Html>
         <Suspense fallback={null}>
           <SideBottle
-            modelPath="/Tequila02.glb"
+            modelPath="/Tequila02.opt.glb"
             side="left"
             label="Dorado"
             subtitle="Aged in warmth."
@@ -483,7 +500,7 @@ function BottleScene({
             titleColor={PANEL_PRODUCT_NAME_COLOR}
           />
           <SideBottle
-            modelPath="/Tequila03.glb"
+            modelPath="/Tequila03.opt.glb"
             side="right"
             label="Ámbar"
             subtitle="Deep glow, slow heat."
@@ -499,6 +516,8 @@ function BottleScene({
             titleColor={PANEL_PRODUCT_NAME_COLOR}
             taglineColor={AMBAR_PANEL_TAGLINE_COLOR}
           />
+        </Suspense>
+        <Suspense fallback={<CanvasLoadingHint />}>
           <BottleModel
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}

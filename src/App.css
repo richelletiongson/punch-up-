@@ -21,6 +21,29 @@
   z-index: 10;
 }
 
+.stage__canvasFallback {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  padding: 1.25rem;
+}
+
+.stage__canvasFallbackText {
+  margin: 0;
+  max-width: 30rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--color-title-headline);
+  font-family: var(--font-avenir);
+  font-size: clamp(0.9rem, 2.3vw, 1.05rem);
+  line-height: 1.4;
+  text-align: center;
+}
+
 .stage__heroStar {
   position: fixed;
   inset: 0;
