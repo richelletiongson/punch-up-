@@ -188,6 +188,8 @@ function SideBottle({
   const entranceRaw = Math.min(Math.max((reveal - 0.18) / 0.82, 0), 1)
   const entrance = entranceRaw * entranceRaw * (3 - 2 * entranceRaw)
   const dir = side === 'left' ? -1 : 1
+  /** Phone + tablet: Ámbar left of Dorado left of Miel (same X stack as narrow-only before). */
+  const trioStackLayout = narrowViewport || compressBottleSpacing
 
   const baseY = MAIN_BOTTLE_START_Y + (MAIN_BOTTLE_END_Y - MAIN_BOTTLE_START_Y) * clamped
   const targetY = baseY - outro * MAIN_BOTTLE_OUTRO_DROP
@@ -208,12 +210,12 @@ function SideBottle({
   const mobileMag = Math.max(pairGap, 3.38)
 
   let panelX
-  if (narrowViewport && side === 'right') {
+  if (trioStackLayout && side === 'right') {
     const doradoPanelX = -mobileMag + centerNudge * 0.88
     const settledAmbar = doradoPanelX - mobileMag
     const slide = (1 - entrance) * (mobileMag + 2.72)
     panelX = settledAmbar - slide
-  } else if (narrowViewport && side === 'left') {
+  } else if (trioStackLayout && side === 'left') {
     panelX = -mobileMag + centerNudge * 0.88
   } else {
     const mag = compressBottleSpacing ? tightFromCenter : wideFromCenter
@@ -224,12 +226,12 @@ function SideBottle({
   const panelScaleY = 0.51 + reveal * 1.92
   const panelTopY = -2.95 + (4.3 * panelScaleY) / 2
   const bottleInwardShift = 0.34
-  const bottleInwardDir = narrowViewport && side === 'right' ? -1 : dir
+  const bottleInwardDir = trioStackLayout && side === 'right' ? -1 : dir
   const bottleX = panelX - bottleInwardDir * bottleInwardShift
   const z = 0
   // Tequila02/03 files are slightly yawed out by default; counter-rotate per side to match center bottle.
   const yawCorrection =
-    narrowViewport && side === 'right' ? 0.24 : -dir * 0.24
+    trioStackLayout && side === 'right' ? 0.24 : -dir * 0.24
   const enterSpinTurns = 0.9
   const enterSpin = (1 - entrance) * TWO_PI * enterSpinTurns
 
