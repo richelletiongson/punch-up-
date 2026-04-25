@@ -751,7 +751,15 @@ function App() {
                 transform: pureGoldTransform
               }}
             >
-              <PureGoldHeading progress={pureGoldLetterProgress} />
+              <div className="stage__pureGoldStack">
+                <PureGoldHeading progress={pureGoldLetterProgress} />
+                <a
+                  className="stage__cta stage__cta--primary stage__pureGoldCta"
+                  href="/shop"
+                >
+                  Shop now
+                </a>
+              </div>
             </div>
           </div>
         ) : null}

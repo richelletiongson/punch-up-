@@ -42,6 +42,20 @@
   text-align: center;
 }
 
+.stage__pureGoldStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-inline: var(--page-margin-inline);
+  box-sizing: border-box;
+  /* Slightly above vertical center */
+  transform: translateY(clamp(-5.5rem, -5vh, -2.5rem));
+  pointer-events: auto;
+}
+
 .stage__pureGoldHeading {
   font-family: var(--font-heading);
   font-weight: 500;
@@ -422,6 +436,13 @@
   outline-offset: 3px;
 }
 
+.stage__cta.stage__pureGoldCta {
+  font-size: clamp(0.95rem, 1.85vw, 1.2rem);
+  padding: 0.95em 2.25em;
+  margin-top: clamp(1rem, 2.8vh, 1.75rem);
+  letter-spacing: 0.1em;
+}
+
 /* Right column: specs (with horizontal rules between blocks) */
 .stage__heroSpecs {
   position: fixed;
@@ -617,8 +638,24 @@
     padding: 0.65em 1.2em;
   }
 
+  .stage__cta.stage__pureGoldCta {
+    font-size: clamp(0.74rem, 2.9vw, 0.92rem);
+    padding: 0.72em 1.5em;
+    letter-spacing: 0.09em;
+  }
+
   .stage__pureGoldHeading {
     font-size: clamp(3.75rem, 20vw, 8rem);
   }
+
+  .stage__pureGoldStack {
+    transform: translateY(clamp(-6.5rem, -7vh, -3rem));
+  }
 }
 
+@media (max-width: 480px) {
+  .stage__cta.stage__pureGoldCta {
+    font-size: clamp(0.66rem, 3.2vw, 0.78rem);
+    padding: 0.58em 1.1em;
+  }
+}
