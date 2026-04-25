@@ -519,6 +519,7 @@ function App() {
   const [bottleSettleProgress, setBottleSettleProgress] = useState(0)
   const [textOutroProgress, setTextOutroProgress] = useState(0)
   const [sceneSlideProgress, setSceneSlideProgress] = useState(0)
+  const [starRotationDeg, setStarRotationDeg] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
   /** ≤1100px: pull side bottles in + wider FOV so Ámbar stays in frame on tablets */
   const [compressBottleSpacing, setCompressBottleSpacing] = useState(() => {
@@ -615,6 +616,9 @@ function App() {
   const onWheel = useCallback((e) => {
     e.preventDefault()
     const delta = e.deltaY
+    // Star spin is proportional to wheel speed: bigger/ faster scroll input = larger angle step.
+    const starSpinStep = delta * 0.12
+    setStarRotationDeg((prev) => prev + starSpinStep)
     const scrollStep = delta * 0.0008
     // floatProgress runs 0→1 over scrollProgress 0.05→1 (span 0.95). Scale exit so
     // the same total wheel travel scrubs headline in vs out.
@@ -727,7 +731,11 @@ function App() {
           onMenuClose={() => console.log('Menu closed')}
         />
 
-        <div className="stage__heroStar" aria-hidden="true">
+        <div
+          className="stage__heroStar"
+          aria-hidden="true"
+          style={{ ['--star-rotate-deg']: `${starRotationDeg}deg` }}
+        >
           <img className="stage__heroStarImg" src="/Star.svg" alt="" />
         </div>
 

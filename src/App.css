@@ -33,9 +33,9 @@
 .stage__heroStarImg {
   width: min(96vmin, 68rem);
   height: auto;
-  opacity: 0.62;
-  filter: brightness(0.82) saturate(0.98);
-  transform: translateY(clamp(0.5rem, 2.2vh, 1.75rem));
+  opacity: 1;
+  filter: none;
+  transform: translateY(clamp(0.5rem, 2.2vh, 1.75rem)) rotate(var(--star-rotate-deg, 0deg));
   user-select: none;
 }
 
