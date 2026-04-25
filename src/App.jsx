@@ -32,6 +32,9 @@ const TEXT_OUTRO_START = 0.28
 /** Vertical panel base color (lit mesh + compact brand story panel) — light blue-grey */
 const HERO_PANEL_SURFACE = '#9eb6c3'
 
+/** Wider rendered panel bar only; `panelHalfWorldX` stays on base scale so center-to-center gaps unchanged. */
+const PANEL_MESH_WIDTH_MUL = 1.14
+
 const HERO_BRAND_STORY_FULL =
   'Áureo is a modern tequila shaped by warmth, heritage, and the golden hours that linger longest. Crafted from blue agave and inspired by the richness of sun-soaked landscapes, each expression captures a different shade of gold. From the honeyed brightness of Miel, to the oak-warmed depth of Dorado, to the spiced amber glow of Ámbar. Rooted in tradition, refined through a modern lens, Áureo is made for slow pours, long evenings, and the art of savoring.'
 
@@ -112,6 +115,26 @@ function BottleModel({
 
 useGLTF.preload('/Tequila01.glb')
 
+/** Horizontal scale factor for vertical panel mesh (shape half-width = 0.9 in local units). */
+function panelWidthMul(narrowViewport, compressBottleSpacing) {
+  if (narrowViewport) return 0.84
+  if (compressBottleSpacing) return 0.96
+  return 1
+}
+
+/** Extra world-space gap between adjacent panel centers (beyond touching half-widths). */
+function interPanelGutter(narrowViewport, compressBottleSpacing) {
+  if (narrowViewport) return 0.56
+  if (compressBottleSpacing) return 0.5
+  return 0.92
+}
+
+/** Layout half-width along X for spacing (mesh uses `sx * PANEL_MESH_WIDTH_MUL` so bars can draw wider). */
+function panelHalfWorldX(reveal, narrowViewport, compressBottleSpacing) {
+  const sx = (0.45 + Math.min(Math.max(reveal, 0), 1) * 1.35) * panelWidthMul(narrowViewport, compressBottleSpacing)
+  return 0.9 * sx
+}
+
 function SideBottle({
   modelPath,
   side = 'left',
@@ -120,8 +143,10 @@ function SideBottle({
   profile,
   textOutroProgress = 0,
   scrollProgress = 1,
-  narrowViewport
+  narrowViewport,
+  compressBottleSpacing = false
 }) {
+  const pwm = panelWidthMul(narrowViewport, compressBottleSpacing)
   const { scene } = useGLTF(modelPath)
   const instance = useMemo(() => {
     const clone = scene.clone(true)
@@ -162,15 +187,40 @@ function SideBottle({
   const baseScale = narrowViewport ? 0.14 : 0.16
   const minScaleFactor = 0.68
   const scale = baseScale * minScaleFactor * 1.02
-  const centerNudge = 0.18
-  const panelX = dir * 4.05 - dir * centerNudge
+  const centerNudge = 0.16
+  const gutter = interPanelGutter(narrowViewport, compressBottleSpacing)
+  const hw = panelHalfWorldX(reveal, narrowViewport, compressBottleSpacing)
+  const pairGap = 2 * hw + gutter
+
+  // Distance from scene center (Miel) to Dorado / desktop Ámbar — same mag both sides = even gutters.
+  const wideFromCenter = Math.max(pairGap, 5.12)
+  const tightFromCenter = Math.max(pairGap * 1.04, 3.68)
+  /** Mobile: one step Miel↔Dorado and Dorado↔Ámbar (same `mobileMag` = consistent spacing). */
+  const mobileMag = Math.max(pairGap, 3.38)
+
+  let panelX
+  if (narrowViewport && side === 'right') {
+    const doradoPanelX = -mobileMag + centerNudge * 0.88
+    const settledAmbar = doradoPanelX - mobileMag
+    const slide = (1 - entrance) * (mobileMag + 2.72)
+    panelX = settledAmbar - slide
+  } else if (narrowViewport && side === 'left') {
+    panelX = -mobileMag + centerNudge * 0.88
+  } else {
+    const mag = compressBottleSpacing ? tightFromCenter : wideFromCenter
+    panelX = dir * mag - dir * centerNudge
+  }
+
+  const panelSX = (0.45 + reveal * 1.35) * pwm
   const panelScaleY = 0.51 + reveal * 1.92
   const panelTopY = -2.95 + (4.3 * panelScaleY) / 2
   const bottleInwardShift = 0.34
-  const bottleX = panelX - dir * bottleInwardShift
+  const bottleInwardDir = narrowViewport && side === 'right' ? -1 : dir
+  const bottleX = panelX - bottleInwardDir * bottleInwardShift
   const z = 0
   // Tequila02/03 files are slightly yawed out by default; counter-rotate per side to match center bottle.
-  const yawCorrection = -dir * 0.24
+  const yawCorrection =
+    narrowViewport && side === 'right' ? 0.24 : -dir * 0.24
   const enterSpinTurns = 0.9
   const enterSpin = (1 - entrance) * TWO_PI * enterSpinTurns
 
@@ -178,7 +228,7 @@ function SideBottle({
     <>
       <mesh
         position={[panelX, -2.95, -1.05]}
-        scale={[0.45 + reveal * 1.35, panelScaleY, 1]}
+        scale={[panelSX * PANEL_MESH_WIDTH_MUL, panelScaleY, 1]}
         visible={reveal > 0.001}
       >
         <shapeGeometry args={[panelShape]} />
@@ -197,11 +247,11 @@ function SideBottle({
         style={{
           fontFamily: 'chorine-large, sans-serif',
           fontWeight: 500,
-          fontSize: '30px',
+          fontSize: narrowViewport ? '23px' : '30px',
           letterSpacing: '0.06em',
           color: '#ffffff',
-          width: '280px',
-          maxWidth: '280px',
+          width: narrowViewport ? '248px' : '280px',
+          maxWidth: narrowViewport ? '248px' : '280px',
           opacity: reveal > 0.35 ? 1 : 0,
           pointerEvents: 'none',
           userSelect: 'none'
@@ -230,8 +280,8 @@ function SideBottle({
               letterSpacing: '0.01em',
               lineHeight: 1.2,
               whiteSpace: 'pre-line',
-              width: '220px',
-              maxWidth: '220px',
+              width: narrowViewport ? '218px' : '220px',
+              maxWidth: narrowViewport ? '218px' : '220px',
               marginLeft: 'auto',
               marginRight: 'auto',
               overflowWrap: 'normal',
@@ -246,7 +296,7 @@ function SideBottle({
         position={[bottleX, y, z]}
         rotation={[0, BOTTLE_REST_ROTATION[1] + yawCorrection + enterSpin, 0]}
         scale={scale}
-        visible={entrance > 0.08}
+        visible={entrance > 0.06}
       >
         <primitive object={instance} />
       </group>
@@ -260,16 +310,29 @@ useGLTF.preload('/Tequila03.glb')
 function BottleScene({
   scrollProgress,
   narrowViewport,
+  compressBottleSpacing = false,
+  pureGoldOffscreenBoost = false,
   titleExitProgress,
   bottleSettleProgress,
   textOutroProgress,
   sceneSlideProgress = 0
 }) {
   const reveal = Math.min(Math.max((textOutroProgress - 0.78) / 0.22, 0), 1)
-  const slideDistance = narrowViewport ? 9 : 14
+  const slideDistance = narrowViewport
+    ? 19.25
+    : compressBottleSpacing
+      ? 17.5
+      : pureGoldOffscreenBoost
+        ? 19
+        : 25.5
   const sceneSlideX = Math.min(Math.max(sceneSlideProgress, 0), 1) * slideDistance
+  const pwm = panelWidthMul(narrowViewport, compressBottleSpacing)
+  const centerPanelSX = (0.45 + reveal * 1.35) * pwm
   const panelScaleY = 0.51 + reveal * 1.92
   const panelTopY = -2.95 + (4.3 * panelScaleY) / 2
+  const labelTitlePx = narrowViewport ? 23 : compressBottleSpacing ? 25 : 30
+  const labelBoxPx = narrowViewport ? 248 : compressBottleSpacing ? 258 : 280
+  const profileBoxPx = narrowViewport ? 218 : compressBottleSpacing ? 212 : 220
   const panelShape = useMemo(() => {
     const w = 1.8
     const h = 4.3
@@ -292,7 +355,7 @@ function BottleScene({
   useFrame(({ camera }) => {
     // Scroll parallax: zooms out until it stops.
     const startZ = 4.2
-    const endZ = 10.5
+    const endZ = narrowViewport ? 11.2 : compressBottleSpacing ? 10.95 : 11.25
     const clamped = Math.min(Math.max(scrollProgress, 0), 1)
 
     const z = startZ + (endZ - startZ) * clamped
@@ -309,7 +372,7 @@ function BottleScene({
       <group position={[sceneSlideX, 0, 0]}>
         <mesh
           position={[0, -2.95, -1.05]}
-          scale={[0.45 + reveal * 1.35, panelScaleY, 1]}
+          scale={[centerPanelSX * PANEL_MESH_WIDTH_MUL, panelScaleY, 1]}
           visible={reveal > 0.001}
         >
           <shapeGeometry args={[panelShape]} />
@@ -328,11 +391,11 @@ function BottleScene({
           style={{
             fontFamily: 'chorine-large, sans-serif',
             fontWeight: 500,
-            fontSize: '30px',
+            fontSize: `${labelTitlePx}px`,
             letterSpacing: '0.06em',
             color: '#ffffff',
-            width: '280px',
-            maxWidth: '280px',
+            width: `${labelBoxPx}px`,
+            maxWidth: `${labelBoxPx}px`,
             opacity: reveal > 0.35 ? 1 : 0,
             pointerEvents: 'none',
             userSelect: 'none'
@@ -361,8 +424,8 @@ function BottleScene({
                 letterSpacing: '0.01em',
                 lineHeight: 1.2,
                 whiteSpace: 'pre-line',
-                width: '220px',
-                maxWidth: '220px',
+                width: `${profileBoxPx}px`,
+                maxWidth: `${profileBoxPx}px`,
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 overflowWrap: 'normal',
@@ -383,6 +446,7 @@ function BottleScene({
             textOutroProgress={textOutroProgress}
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}
+            compressBottleSpacing={compressBottleSpacing}
           />
           <SideBottle
             modelPath="/Tequila03.glb"
@@ -393,6 +457,7 @@ function BottleScene({
             textOutroProgress={textOutroProgress}
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}
+            compressBottleSpacing={compressBottleSpacing}
           />
           <BottleModel
             scrollProgress={scrollProgress}
@@ -415,6 +480,11 @@ function App() {
   const [textOutroProgress, setTextOutroProgress] = useState(0)
   const [sceneSlideProgress, setSceneSlideProgress] = useState(0)
   const [narrowViewport, setNarrowViewport] = useState(false)
+  /** ≤1100px: pull side bottles in + wider FOV so Ámbar stays in frame on tablets */
+  const [compressBottleSpacing, setCompressBottleSpacing] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 1100px)').matches
+  })
   /** ≤1200px: tablets / small widths — stronger off-screen offset so “Pure Gold” never peeks */
   const [pureGoldOffscreenBoost, setPureGoldOffscreenBoost] = useState(() => {
     if (typeof window === 'undefined') return false
@@ -441,12 +511,29 @@ function App() {
   )
   const textVisibleProgress = heroSequenceComplete ? 1 - textOutroEffectiveProgress : 0
   const textOutroOffset = textOutroEffectiveProgress * 72
-  const textSlideX = sceneSlideProgress * 1200
+  const textSlideX =
+    sceneSlideProgress *
+    (narrowViewport ? 1780 : compressBottleSpacing ? 1560 : pureGoldOffscreenBoost ? 1460 : 1640)
   const showPureGoldLayer = heroSequenceComplete && textOutroProgress >= 1
-  const pureGoldT = clamp01(sceneSlideProgress)
+  /** Large screens: headline eases in only after part of the scene slide (3D clears first). */
+  const pureGoldSlideHold = narrowViewport ? 0 : compressBottleSpacing ? 0.08 : 0.14
+  const pureGoldT =
+    sceneSlideProgress <= pureGoldSlideHold
+      ? 0
+      : clamp01((sceneSlideProgress - pureGoldSlideHold) / (1 - pureGoldSlideHold))
   const pureGoldTransform = pureGoldOffscreenBoost
     ? 'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-82dvw - 68%)), 0, 0)'
     : 'translate3d(calc((1 - var(--pure-gold-t, 0)) * (-52vw - 52%)), 0, 0)'
+
+  const heroCameraSettings = useMemo(
+    () => ({
+      position: [0, 0, 4.2],
+      fov: narrowViewport ? 43 : compressBottleSpacing ? 38 : 35,
+      near: 0.01,
+      far: 100
+    }),
+    [narrowViewport, compressBottleSpacing]
+  )
 
   const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
@@ -464,19 +551,23 @@ function App() {
   useEffect(() => {
     const mq700 = window.matchMedia('(max-width: 700px)')
     const mq900 = window.matchMedia('(max-width: 900px)')
+    const mq1100 = window.matchMedia('(max-width: 1100px)')
     const mq1200 = window.matchMedia('(max-width: 1200px)')
     const sync = () => {
       setNarrowViewport(mq700.matches)
       setHeroCompactLayout(mq900.matches)
+      setCompressBottleSpacing(mq1100.matches)
       setPureGoldOffscreenBoost(mq1200.matches)
     }
     sync()
     mq700.addEventListener('change', sync)
     mq900.addEventListener('change', sync)
+    mq1100.addEventListener('change', sync)
     mq1200.addEventListener('change', sync)
     return () => {
       mq700.removeEventListener('change', sync)
       mq900.removeEventListener('change', sync)
+      mq1100.removeEventListener('change', sync)
       mq1200.removeEventListener('change', sync)
     }
   }, [])
@@ -628,13 +719,12 @@ function App() {
           </div>
         </div>
 
-        <Canvas
-          camera={{ position: [0, 0, 4.2], fov: 35, near: 0.01, far: 100 }}
-          className="stage__canvas"
-        >
+        <Canvas camera={heroCameraSettings} className="stage__canvas">
           <BottleScene
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}
+            compressBottleSpacing={compressBottleSpacing}
+            pureGoldOffscreenBoost={pureGoldOffscreenBoost}
             titleExitProgress={titleExitProgress}
             bottleSettleProgress={bottleSettleProgress}
             textOutroProgress={textOutroEffectiveProgress}
