@@ -32,6 +32,8 @@ const TEXT_OUTRO_START = 0.28
 
 /** Vertical panel base color (lit mesh + compact brand story panel) — light blue-grey */
 const HERO_PANEL_SURFACE = '#9eb6c3'
+/** Dorado side panel only */
+const DORADO_PANEL_SURFACE = '#7D513D'
 
 /** Wider rendered panel bar only; `panelHalfWorldX` stays on base scale so center-to-center gaps unchanged. */
 const PANEL_MESH_WIDTH_MUL = 1.14
@@ -145,7 +147,13 @@ function SideBottle({
   textOutroProgress = 0,
   scrollProgress = 1,
   narrowViewport,
-  compressBottleSpacing = false
+  compressBottleSpacing = false,
+  panelSurfaceColor = HERO_PANEL_SURFACE,
+  /** Max opacity factor at full reveal; default matches Miel/Ámbar frosted bar. */
+  panelOpacityMul = 0.36,
+  /** Nudge base color toward swatch under scene lights (0 = off). */
+  panelEmissiveIntensity = 0,
+  panelRoughness = 0.62
 }) {
   const pwm = panelWidthMul(narrowViewport, compressBottleSpacing)
   const { scene } = useGLTF(modelPath)
@@ -234,11 +242,13 @@ function SideBottle({
       >
         <shapeGeometry args={[panelShape]} />
         <meshStandardMaterial
-          color={HERO_PANEL_SURFACE}
-          transparent
-          opacity={reveal * 0.36}
-          roughness={0.62}
+          color={panelSurfaceColor}
+          transparent={reveal * panelOpacityMul < 0.998}
+          opacity={reveal * panelOpacityMul}
+          roughness={panelRoughness}
           metalness={0.02}
+          emissive={panelSurfaceColor}
+          emissiveIntensity={panelEmissiveIntensity}
         />
       </mesh>
       <Html
@@ -448,6 +458,10 @@ function BottleScene({
             scrollProgress={scrollProgress}
             narrowViewport={narrowViewport}
             compressBottleSpacing={compressBottleSpacing}
+            panelSurfaceColor={DORADO_PANEL_SURFACE}
+            panelOpacityMul={0.96}
+            panelEmissiveIntensity={0.08}
+            panelRoughness={0.45}
           />
           <SideBottle
             modelPath="/Tequila03.glb"
