@@ -69,7 +69,7 @@
   );
   line-height: 0.88;
   letter-spacing: 0.035em;
-  color: #ffffff;
+  color: var(--color-hero-tagline);
   white-space: nowrap;
   margin: 0;
   max-width: 100%;
@@ -283,7 +283,7 @@
 .stage__copyTitleText.scroll-float-text {
   font-size: inherit;
   line-height: 0.9;
-  color: #ffffff;
+  color: var(--color-title-headline);
   font-family: var(--font-chorine);
   font-weight: var(--weight-heading);
   font-style: normal;
@@ -310,9 +310,7 @@
 }
 
 .stage__copyTitleText--front.scroll-float-text {
-  text-shadow:
-    0 0.06em 0.18em rgba(0, 12, 20, 0.32),
-    0 0.02em 0.06em rgba(0, 21, 36, 0.22);
+  text-shadow: 0 0.04em 0.12em rgba(255, 255, 255, 0.35);
 }
 
 .stage__copyTitleText--under.scroll-float-text .char,
@@ -354,7 +352,7 @@
   font-size: clamp(2rem, 7vw, 4rem);
   letter-spacing: 0.07em;
   line-height: 1.12;
-  color: #fff;
+  color: var(--color-hero-tagline);
 }
 
 .stage__taglineLine {
@@ -381,7 +379,7 @@
   font-size: clamp(0.9375rem, 1.55vw, 1.125rem);
   line-height: 1.65;
   letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.94);
+  color: var(--color-body-text);
 }
 
 .stage__heroOutroCtas {
@@ -417,7 +415,7 @@
 
 .stage__cta--primary {
   background: #fff;
-  color: var(--ink-black);
+  color: var(--color-cta-text);
   border-color: #fff;
 }
 
@@ -429,6 +427,7 @@
 .stage__cta--ghost {
   background: transparent;
   color: #fff;
+  border-color: var(--color-cta-text);
 }
 
 .stage__cta--ghost:hover {
@@ -488,7 +487,7 @@
   font-size: clamp(1.15rem, 2.55vw, 1.65rem);
   letter-spacing: 0.08em;
   line-height: 1.15;
-  color: #fff;
+  color: var(--color-title-headline);
 }
 
 .stage__heroSpecText {
@@ -497,7 +496,7 @@
   font-weight: 400;
   font-size: clamp(0.8125rem, 1.3vw, 0.9375rem);
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--color-body-text);
 }
 
 .stage__heroSpecList {
@@ -508,7 +507,7 @@
   font-weight: 400;
   font-size: clamp(0.8125rem, 1.3vw, 0.9375rem);
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--color-body-text);
 }
 
 .stage__heroSpecList li {
@@ -598,7 +597,7 @@
     overflow: visible;
     padding: clamp(0.85rem, 2.6vw, 1.1rem) clamp(1rem, 3vw, 1.2rem);
     text-align: center;
-    color: #fff;
+    color: var(--color-body-text);
   }
 
   .stage__heroOutroCtas {

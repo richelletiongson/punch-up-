@@ -42,8 +42,17 @@
   --brandy-d1: #66230d;
   --brandy-d2: #541d0b;
 
-  /* Hero page backdrop — warm apricot base + layered radials (see body background) */
-  --hero-bg-base: #ecc38d;
+  /* Hero page backdrop — warm cream base + layered radials (see body background) */
+  --hero-bg-base: #f5d5aa;
+
+  /* Display titles / section headlines (warm brown) */
+  --color-title-headline: #7d513d;
+  /* Hero tagline: “Born of Sun.” / “Poured in Gold.” */
+  --color-hero-tagline: #b5560d;
+  /* Default paragraph / inherited UI copy */
+  --color-body-text: #be7d5e;
+  /* Hero CTA labels (Shop / About / Pure Gold layer) */
+  --color-cta-text: #95c7e2;
   --hero-bg-blob-light: color-mix(in srgb, var(--hero-bg-base) 46%, #ffffff);
   --hero-bg-blob-deep: color-mix(in srgb, var(--hero-bg-base) 62%, #5a3d28);
   --hero-bg-blob-mid: color-mix(in srgb, var(--hero-bg-base) 50%, #ffd4a0);
@@ -91,7 +100,7 @@ body {
   font-family: var(--font-body);
   font-weight: var(--weight-body);
   font-size: var(--text-body);
-  color: var(--papaya-whip);
+  color: var(--color-body-text);
   background:
     radial-gradient(
       1200px 800px at 12% 10%,
@@ -119,6 +128,7 @@ h3 {
   font-style: normal;
   letter-spacing: var(--tracking-heading);
   margin: 0;
+  color: var(--color-title-headline);
 }
 
 h1 {

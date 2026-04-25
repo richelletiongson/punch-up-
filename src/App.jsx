@@ -36,8 +36,16 @@ const HERO_PANEL_SURFACE = '#9eb6c3'
 const DORADO_PANEL_SURFACE = '#7D513D'
 /** Miel center vertical panel */
 const MIEL_PANEL_SURFACE = '#E99861'
+/** Miel flavor panel tagline (“Golden, slow, and softly sweet.”) */
+const MIEL_PANEL_TAGLINE_COLOR = '#F9BF8D'
 /** Ámbar side panel only */
-const AMBAR_PANEL_SURFACE = '#FAD88A'
+const AMBAR_PANEL_SURFACE = '#F4BF55'
+/** Ámbar flavor panel tagline (“Deep glow, slow heat.”) */
+const AMBAR_PANEL_TAGLINE_COLOR = '#FFE5B1'
+
+/** DOM headlines; 3D panel product names use `PANEL_PRODUCT_NAME_COLOR` where white reads best. */
+const HERO_TITLE_HEADLINE_COLOR = '#7D513D'
+const PANEL_PRODUCT_NAME_COLOR = '#ffffff'
 
 /** Wider rendered panel bar only; `panelHalfWorldX` stays on base scale so center-to-center gaps unchanged. */
 const PANEL_MESH_WIDTH_MUL = 1.14
@@ -157,7 +165,9 @@ function SideBottle({
   panelOpacityMul = 0.36,
   /** Nudge base color toward swatch under scene lights (0 = off). */
   panelEmissiveIntensity = 0,
-  panelRoughness = 0.62
+  panelRoughness = 0.62,
+  titleColor = HERO_TITLE_HEADLINE_COLOR,
+  taglineColor = 'var(--color-body-text)'
 }) {
   const pwm = panelWidthMul(narrowViewport, compressBottleSpacing)
   const { scene } = useGLTF(modelPath)
@@ -266,7 +276,7 @@ function SideBottle({
           fontWeight: 500,
           fontSize: narrowViewport ? '23px' : '30px',
           letterSpacing: '0.06em',
-          color: '#ffffff',
+          color: titleColor,
           width: narrowViewport ? '248px' : '280px',
           maxWidth: narrowViewport ? '248px' : '280px',
           opacity: reveal > 0.35 ? 1 : 0,
@@ -283,7 +293,7 @@ function SideBottle({
               fontWeight: 700,
               fontSize: '8px',
               letterSpacing: '0.01em',
-              color: 'rgba(255,255,255,0.95)'
+              color: taglineColor
             }}
           >
             {subtitle}
@@ -412,7 +422,7 @@ function BottleScene({
             fontWeight: 500,
             fontSize: `${labelTitlePx}px`,
             letterSpacing: '0.06em',
-            color: '#ffffff',
+            color: PANEL_PRODUCT_NAME_COLOR,
             width: `${labelBoxPx}px`,
             maxWidth: `${labelBoxPx}px`,
             opacity: reveal > 0.35 ? 1 : 0,
@@ -429,7 +439,7 @@ function BottleScene({
                 fontWeight: 700,
                 fontSize: '8px',
                 letterSpacing: '0.01em',
-                color: 'rgba(255,255,255,0.95)'
+                color: MIEL_PANEL_TAGLINE_COLOR
               }}
             >
               Golden, slow, and softly sweet.
@@ -470,6 +480,7 @@ function BottleScene({
             panelOpacityMul={0.96}
             panelEmissiveIntensity={0.08}
             panelRoughness={0.45}
+            titleColor={PANEL_PRODUCT_NAME_COLOR}
           />
           <SideBottle
             modelPath="/Tequila03.glb"
@@ -485,6 +496,8 @@ function BottleScene({
             panelOpacityMul={0.96}
             panelEmissiveIntensity={0.08}
             panelRoughness={0.45}
+            titleColor={PANEL_PRODUCT_NAME_COLOR}
+            taglineColor={AMBAR_PANEL_TAGLINE_COLOR}
           />
           <BottleModel
             scrollProgress={scrollProgress}
@@ -573,12 +586,6 @@ function App() {
     { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
     { label: 'Services', ariaLabel: 'View our services', link: '/services' },
     { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' },
-  ]
-
-  const socialItems = [
-    { label: 'Twitter', link: 'https://twitter.com' },
-    { label: 'GitHub', link: 'https://github.com' },
-    { label: 'LinkedIn', link: 'https://linkedin.com' },
   ]
 
   useEffect(() => {
@@ -709,8 +716,7 @@ function App() {
           position="right"
           logoUrl="/Aurero_Logo.svg"
           items={menuItems}
-          socialItems={socialItems}
-          displaySocials
+          displaySocials={false}
           displayItemNumbering={true}
           menuButtonColor="#ffffff"
           openMenuButtonColor="#fff"
