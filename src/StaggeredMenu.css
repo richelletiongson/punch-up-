@@ -340,7 +340,7 @@
 @media (max-width: 1024px) {
   /* Logo + Menu/Close sit lower on tablets / small laptops */
   .staggered-menu-header {
-    padding-top: clamp(4.25rem, min(11svh, 13vh), 8.5rem);
+    padding-top: clamp(1.75rem, min(4.5svh, 5.5vh), 3.25rem);
     padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
   }
 
@@ -365,7 +365,7 @@
 
 @media (max-width: 640px) {
   .staggered-menu-header {
-    padding-top: clamp(4.75rem, min(13svh, 15vh), 9.5rem);
+    padding-top: clamp(1.35rem, min(3.8svh, 4.8vh), 2.6rem);
   }
 
   .staggered-menu-panel {

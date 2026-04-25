@@ -644,6 +644,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #fff;
   }
 
   .stage__taglineLine {
@@ -672,7 +673,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: #9eb6c3;
+    background: #f4bf55;
     border-radius: 14px;
     border: none;
     box-shadow: 0 6px 24px rgba(0, 21, 36, 0.12);
@@ -692,7 +693,7 @@
     overflow: visible;
     padding: clamp(0.85rem, 2.6vw, 1.1rem) clamp(1rem, 3vw, 1.2rem);
     text-align: center;
-    color: var(--color-body-text);
+    color: #fff;
   }
 
   .stage__heroOutroCtas {
