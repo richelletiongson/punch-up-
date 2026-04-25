@@ -311,10 +311,8 @@
 
 .stage__copyTitleText--front.scroll-float-text {
   text-shadow:
-    0 0.14em 0.42em rgba(0, 8, 14, 0.85),
-    0 0.08em 0.2em rgba(0, 21, 36, 0.7),
-    0 0.03em 0.08em rgba(0, 0, 0, 0.55),
-    0 0 0.06em rgba(0, 0, 0, 0.4);
+    0 0.06em 0.18em rgba(0, 12, 20, 0.32),
+    0 0.02em 0.06em rgba(0, 21, 36, 0.22);
 }
 
 .stage__copyTitleText--under.scroll-float-text .char,
